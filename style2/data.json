@@ -1,0 +1,89 @@
+{
+  "firstName": "Richard",
+  "lastName": "Sanchez",
+  "title": "Marketing Manager",
+  "contact": {
+    "phone": "+123-456-7890",
+    "email": "hello@reallygreatsite.com",
+    "address": "123 Anywhere St., Any City",
+    "website": "www.reallygreatsite.com"
+  },
+  "profile": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.",
+  "education": [
+    {
+      "degree": "Master of Business Management",
+      "institution": "Wardiere University",
+      "start": "2029",
+      "end": "2030"
+    },
+    {
+      "degree": "Bachelor of Business (GPA: 3.8 / 4.0)",
+      "institution": "Wardiere University",
+      "start": "2025",
+      "end": "2029"
+    }
+  ],
+  "skills": [
+    "Project Management",
+    "Public Relations",
+    "Teamwork",
+    "Time Management",
+    "Leadership",
+    "Effective Communication",
+    "Critical Thinking"
+  ],
+  "languages": [
+    "English (Fluent)",
+    "French (Fluent)",
+    "German (Basics)",
+    "Spanish (Intermediate)"
+  ],
+  "experience": [
+    {
+      "company": "Borcelle Studio",
+      "role": "Marketing Manager & Specialist",
+      "start": "2030",
+      "end": "Present",
+      "details": [
+        "Develop and execute comprehensive marketing strategies and campaigns that align with the company's goals and objectives.",
+        "Lead, mentor, and manage a high-performing marketing team, fostering a collaborative and results-driven work environment.",
+        "Monitor brand consistency across marketing channels and materials."
+      ]
+    },
+    {
+      "company": "Fauget Studio",
+      "role": "Marketing Manager & Specialist",
+      "start": "2025",
+      "end": "2029",
+      "details": [
+        "Create and manage the marketing budget, ensuring efficient allocation of resources and optimizing ROI.",
+        "Oversee market research to identify emerging trends, customer needs, and competitor strategies.",
+        "Monitor brand consistency across marketing channels and materials."
+      ]
+    },
+    {
+      "company": "Studio Shodwe",
+      "role": "Marketing Manager & Specialist",
+      "start": "2024",
+      "end": "2025",
+      "details": [
+        "Develop and maintain strong relationships with partners, agencies, and vendors to support marketing initiatives.",
+        "Monitor and maintain brand consistency across all marketing channels and materials."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Estelle Darcy",
+      "role": "Wardiere Inc. / CTO",
+      "phone": "123-456-7890",
+      "email": "hello@reallygreatsite.com"
+    },
+    {
+      "name": "Harper Richard",
+      "role": "Wardiere Inc. / CEO",
+      "phone": "123-456-7890",
+      "email": "hello@reallygreatsite.com"
+    }
+  ]
+}
