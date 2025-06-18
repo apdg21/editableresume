@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Resume | Your Name</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="resume-container">
+        <header class="resume-header">
+            <div class="profile-section">
+                <div class="profile-image-container">
+                    <img src="assets/profile.jpg" alt="Profile Photo" class="profile-image" id="profileImage">
+                    <button class="edit-btn" id="editImageBtn"><i class="fas fa-camera"></i></button>
+                </div>
+                <div class="profile-info">
+                    <h1 id="fullName">Loading...</h1>
+                    <h2 id="jobTitle">Loading...</h2>
+                    <div class="contact-info">
+                        <p id="email"><i class="fas fa-envelope"></i> Loading...</p>
+                        <p id="phone"><i class="fas fa-phone"></i> Loading...</p>
+                        <p id="location"><i class="fas fa-map-marker-alt"></i> Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="resume-body">
+            <aside class="resume-sidebar">
+                <section class="sidebar-section" id="skillsSection">
+                    <h3><i class="fas fa-code"></i> Skills</h3>
+                    <ul class="skills-list" id="skillsList"></ul>
+                </section>
+
+                <section class="sidebar-section" id="educationSection">
+                    <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                    <div id="educationList"></div>
+                </section>
+
+                <section class="sidebar-section" id="languagesSection">
+                    <h3><i class="fas fa-language"></i> Languages</h3>
+                    <ul class="languages-list" id="languagesList"></ul>
+                </section>
+            </aside>
+
+            <main class="resume-main">
+                <section class="main-section" id="aboutSection">
+                    <h3><i class="fas fa-user"></i> About Me</h3>
+                    <p id="aboutText">Loading...</p>
+                </section>
+
+                <section class="main-section" id="experienceSection">
+                    <h3><i class="fas fa-briefcase"></i> Experience</h3>
+                    <div class="timeline" id="experienceList"></div>
+                </section>
+
+                <section class="main-section" id="projectsSection">
+                    <h3><i class="fas fa-project-diagram"></i> Projects</h3>
+                    <div class="projects-grid" id="projectsList"></div>
+                </section>
+            </main>
+        </div>
+
+        <footer class="resume-footer">
+            <div class="social-links" id="socialLinks"></div>
+            <p class="copyright">&copy; <span id="currentYear"></span> <span id="footerName">Your Name</span>. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Edit Information</h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editField">Field:</label>
+                    <select id="editField" class="form-control">
+                        <option value="">Select a field to edit</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editValue">Value:</label>
+                    <textarea id="editValue" class="form-control" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
