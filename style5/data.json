@@ -1,0 +1,81 @@
+{
+  "name": "DONNA STROUPE",
+  "title": "Sales Representative",
+  "contact": {
+    "phone": "+123-456-7890",
+    "email": "hello@reallygreatsite.com",
+    "address": "123 Anywhere St., Any City, ST 12345"
+  },
+  "about": "I am a Sales Representative is a professional who initializes and manages relationships with customers. They serve as their point of contact and lead from initial outreach through the making of the final purchase by them or someone in their household.",
+  "education": [
+    {
+      "degree": "BA Sales and Commerce",
+      "institution": "Wardiere University",
+      "start": "2011",
+      "end": "2015"
+    },
+    {
+      "degree": "BA Sales and Commerce",
+      "institution": "Wardiere University",
+      "start": "2011",
+      "end": "2015"
+    }
+  ],
+  "skills": [
+    "Fast-moving Consumer Goods",
+    "Packaged Consumer Goods",
+    "Sales",
+    "Corporate sales account management",
+    "Experience in retail"
+  ],
+  "languages": [
+    "English",
+    "French"
+  ],
+  "experience": [
+    {
+      "start": "Aug 2018",
+      "end": "present",
+      "company": "Timmerman Industries",
+      "role": "Consumer Goods Seller",
+      "details": [
+        "Offer consumer goods packages to corporate and clients",
+        "Meet with clients every quarter to update or renew services",
+        "Train junior sales agents"
+      ]
+    },
+    {
+      "start": "Jul 2015",
+      "end": "Aug 2018",
+      "company": "Timmerman Industries",
+      "role": "FMCG Sales Agent",
+      "details": [
+        "Visited corporate client offices to offer latest products",
+        "Built relationships with clients to maintain sales goals and create new opportunities"
+      ]
+    },
+    {
+      "start": "Aug 2014",
+      "end": "Jul 2015",
+      "company": "Timmerman Industries",
+      "role": "Sales Agent",
+      "details": [
+        "Visited corporate client offices to offer latest products"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Estelle Darcy",
+      "role": "Wardiere Inc. / CEO",
+      "phone": "+123-456-7890",
+      "email": "hello@reallygreatsite.com"
+    },
+    {
+      "name": "Harper Russo",
+      "role": "Wardiere Inc. / CEO",
+      "phone": "+123-456-7890",
+      "email": "hello@reallygreatsite.com"
+    }
+  ]
+}
