@@ -1,73 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Elegant Resume | Morgan Maxwell</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Donna Stroupe – Resume</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="resume-container">
-        <header class="resume-header">
-            <div class="header-content">
-                <div class="profile-image-container">
-                    <img src="assets/profile.jpg" alt="Morgan Maxwell" class="profile-image">
-                </div>
-                <div class="name-title">
-                    <h1 id="fullName">MORGAN Maxwell</h1>
-                    <h2 id="jobTitle">Graphic Designer</h2>
-                </div>
-            </div>
-        </header>
-
-        <div class="resume-body">
-            <aside class="resume-sidebar">
-                <section class="sidebar-section" id="aboutSection">
-                    <h3><i class="fas fa-user"></i> About Me</h3>
-                    <p id="aboutText">Creative and detail-oriented graphic designer with 4 years of experience...</p>
-                </section>
-
-                <section class="sidebar-section" id="skillsSection">
-                    <h3><i class="fas fa-code"></i> Skills</h3>
-                    <div class="skills-grid" id="skillsList"></div>
-                </section>
-
-                <section class="sidebar-section" id="educationSection">
-                    <h3><i class="fas fa-graduation-cap"></i> Education</h3>
-                    <div id="educationList"></div>
-                </section>
-
-                <section class="sidebar-section" id="languagesSection">
-                    <h3><i class="fas fa-language"></i> Languages</h3>
-                    <div class="languages-grid" id="languagesList"></div>
-                </section>
-            </aside>
-
-            <main class="resume-main">
-                <section class="main-section" id="contactSection">
-                    <div class="contact-info">
-                        <p id="phone"><i class="fas fa-phone"></i> +123-456-7890</p>
-                        <p id="email"><i class="fas fa-envelope"></i> morgan@example.com</p>
-                        <p id="website"><i class="fas fa-globe"></i> www.reallygreatsite.com</p>
-                        <p id="location"><i class="fas fa-map-marker-alt"></i> 123 Anywhere St., Any City</p>
-                    </div>
-                </section>
-
-                <section class="main-section" id="experienceSection">
-                    <h3><i class="fas fa-briefcase"></i> Professional Experience</h3>
-                    <div class="timeline" id="experienceList"></div>
-                </section>
-
-                <section class="main-section" id="awardsSection">
-                    <h3><i class="fas fa-award"></i> Awards</h3>
-                    <div id="awardsList"></div>
-                </section>
-            </main>
-        </div>
+  <div class="resume-container">
+    <aside class="sidebar">
+      <div class="profile-photo">
+        <img src="assets/profile.jpg" alt="Profile Photo" />
+      </div>
+      <div class="contact-block">
+        <ul id="contact-list"></ul>
+      </div>
+      <div class="sidebar-section">
+        <h2>EDUCATION</h2>
+        <div id="education-list"></div>
+      </div>
+      <div class="sidebar-section">
+        <h2>SKILLS</h2>
+        <ul id="skills-list"></ul>
+      </div>
+      <div class="sidebar-section">
+        <h2>LANGUAGE</h2>
+        <ul id="languages-list"></ul>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="main-header">
+        <h1 id="name"></h1>
+        <h3 id="job-title"></h3>
+      </header>
+      <section>
+        <h2>About Me</h2>
+        <p id="about"></p>
+      </section>
+      <section>
+        <h2>WORK EXPERIENCE</h2>
+        <div id="experience-list"></div>
+      </section>
+      <section>
+        <h2>REFERENCES</h2>
+        <div id="references-list"></div>
+      </section>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn"><img src="assets/linkedin.svg" alt="LinkedIn" /></a>
+        <a href="#" aria-label="Twitter"><img src="assets/twitter.svg" alt="Twitter" /></a>
+        <a href="#" aria-label="Facebook"><img src="assets/facebook.svg" alt="Facebook" /></a>
+      </div>
+      <div class="copyright">
+        &copy; 2025 Donna Stroupe. All rights reserved.
+      </div>
     </div>
-
-    <script src="main.js"></script>
+  </footer>
+  <script src="main.js"></script>
 </body>
 </html>
