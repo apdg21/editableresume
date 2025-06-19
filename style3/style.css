@@ -25,6 +25,7 @@ header {
     padding: 20px;
     border-radius: 15px 15px 0 0;
     margin: 0 -40px 40px -40px;
+    position: relative;
 }
 
 #profile-pic {
@@ -32,15 +33,16 @@ header {
     height: 150px;
     border-radius: 50%;
     border: 5px solid #fff;
-    margin-top: -50px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-    top: -20px;
+    position: absolute;
+    top: -75px; /* Adjusted to position correctly within header */
+    left: 50%;
+    transform: translateX(-50%); /* Center the image horizontally */
 }
 
 h1 {
     font-size: 2.8em;
-    margin: 10px 0;
+    margin: 60px 0 10px; /* Increased top margin to accommodate image */
     font-weight: 700;
 }
 
@@ -74,15 +76,26 @@ section {
 
 .columns section {
     flex: 1;
+    min-width: 0; /* Prevent overflow by allowing content to shrink */
+    word-wrap: break-word; /* Ensure text wraps properly */
 }
 
-/* Stack columns on mobile */
+/* Stack columns on mobile and prevent overflow */
 @media (max-width: 768px) {
     .columns {
         flex-direction: column;
     }
     .columns section {
         width: 100%;
+        overflow: hidden; /* Prevent overflow */
+    }
+    #profile-pic {
+        top: -60px; /* Adjust image position for mobile */
+        width: 120px;
+        height: 120px;
+    }
+    h1 {
+        margin-top: 50px; /* Adjust margin for mobile */
     }
 }
 
@@ -123,4 +136,10 @@ footer {
 
 footer a {
     color: #4a90e2;
-    text-decoration
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
