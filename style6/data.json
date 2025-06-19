@@ -1,0 +1,55 @@
+{
+    "name": "Isabel Schumacher",
+    "title": "Graphics Designer",
+    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum.",
+    "contact": {
+        "phone": "+123-456-7890",
+        "email": "hello@reallygreatsite.com",
+        "address": "123 Anywhere Street., Any City"
+    },
+    "skills": [
+        "Web Design",
+        "Branding",
+        "Graphic Design",
+        "SEO",
+        "Marketing"
+    ],
+    "languages": [
+        "English",
+        "French"
+    ],
+    "education": [
+        {
+            "years": "2011-2015",
+            "degree": "Bachelor of Design",
+            "university": "WARDIERE UNIVERSITY",
+            "grade": "3.65"
+        },
+        {
+            "years": "2014-2019",
+            "degree": "Bachelor of Design",
+            "university": "WARDIERE UNIVERSITY",
+            "grade": "3.74"
+        }
+    ],
+    "experience": [
+        {
+            "years": "2020-2023",
+            "title": "SENIOR GRAPHIC DESIGNER",
+            "company": "Fauget Studio",
+            "responsibilities": [
+                "create more than 100 graphic designs for big companies",
+                "complete a lot of complicated work"
+            ]
+        },
+        {
+            "years": "2017-2019",
+            "title": "SENIOR GRAPHIC DESIGNER",
+            "company": "Larana, Inc.",
+            "responsibilities": [
+                "create more than 100 graphic designs for big companies",
+                "complete a lot of complicated work"
+            ]
+        }
+    ]
+}
