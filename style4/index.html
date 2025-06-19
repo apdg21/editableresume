@@ -5,50 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Green Elegant Resume | Morgan Maxwell</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="resume-container">
         <header class="resume-header">
-            <div class="name-title">
-                <h1 id="fullName">MORGAN Maxwell</h1>
-                <h2 id="jobTitle">Graphic Designer</h2>
+            <div class="header-content">
+                <div class="profile-image-container">
+                    <img src="assets/profile.jpg" alt="Morgan Maxwell" class="profile-image">
+                </div>
+                <div class="name-title">
+                    <h1 id="fullName">MORGAN Maxwell</h1>
+                    <h2 id="jobTitle">Graphic Designer</h2>
+                </div>
             </div>
         </header>
 
         <div class="resume-body">
             <aside class="resume-sidebar">
                 <section class="sidebar-section" id="aboutSection">
-                    <h3>About Me</h3>
+                    <h3><i class="fas fa-user"></i> About Me</h3>
                     <p id="aboutText">Creative and detail-oriented graphic designer with 4 years of experience...</p>
                 </section>
 
                 <section class="sidebar-section" id="skillsSection">
-                    <h3>Skills</h3>
+                    <h3><i class="fas fa-code"></i> Skills</h3>
                     <div class="skills-grid" id="skillsList"></div>
                 </section>
 
                 <section class="sidebar-section" id="educationSection">
-                    <h3>Education</h3>
+                    <h3><i class="fas fa-graduation-cap"></i> Education</h3>
                     <div id="educationList"></div>
                 </section>
 
                 <section class="sidebar-section" id="languagesSection">
-                    <h3>Language</h3>
+                    <h3><i class="fas fa-language"></i> Languages</h3>
                     <div class="languages-grid" id="languagesList"></div>
-                    <div class="contact-info">
-                        <p id="phone"><i class="fas fa-phone"></i> +123-456-7890</p>
-                        <p id="website"><i class="fas fa-globe"></i> www.reallygreatsite.com</p>
-                        <p id="location"><i class="fas fa-map-marker-alt"></i> 123 Anywhere St., Any City</p>
-                    </div>
                 </section>
             </aside>
 
             <main class="resume-main">
+                <section class="main-section" id="contactSection">
+                    <div class="contact-info">
+                        <p id="phone"><i class="fas fa-phone"></i> +123-456-7890</p>
+                        <p id="email"><i class="fas fa-envelope"></i> morgan@example.com</p>
+                        <p id="website"><i class="fas fa-globe"></i> www.reallygreatsite.com</p>
+                        <p id="location"><i class="fas fa-map-marker-alt"></i> 123 Anywhere St., Any City</p>
+                    </div>
+                </section>
+
                 <section class="main-section" id="experienceSection">
-                    <h3>Professional Experience</h3>
+                    <h3><i class="fas fa-briefcase"></i> Professional Experience</h3>
                     <div class="timeline" id="experienceList"></div>
+                </section>
+
+                <section class="main-section" id="awardsSection">
+                    <h3><i class="fas fa-award"></i> Awards</h3>
+                    <div id="awardsList"></div>
                 </section>
             </main>
         </div>

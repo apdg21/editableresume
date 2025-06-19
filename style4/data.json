@@ -3,6 +3,7 @@
         "firstName": "Morgan",
         "lastName": "Maxwell",
         "jobTitle": "Graphic Designer",
+        "email": "morgan@example.com",
         "phone": "+123-456-7890",
         "website": "www.reallygreatsite.com",
         "location": "123 Anywhere St., Any City"
@@ -39,7 +40,8 @@
             "description": "Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement.",
             "details": [
                 "Collaborated with marketing and product teams to develop visually appealing and effective campaigns.",
-                "Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines."
+                "Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines.",
+                "Mentored junior designers and conducted design workshops for cross-functional teams."
             ]
         },
         {
@@ -50,7 +52,8 @@
             "description": "Created website and mobile app designs that enhanced user experience and increased engagement by 20%.",
             "details": [
                 "Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback.",
-                "Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations."
+                "Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations.",
+                "Developed brand guidelines and design systems for consistent visual identity across all platforms."
             ]
         }
     ],
@@ -74,6 +77,18 @@
         {
             "name": "Korean",
             "level": 84
+        }
+    ],
+    "awards": [
+        {
+            "name": "Design Excellence Award",
+            "organization": "International Design Association",
+            "year": "2023"
+        },
+        {
+            "name": "Best Brand Identity",
+            "organization": "Creative Design Awards",
+            "year": "2021"
         }
     ]
 }

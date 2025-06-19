@@ -12,7 +12,10 @@ function populateResume(data) {
     document.getElementById('fullName').textContent = `${data.personalInfo.firstName.toUpperCase()} ${data.personalInfo.lastName.toUpperCase()}`;
     document.getElementById('jobTitle').textContent = data.personalInfo.jobTitle;
     document.getElementById('aboutText').textContent = data.about;
+    
+    // Contact Info
     document.getElementById('phone').innerHTML = `<i class="fas fa-phone"></i> ${data.personalInfo.phone}`;
+    document.getElementById('email').innerHTML = `<i class="fas fa-envelope"></i> ${data.personalInfo.email}`;
     document.getElementById('website').innerHTML = `<i class="fas fa-globe"></i> ${data.personalInfo.website}`;
     document.getElementById('location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location}`;
     
@@ -39,7 +42,7 @@ function populateResume(data) {
         div.innerHTML = `
             <p class="education-degree">${edu.degree}</p>
             <p class="education-school">${edu.institution}</p>
-            <p class="education-location">${edu.location}</p>
+            ${edu.location ? `<p class="education-location">${edu.location}</p>` : ''}
             <p class="education-dates">${edu.year}</p>
         `;
         educationList.appendChild(div);
@@ -48,16 +51,13 @@ function populateResume(data) {
     // Languages
     const languagesList = document.getElementById('languagesList');
     data.languages.forEach(lang => {
-        const nameDiv = document.createElement('div');
-        nameDiv.className = 'language-name';
-        nameDiv.textContent = lang.name;
-        
-        const percentDiv = document.createElement('div');
-        percentDiv.className = 'language-percent';
-        percentDiv.textContent = `${lang.level}%`;
-        
-        languagesList.appendChild(nameDiv);
-        languagesList.appendChild(percentDiv);
+        const div = document.createElement('div');
+        div.className = 'language-item';
+        div.innerHTML = `
+            <span class="language-name">${lang.name}</span>
+            <span class="language-percent">${lang.level}%</span>
+        `;
+        languagesList.appendChild(div);
     });
     
     // Experience
@@ -93,4 +93,21 @@ function populateResume(data) {
         div.appendChild(detailsUl);
         experienceList.appendChild(div);
     });
+    
+    // Awards
+    if (data.awards && data.awards.length > 0) {
+        const awardsList = document.getElementById('awardsList');
+        data.awards.forEach(award => {
+            const div = document.createElement('div');
+            div.className = 'award-item';
+            div.innerHTML = `
+                <p class="award-name">${award.name}</p>
+                <p class="award-org">${award.organization}</p>
+                <p class="award-year">${award.year}</p>
+            `;
+            awardsList.appendChild(div);
+        });
+    } else {
+        document.getElementById('awardsSection').style.display = 'none';
+    }
 }
