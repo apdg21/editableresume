@@ -1,0 +1,42 @@
+{
+    "name": "Morgan Maxwell",
+    "title": "Graphic Designer",
+    "about": "Creative and detail-oriented graphic designer with 4 years of experience in developing visually compelling designs for print and digital media. Adept at collaborating with cross-functional teams and managing multiple projects to deliver high-quality results on time and within budget.",
+    "skills": [
+        {"name": "Graphic Design", "level": 90},
+        {"name": "Typography", "level": 87},
+        {"name": "Branding & Identity", "level": 95},
+        {"name": "Print & Digital Media", "level": 84},
+        {"name": "Project Management", "level": 92}
+    ],
+    "education": {
+        "degree": "Bachelor of Fine Arts in Graphic Design",
+        "university": "Paucek and Lage University",
+        "address": "123 Anywhere St., Any City",
+        "years": "2016 - 2020"
+    },
+    "languages": [
+        {"name": "Russian", "level": 94},
+        {"name": "Chinese", "level": 86},
+        {"name": "Korean", "level": 84}
+    ],
+    "experience": [
+        {
+            "title": "Senior Graphic Designer",
+            "period": "June 2022 - May 2024",
+            "company": "Fradel and Spies Company",
+            "description": "Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement. Collaborated with marketing and product teams to develop visually appealing and effective campaigns. Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines."
+        },
+        {
+            "title": "Graphic Designer",
+            "period": "January 2020 - March 2022",
+            "company": "Borcelle Company",
+            "description": "Created website and mobile app designs that enhanced user experience by 20%. Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback. Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations."
+        }
+    ],
+    "contact": {
+        "phone": "+123-456-7890",
+        "website": "www.reallygreatsite.com",
+        "address": "123 Anywhere St., Any City"
+    }
+}
