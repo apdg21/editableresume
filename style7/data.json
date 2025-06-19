@@ -1,59 +1,51 @@
 {
   "profile_image": "assets/profile.jpg",
-  "name": "Firstname Lastname",
-  "title": "Professional Title",
-  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus.",
+  "name": "Richard Sanchez",
+  "title": "Product Designer",
+  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus, egestas dui eget, malesuada justo.",
   "phone": "+123-456-7890",
-  "email": "hello@example.com",
+  "email": "hello@reallygreatsite.com",
   "location": "123 Anywhere St., Any City",
-  "languages": [
-    "English",
-    "German (basic)",
-    "Spanish (basic)"
-  ],
+  "languages": ["English", "German (basic)", "Spanish (basic)"],
   "expertise": [
-    "Management Skills",
-    "Creativity",
-    "Digital Marketing",
-    "Negotiation",
-    "Critical Thinking",
-    "Leadership"
+    "Management Skills", "Creativity", "Digital Marketing",
+    "Negotiation", "Critical Thinking", "Leadership"
   ],
-  "summary": "A compassionate professional with strong background in providing support and guidance.",
+  "summary": "A compassionate Family Wellness Counselor with a strong background in providing support and guidance to families facing various challenges.",
   "experience": [
     {
-      "role": "Position Title",
-      "company": "Company Name - Location",
+      "role": "Product Designer",
+      "company": "Studio Showde Canberra - Australia",
       "period": "2020 - 2022",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus."
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus, egestas dui eget, malesuada justo."
     },
     {
-      "role": "Another Role",
-      "company": "Company Name - Location",
+      "role": "UX Designer",
+      "company": "Elsetown Cor. Kota Baru - Singapore",
       "period": "2016 - 2020",
-      "description": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip."
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus, egestas dui eget, malesuada justo."
+    },
+    {
+      "role": "Junior Designer",
+      "company": "Studio Showde Sydney - Australia",
+      "period": "2010 - 2015",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus, egestas dui eget, malesuada justo."
     }
   ],
   "education": [
     {
-      "institution": "University Name",
-      "degree": "Bachelor of Subject",
+      "institution": "Borcelle University",
+      "degree": "Bachelor of Business Management",
       "year": "2014 - 2018"
     },
     {
-      "institution": "University Name",
-      "degree": "Master of Subject",
+      "institution": "Borcelle University",
+      "degree": "Master of Business Management",
       "year": "2018 - 2020"
     }
   ],
   "skills": [
-    {
-      "name": "Design Process",
-      "level": 78
-    },
-    {
-      "name": "Project Management",
-      "level": 81
-    }
+    {"name": "Design Process", "level": 78},
+    {"name": "Project Management", "level": 81}
   ]
 }
