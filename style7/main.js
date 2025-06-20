@@ -109,3 +109,7 @@ window.addEventListener('scroll', () => {
     }
   });
 });
+
+// Set footer year and name
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('footer-name').textContent = document.getElementById('name').textContent;
