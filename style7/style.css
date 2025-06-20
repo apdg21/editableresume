@@ -1,78 +1,74 @@
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
 }
 body {
-  background: #f4f4f4;
+  font-family: 'Inter', sans-serif;
+  background: #f5f5f5;
+  color: #333;
 }
-.container {
-  display: flex;
-  max-width: 1200px;
-  margin: 30px auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-.sidebar {
-  background-color: #1e7150;
-  color: white;
-  padding: 30px;
-  width: 35%;
-  border-radius: 8px 0 0 8px;
-}
-.profile-img {
-  width: 100%;
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-.sidebar h2, .sidebar h3 {
-  margin: 20px 0 10px;
-}
-.sidebar ul {
-  list-style: disc;
-  margin-left: 20px;
-}
-.content {
-  padding: 30px;
-  width: 65%;
+nav {
   background: white;
-  border-radius: 0 8px 8px 0;
-}
-.content h1 {
-  color: #1e7150;
-  font-size: 36px;
-}
-.content h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-.content p {
-  margin-bottom: 15px;
-}
-.section-title {
-  background-color: #1e7150;
-  color: white;
-  padding: 5px 10px;
-  margin-top: 20px;
-}
-.skill-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.75rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0;
 }
-.skill-bar .bar {
-  flex: 1;
-  margin-left: 10px;
-  height: 8px;
-  background: #ddd;
-  position: relative;
+nav .menu-icon {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
-.skill-bar .bar::after {
-  content: '';
-  position: absolute;
-  height: 100%;
-  background: #1e7150;
-  width: 0%;
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+nav a {
+  text-decoration: none;
+  color: #22a06b;
+  font-weight: 600;
+}
+main {
+  padding: 6rem 1.5rem 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+section {
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+h1, h2 {
+  color: #22a06b;
+}
+footer {
+  background: #222;
+  color: #aaa;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+    flex-direction: column;
+    background: white;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 200px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  nav ul.active {
+    display: flex;
+  }
+  nav .menu-icon {
+    display: block;
+  }
 }

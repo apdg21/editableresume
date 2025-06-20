@@ -1,53 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Resume</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume - Richard Sanchez</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="container">
-    <aside class="sidebar">
-      <img src="" alt="Profile" class="profile-img" id="profileImage"/>
-      <h2>About Me</h2>
-      <p id="about"></p>
-      <div class="contact">
-        <p><strong>📞</strong> <span id="phone"></span></p>
-        <p><strong>✉️</strong> <span id="email"></span></p>
-        <p><strong>📍</strong> <span id="location"></span></p>
-      </div>
-      <div class="section">
-        <h3>Language</h3>
-        <ul id="languages"></ul>
-      </div>
-      <div class="section">
-        <h3>Expertise</h3>
-        <ul id="expertise"></ul>
-      </div>
-    </aside>
-    <main class="content">
-      <h1 id="name"></h1>
-      <h2 id="title"></h2>
-      <p id="summary"></p>
+  <nav>
+    <div><strong>Resume</strong></div>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <ul id="menu">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-      <section>
-        <h3 class="section-title">Experience</h3>
-        <div id="experience"></div>
-      </section>
+  <main id="resume">
+    <!-- Resume content populated by JS -->
+  </main>
 
-      <section>
-        <h3 class="section-title">Education</h3>
-        <div id="education"></div>
-      </section>
+  <footer>
+    <p>&copy; 2025 Richard Sanchez. All rights reserved.</p>
+  </footer>
 
-      <section>
-        <h3 class="section-title">Skills Summary</h3>
-        <div id="skills"></div>
-      </section>
-    </main>
-  </div>
   <script src="main.js"></script>
 </body>
 </html>

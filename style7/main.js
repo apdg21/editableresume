@@ -1,53 +1,48 @@
+function toggleMenu() {
+  document.getElementById('menu').classList.toggle('active');
+}
 
-fetch('data.json')
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('profileImage').src = data.profile_image;
-    document.getElementById('name').textContent = data.name;
-    document.getElementById('title').textContent = data.title;
-    document.getElementById('about').textContent = data.about;
-    document.getElementById('phone').textContent = data.phone;
-    document.getElementById('email').textContent = data.email;
-    document.getElementById('location').textContent = data.location;
-    document.getElementById('summary').textContent = data.summary;
+async function loadResume() {
+  const res = await fetch('data.json');
+  const data = await res.json();
+  const main = document.getElementById('resume');
 
-    const langList = document.getElementById('languages');
-    data.languages.forEach(lang => {
-      const li = document.createElement('li');
-      li.textContent = lang;
-      langList.appendChild(li);
-    });
+  const sections = [
+    ['about', `<section id="about">
+      <h1>${data.name}</h1>
+      <h2>${data.title}</h2>
+      <p>${data.summary}</p>
+    </section>`],
+    ['experience', `<section id="experience">
+      <h2>Experience</h2>
+      ${data.experience.map(job => `
+        <div>
+          <h3>${job.role} – ${job.company}</h3>
+          <p>${job.period}</p>
+          <p>${job.description}</p>
+        </div>`).join('')}
+    </section>`],
+    ['education', `<section id="education">
+      <h2>Education</h2>
+      ${data.education.map(edu => `
+        <div>
+          <h3>${edu.degree} – ${edu.institution}</h3>
+          <p>${edu.period}</p>
+        </div>`).join('')}
+    </section>`],
+    ['skills', `<section id="skills">
+      <h2>Skills</h2>
+      <ul>${data.skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
+    </section>`],
+    ['contact', `<section id="contact">
+      <h2>Contact</h2>
+      <p>Email: ${data.contact.email}</p>
+      <p>Phone: ${data.contact.phone}</p>
+      <p>LinkedIn: ${data.contact.linkedin}</p>
+    </section>`],
+  ];
 
-    const expDiv = document.getElementById('experience');
-    data.experience.forEach(job => {
-      const div = document.createElement('div');
-      div.innerHTML = `<strong>${job.role}</strong><br>${job.company} <br><em>${job.period}</em><p>${job.description}</p>`;
-      expDiv.appendChild(div);
-    });
+  main.innerHTML = sections.map(([id, html]) => html).join('');
+}
 
-    const eduDiv = document.getElementById('education');
-    data.education.forEach(edu => {
-      const div = document.createElement('div');
-      div.innerHTML = `<strong>${edu.institution}</strong><br>${edu.degree}<br><em>${edu.year}</em>`;
-      eduDiv.appendChild(div);
-    });
-
-    const expList = document.getElementById('expertise');
-    data.expertise.forEach(skill => {
-      const li = document.createElement('li');
-      li.textContent = skill;
-      expList.appendChild(li);
-    });
-
-    const skillsDiv = document.getElementById('skills');
-    data.skills.forEach(skill => {
-      const div = document.createElement('div');
-      div.className = 'skill-bar';
-      div.innerHTML = `
-        <span>${skill.name}</span>
-        <div class="bar" style="--level:${skill.level}%">
-          <div style="width:${skill.level}%; height:8px; background:#1e7150;"></div>
-        </div>`;
-      skillsDiv.appendChild(div);
-    });
-  });
+loadResume();
