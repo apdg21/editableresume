@@ -1,7 +1,7 @@
 {
     "personalInfo": {
-        "firstName": "Adolf",
-        "lastName": "De Guzman",
+        "firstName": "John",
+        "lastName": "Doe",
         "jobTitle": "Senior Web Developer",
         "email": "john.doe@example.com",
         "phone": "(123) 456-7890",
@@ -40,27 +40,30 @@
             "company": "Tech Solutions Inc.",
             "startDate": "Jan 2020",
             "endDate": "Present",
-            "description": "Lead a team of 5 developers to build and maintain the company's flagship web application. Implemented performance optimizations that reduced load times by 40%. Introduced React best practices and TypeScript to the codebase."
+            "description": "Lead a team of 5 developers to build and maintain the company's flagship web application.",
+            "details": [
+                "Implemented performance optimizations that reduced load times by 40%",
+                "Introduced React best practices and TypeScript to the codebase",
+                "Mentored junior developers and conducted design workshops"
+            ]
         },
         {
             "position": "Web Developer",
             "company": "Digital Creations",
             "startDate": "Mar 2017",
             "endDate": "Dec 2019",
-            "description": "Developed and maintained client websites using modern JavaScript frameworks. Collaborated with designers to implement responsive layouts. Reduced client site bounce rates by 25% through performance improvements."
-        },
-        {
-            "position": "Junior Developer",
-            "company": "WebStart",
-            "startDate": "Jun 2015",
-            "endDate": "Feb 2017",
-            "description": "Assisted in building and testing web applications. Learned modern development workflows and best practices. Contributed to open source projects to expand skill set."
+            "description": "Developed and maintained client websites using modern JavaScript frameworks.",
+            "details": [
+                "Reduced client site bounce rates by 25% through performance improvements",
+                "Collaborated with designers to implement responsive layouts"
+            ]
         }
     ],
     "education": [
         {
             "degree": "Bachelor of Science in Computer Science",
             "institution": "University of California",
+            "location": "123 Anywhere St., Any City",
             "year": "2011 - 2015"
         },
         {
@@ -72,33 +75,28 @@
     "languages": [
         {
             "name": "English",
-            "level": "Native"
+            "level": 100
         },
         {
             "name": "Spanish",
-            "level": "Intermediate"
+            "level": 75
         },
         {
             "name": "French",
-            "level": "Basic"
+            "level": 50
         }
     ],
     "projects": [
         {
             "name": "E-commerce Platform",
-            "description": "A full-stack e-commerce solution with React frontend and Node.js backend. Features include product filtering, cart functionality, and secure checkout.",
+            "description": "A full-stack e-commerce solution with React frontend and Node.js backend.",
             "liveUrl": "https://example-ecommerce.com",
             "codeUrl": "https://github.com/username/ecommerce"
         },
         {
             "name": "Task Management App",
-            "description": "A productivity application for managing personal and team tasks with drag-and-drop interface and real-time updates.",
+            "description": "A productivity application for managing personal and team tasks.",
             "codeUrl": "https://github.com/username/task-manager"
-        },
-        {
-            "name": "Weather Dashboard",
-            "description": "Interactive weather application that displays current conditions and forecasts using data from multiple APIs.",
-            "liveUrl": "https://example-weather.com"
         }
     ],
     "socialLinks": [
@@ -113,10 +111,6 @@
         {
             "name": "Twitter",
             "url": "https://twitter.com/username"
-        },
-        {
-            "name": "Medium",
-            "url": "https://medium.com/@username"
         }
     ]
 }

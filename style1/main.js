@@ -2,27 +2,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const mobileNav = document.querySelector('.mobile-nav');
+    
+    hamburger.addEventListener('click', () => {
+        mobileNav.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+        });
+    });
+
     // Load resume data from JSON
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
             populateResume(data);
             setupEditModal(data);
+            setupNavigationHighlight();
         })
         .catch(error => console.error('Error loading resume data:', error));
 
-    // Modal functionality
-    const modal = document.getElementById('editModal');
-    const closeBtn = document.querySelector('.close-btn');
-    
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-    
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
+    // Smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
     });
 });
 
@@ -30,10 +49,10 @@ function populateResume(data) {
     // Personal Info
     document.getElementById('fullName').textContent = `${data.personalInfo.firstName} ${data.personalInfo.lastName}`;
     document.getElementById('jobTitle').textContent = data.personalInfo.jobTitle;
+    document.getElementById('footerName').textContent = `${data.personalInfo.firstName} ${data.personalInfo.lastName}`;
     document.getElementById('email').innerHTML = `<i class="fas fa-envelope"></i> ${data.personalInfo.email}`;
     document.getElementById('phone').innerHTML = `<i class="fas fa-phone"></i> ${data.personalInfo.phone}`;
     document.getElementById('location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location}`;
-    document.getElementById('footerName').textContent = `${data.personalInfo.firstName} ${data.personalInfo.lastName}`;
     
     // About
     document.getElementById('aboutText').textContent = data.about;
@@ -62,6 +81,9 @@ function populateResume(data) {
             <p class="experience-company">${exp.company}</p>
             <p class="experience-dates">${exp.startDate} - ${exp.endDate}</p>
             <p class="experience-description">${exp.description}</p>
+            <ul class="experience-details">
+                ${exp.details.map(detail => `<li>${detail}</li>`).join('')}
+            </ul>
         `;
         experienceList.appendChild(div);
     });
@@ -74,6 +96,7 @@ function populateResume(data) {
         div.innerHTML = `
             <p class="education-degree">${edu.degree}</p>
             <p class="education-school">${edu.institution}</p>
+            ${edu.location ? `<p class="education-location">${edu.location}</p>` : ''}
             <p class="education-dates">${edu.year}</p>
         `;
         educationList.appendChild(div);
@@ -86,7 +109,7 @@ function populateResume(data) {
         li.className = 'language-item';
         li.innerHTML = `
             <span>${lang.name}</span>
-            <span>${lang.level}</span>
+            <span>${lang.level}%</span>
         `;
         languagesList.appendChild(li);
     });
@@ -166,13 +189,41 @@ function setupEditModal(data) {
         editModal.style.display = 'none';
     });
     
-    // For demo purposes, show edit button on hover
-    const profileImageContainer = document.querySelector('.profile-image-container');
-    profileImageContainer.addEventListener('mouseenter', () => {
-        editImageBtn.style.display = 'flex';
+    // Modal functionality
+    const closeBtn = document.querySelector('.close-btn');
+    
+    closeBtn.addEventListener('click', () => {
+        editModal.style.display = 'none';
     });
     
-    profileImageContainer.addEventListener('mouseleave', () => {
-        editImageBtn.style.display = 'none';
+    window.addEventListener('click', (e) => {
+        if (e.target === editModal) {
+            editModal.style.display = 'none';
+        }
+    });
+}
+
+function setupNavigationHighlight() {
+    const sections = document.querySelectorAll('.main-section, .sidebar-section');
+    const navLinks = document.querySelectorAll('.desktop-nav a, .mobile-nav a');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            if (pageYOffset >= (sectionTop - 150)) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
     });
 }

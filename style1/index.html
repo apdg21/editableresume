@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Resume | Your Name</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Mobile Menu Button -->
+    <button class="hamburger">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <div class="resume-container">
+        <!-- Header Section -->
         <header class="resume-header">
             <div class="profile-section">
                 <div class="profile-image-container">
@@ -26,7 +32,24 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav" id="desktopNav">
+                <a href="#aboutSection"><i class="fas fa-user"></i> About</a>
+                <a href="#experienceSection"><i class="fas fa-briefcase"></i> Experience</a>
+                <a href="#projectsSection"><i class="fas fa-project-diagram"></i> Projects</a>
+                <a href="#skillsSection"><i class="fas fa-code"></i> Skills</a>
+            </nav>
         </header>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="#aboutSection"><i class="fas fa-user"></i> About</a>
+            <a href="#experienceSection"><i class="fas fa-briefcase"></i> Experience</a>
+            <a href="#projectsSection"><i class="fas fa-project-diagram"></i> Projects</a>
+            <a href="#skillsSection"><i class="fas fa-code"></i> Skills</a>
+            <a href="#educationSection"><i class="fas fa-graduation-cap"></i> Education</a>
+        </nav>
 
         <div class="resume-body">
             <aside class="resume-sidebar">
