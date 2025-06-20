@@ -1,8 +1,38 @@
-fetch('data.json')
-  .then(res => res.json())
-  .then(data => {
+document.addEventListener('DOMContentLoaded', function() {
+  // Try loading from localStorage first
+  const cachedData = localStorage.getItem('resumeData');
+  if (cachedData) {
+    try {
+      populateData(JSON.parse(cachedData));
+      return;
+    } catch (e) {
+      console.error("Error parsing cached data:", e);
+      localStorage.removeItem('resumeData');
+    }
+  }
+
+  // Fetch fresh data
+  fetch('data.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      populateData(data);
+      // Cache the data
+      localStorage.setItem('resumeData', JSON.stringify(data));
+    })
+    .catch(err => {
+      console.error("Error loading resume data:", err);
+      showError();
+    });
+});
+
+function populateData(data) {
+  try {
     // Basic Info
-    document.getElementById('profileImage').src = data.profile_image;
+    document.getElementById('profileImage').src = data.profile_image || 'assets/default-profile.jpg';
+    document.getElementById('profileImage').alt = `Profile photo of ${data.name}`;
     document.getElementById('name').textContent = data.name;
     document.getElementById('title').textContent = data.title;
     document.getElementById('about').textContent = data.about;
@@ -13,7 +43,7 @@ fetch('data.json')
 
     // Languages
     const langList = document.getElementById('languages');
-    data.languages.forEach(lang => {
+    data.languages?.forEach(lang => {
       const li = document.createElement('li');
       li.textContent = lang;
       langList.appendChild(li);
@@ -21,7 +51,7 @@ fetch('data.json')
 
     // Experience
     const expDiv = document.getElementById('experience');
-    data.experience.forEach(job => {
+    data.experience?.forEach(job => {
       const div = document.createElement('div');
       div.className = 'job';
       div.innerHTML = `
@@ -35,7 +65,7 @@ fetch('data.json')
 
     // Education
     const eduDiv = document.getElementById('education');
-    data.education.forEach(edu => {
+    data.education?.forEach(edu => {
       const div = document.createElement('div');
       div.className = 'education';
       div.innerHTML = `
@@ -48,7 +78,7 @@ fetch('data.json')
 
     // Expertise
     const expList = document.getElementById('expertise');
-    data.expertise.forEach(skill => {
+    data.expertise?.forEach(skill => {
       const li = document.createElement('li');
       li.textContent = skill;
       expList.appendChild(li);
@@ -56,7 +86,7 @@ fetch('data.json')
 
     // Skills
     const skillsDiv = document.getElementById('skills');
-    data.skills.forEach(skill => {
+    data.skills?.forEach(skill => {
       const div = document.createElement('div');
       div.className = 'skill-bar';
       div.innerHTML = `
@@ -68,53 +98,66 @@ fetch('data.json')
       skillsDiv.appendChild(div);
     });
 
-    // ===== FOOTER IMPLEMENTATION =====
+    // Footer
     if (data.footer) {
-      // Copyright text
       const copyrightText = data.footer.copyright
-        .replace('[year]', new Date().getFullYear())
-        .replace('[name]', data.name);
-      document.getElementById('copyright-text').textContent = copyrightText;
+        ?.replace('[year]', new Date().getFullYear())
+        ?.replace('[name]', data.name);
+      if (copyrightText) document.getElementById('copyright-text').textContent = copyrightText;
 
-      // Social links
       const socialLinksContainer = document.getElementById('social-links');
-      if (data.footer.social_links) {
-        data.footer.social_links.forEach(link => {
-          const a = document.createElement('a');
-          a.href = link.url;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.setAttribute('aria-label', link.name);
-          
-          const icon = document.createElement('i');
-          icon.className = link.icon;
-          
-          a.appendChild(icon);
-          socialLinksContainer.appendChild(a);
-        });
-      }
+      data.footer.social_links?.forEach(link => {
+        const a = document.createElement('a');
+        a.href = link.url || '#';
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.setAttribute('aria-label', link.name || 'Social link');
+        
+        const icon = document.createElement('i');
+        icon.className = link.icon || 'fas fa-link';
+        
+        a.appendChild(icon);
+        socialLinksContainer.appendChild(a);
+      });
     }
-    // ===== END FOOTER =====
-  })
-  .catch(err => {
-    console.error("Error loading resume data:", err);
-    alert("Failed to load resume data. Please try again later.");
-  });
+  } catch (error) {
+    console.error("Error populating data:", error);
+    showError();
+  }
+}
+
+function showError() {
+  const container = document.querySelector('.container');
+  container.innerHTML = `
+    <div class="error-message">
+      <h2>Oops! Something went wrong</h2>
+      <p>We couldn't load the resume data. Please:</p>
+      <ul>
+        <li>Check your internet connection</li>
+        <li>Refresh the page</li>
+        <li>Ensure data.json exists</li>
+      </ul>
+      <button onclick="location.reload()">Try Again</button>
+    </div>
+  `;
+}
 
 // Mobile Menu Toggle
 const menuToggle = document.querySelector('.menu-toggle');
 const navbar = document.getElementById('navbar');
 
-menuToggle.addEventListener('click', () => {
-  navbar.classList.toggle('active');
-});
-
-// Close menu when clicking on a link
-document.querySelectorAll('#navbar a').forEach(link => {
-  link.addEventListener('click', () => {
-    navbar.classList.remove('active');
+if (menuToggle && navbar) {
+  menuToggle.addEventListener('click', () => {
+    navbar.classList.toggle('active');
   });
-});
+
+  // Close menu when clicking on a link
+  document.querySelectorAll('#navbar a').forEach(link => {
+    link.addEventListener('click', () => {
+      navbar.classList.remove('active');
+    });
+  });
+}
 
 // Highlight active section in navbar
 window.addEventListener('scroll', () => {
