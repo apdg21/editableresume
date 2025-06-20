@@ -28,7 +28,7 @@ fetch('data.json')
             experienceList.appendChild(li);
         });
 
-        document.getElementById('contact').innerHTML = `
+        document.getElementById('contact-text').innerHTML = `
             <a href="tel:${data.contact.phone}">${data.contact.phone}</a><br>
             <a href="http://${data.contact.website}" target="_blank">${data.contact.website}</a><br>
             ${data.contact.address}

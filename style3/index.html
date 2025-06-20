@@ -42,39 +42,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume - Morgan Maxwell</title>
+    <title>Portfolio - Morgan Maxwell</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="resume-container">
-        <header>
+    <nav class="navbar">
+        <div class="logo">Morgan Maxwell</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#languages">Languages</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <header id="about">
+            <img id="profile-pic" src="assets/profile.jpg" alt="Profile Picture">
             <h1 id="name"></h1>
             <h2 id="title"></h2>
-            <img id="profile-pic" src="assets/profile.jpg" alt="Profile Picture">
-        </header>
-        <section class="about" id="about">
-            <h3>About Me</h3>
             <p id="about-text"></p>
+        </header>
+        <section id="skills" class="section">
+            <h2>Skills</h2>
+            <ul id="skills-list"></ul>
         </section>
-        <div class="columns">
-            <section class="skills" id="skills">
-                <h3>Skills</h3>
-                <ul id="skills-list"></ul>
-            </section>
-            <section class="education" id="education">
-                <h3>Education</h3>
-                <p id="education-text"></p>
-            </section>
-        </div>
-        <section class="experience" id="experience">
-            <h3>Professional Experience</h3>
+        <section id="education" class="section">
+            <h2>Education</h2>
+            <p id="education-text"></p>
+        </section>
+        <section id="experience" class="section">
+            <h2>Professional Experience</h2>
             <ul id="experience-list"></ul>
         </section>
-        <section class="languages" id="languages">
-            <h3>Languages</h3>
+        <section id="languages" class="section">
+            <h2>Languages</h2>
             <ul id="languages-list"></ul>
         </section>
-        <footer id="contact"></footer>
+        <footer id="contact" class="section">
+            <h2>Contact</h2>
+            <div id="contact-text"></div>
+        </footer>
     </div>
     <script src="main.js"></script>
 </body>
