@@ -1,48 +1,111 @@
-function toggleMenu() {
-  document.getElementById('menu').classList.toggle('active');
-}
+// Fetch and populate data
+fetch('data.json')
+  .then(res => res.json())
+  .then(data => {
+    // Basic Info
+    document.getElementById('profileImage').src = data.profile_image;
+    document.getElementById('name').textContent = data.name;
+    document.getElementById('title').textContent = data.title;
+    document.getElementById('about').textContent = data.about;
+    document.getElementById('phone').textContent = data.phone;
+    document.getElementById('email').textContent = data.email;
+    document.getElementById('location').textContent = data.location;
+    document.getElementById('summary').textContent = data.summary;
 
-async function loadResume() {
-  const res = await fetch('data.json');
-  const data = await res.json();
-  const main = document.getElementById('resume');
+    // Languages
+    const langList = document.getElementById('languages');
+    data.languages.forEach(lang => {
+      const li = document.createElement('li');
+      li.textContent = lang;
+      langList.appendChild(li);
+    });
 
-  const sections = [
-    ['about', `<section id="about">
-      <h1>${data.name}</h1>
-      <h2>${data.title}</h2>
-      <p>${data.summary}</p>
-    </section>`],
-    ['experience', `<section id="experience">
-      <h2>Experience</h2>
-      ${data.experience.map(job => `
-        <div>
-          <h3>${job.role} – ${job.company}</h3>
-          <p>${job.period}</p>
-          <p>${job.description}</p>
-        </div>`).join('')}
-    </section>`],
-    ['education', `<section id="education">
-      <h2>Education</h2>
-      ${data.education.map(edu => `
-        <div>
-          <h3>${edu.degree} – ${edu.institution}</h3>
-          <p>${edu.period}</p>
-        </div>`).join('')}
-    </section>`],
-    ['skills', `<section id="skills">
-      <h2>Skills</h2>
-      <ul>${data.skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
-    </section>`],
-    ['contact', `<section id="contact">
-      <h2>Contact</h2>
-      <p>Email: ${data.contact.email}</p>
-      <p>Phone: ${data.contact.phone}</p>
-      <p>LinkedIn: ${data.contact.linkedin}</p>
-    </section>`],
-  ];
+    // Experience
+    const expDiv = document.getElementById('experience');
+    data.experience.forEach(job => {
+      const div = document.createElement('div');
+      div.className = 'job';
+      div.innerHTML = `
+        <h4>${job.role}</h4>
+        <p class="company">${job.company}</p>
+        <p class="period"><em>${job.period}</em></p>
+        <p class="description">${job.description}</p>
+      `;
+      expDiv.appendChild(div);
+    });
 
-  main.innerHTML = sections.map(([id, html]) => html).join('');
-}
+    // Education
+    const eduDiv = document.getElementById('education');
+    data.education.forEach(edu => {
+      const div = document.createElement('div');
+      div.className = 'education';
+      div.innerHTML = `
+        <h4>${edu.institution}</h4>
+        <p class="degree">${edu.degree}</p>
+        <p class="year"><em>${edu.year}</em></p>
+      `;
+      eduDiv.appendChild(div);
+    });
 
-loadResume();
+    // Expertise
+    const expList = document.getElementById('expertise');
+    data.expertise.forEach(skill => {
+      const li = document.createElement('li');
+      li.textContent = skill;
+      expList.appendChild(li);
+    });
+
+    // Skills
+    const skillsDiv = document.getElementById('skills');
+    data.skills.forEach(skill => {
+      const div = document.createElement('div');
+      div.className = 'skill-bar';
+      div.innerHTML = `
+        <span>${skill.name}</span>
+        <div class="bar">
+          <div style="width: ${skill.level}%"></div>
+        </div>
+      `;
+      skillsDiv.appendChild(div);
+    });
+  })
+  .catch(err => {
+    console.error("Error loading resume data:", err);
+    alert("Failed to load resume data. Please try again later.");
+  });
+
+// Mobile Menu Toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const navbar = document.getElementById('navbar');
+
+menuToggle.addEventListener('click', () => {
+  navbar.classList.toggle('active');
+});
+
+// Close menu when clicking on a link
+document.querySelectorAll('#navbar a').forEach(link => {
+  link.addEventListener('click', () => {
+    navbar.classList.remove('active');
+  });
+});
+
+// Highlight active section in navbar
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('#navbar a');
+  
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 100;
+    const sectionHeight = section.clientHeight;
+    const sectionId = section.getAttribute('id');
+    
+    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${sectionId}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+});

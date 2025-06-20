@@ -1,32 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resume - Richard Sanchez</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Resume</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav>
-    <div><strong>Resume</strong></div>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <ul id="menu">
-      <li><a href="#about">About</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contact</a></li>
+  <!-- Mobile Menu Button -->
+  <button class="menu-toggle" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Navigation -->
+  <nav id="navbar">
+    <ul>
+      <li><a href="#about-section">About</a></li>
+      <li><a href="#experience-section">Experience</a></li>
+      <li><a href="#education-section">Education</a></li>
+      <li><a href="#skills-section">Skills</a></li>
     </ul>
   </nav>
 
-  <main id="resume">
-    <!-- Resume content populated by JS -->
-  </main>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile-container">
+        <img src="assets/profile.jpg" alt="Profile photo" class="profile-img" id="profileImage">
+        <h1 id="name"></h1>
+        <h2 id="title"></h2>
+      </div>
 
-  <footer>
-    <p>&copy; 2025 Richard Sanchez. All rights reserved.</p>
-  </footer>
+      <div class="section" id="about-section">
+        <h3>About Me</h3>
+        <p id="about"></p>
+      </div>
+
+      <div class="contact">
+        <p><i class="fas fa-phone"></i> <span id="phone"></span></p>
+        <p><i class="fas fa-envelope"></i> <span id="email"></span></p>
+        <p><i class="fas fa-map-marker-alt"></i> <span id="location"></span></p>
+      </div>
+
+      <div class="section">
+        <h3>Languages</h3>
+        <ul id="languages"></ul>
+      </div>
+
+      <div class="section">
+        <h3>Expertise</h3>
+        <ul id="expertise"></ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <section id="summary-section">
+        <h3>Professional Summary</h3>
+        <p id="summary"></p>
+      </section>
+
+      <section id="experience-section">
+        <h3 class="section-title">Experience</h3>
+        <div id="experience"></div>
+      </section>
+
+      <section id="education-section">
+        <h3 class="section-title">Education</h3>
+        <div id="education"></div>
+      </section>
+
+      <section id="skills-section">
+        <h3 class="section-title">Skills Summary</h3>
+        <div id="skills"></div>
+      </section>
+    </main>
+  </div>
 
   <script src="main.js"></script>
 </body>

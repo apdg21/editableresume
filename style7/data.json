@@ -1,39 +1,59 @@
 {
-  "name": "Richard Sanchez",
-  "title": "Senior Product Designer",
-  "summary": "Creative and detail-oriented designer with over 10 years of experience crafting engaging digital experiences.",
+  "profile_image": "assets/profile.jpg",
+  "name": "Firstname Lastname",
+  "title": "Professional Title",
+  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus.",
+  "phone": "+123-456-7890",
+  "email": "hello@example.com",
+  "location": "123 Anywhere St., Any City",
+  "languages": [
+    "English",
+    "German (basic)",
+    "Spanish (basic)"
+  ],
+  "expertise": [
+    "Management Skills",
+    "Creativity",
+    "Digital Marketing",
+    "Negotiation",
+    "Critical Thinking",
+    "Leadership"
+  ],
+  "summary": "A compassionate professional with strong background in providing support and guidance.",
   "experience": [
     {
-      "role": "Lead Product Designer",
-      "company": "Innovatech Inc.",
-      "period": "2021 - Present",
-      "description": "Leading a team of designers, coordinating UI/UX projects, and working cross-functionally with engineering."
+      "role": "Position Title",
+      "company": "Company Name - Location",
+      "period": "2020 - 2022",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus."
     },
     {
-      "role": "UI/UX Designer",
-      "company": "BrightApps",
-      "period": "2016 - 2021",
-      "description": "Designed mobile and web interfaces, conducted usability testing and improved user engagement by 30%."
+      "role": "Another Role",
+      "company": "Company Name - Location",
+      "period": "2016 - 2020",
+      "description": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip."
     }
   ],
   "education": [
     {
-      "degree": "B.A. in Graphic Design",
-      "institution": "Art & Design University",
-      "period": "2011 - 2015"
+      "institution": "University Name",
+      "degree": "Bachelor of Subject",
+      "year": "2014 - 2018"
+    },
+    {
+      "institution": "University Name",
+      "degree": "Master of Subject",
+      "year": "2018 - 2020"
     }
   ],
   "skills": [
-    "Figma",
-    "Sketch",
-    "Adobe XD",
-    "HTML/CSS",
-    "Prototyping",
-    "User Research"
-  ],
-  "contact": {
-    "email": "richard@example.com",
-    "phone": "+1-555-123-4567",
-    "linkedin": "linkedin.com/in/richardsanchez"
-  }
+    {
+      "name": "Design Process",
+      "level": 78
+    },
+    {
+      "name": "Project Management",
+      "level": 81
+    }
+  ]
 }
