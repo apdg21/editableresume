@@ -55,5 +55,26 @@
       "name": "Project Management",
       "level": 81
     }
-  ]
+  ],
+  "footer": {
+    "copyright": "© [year] [name]. All rights reserved.",
+    "social_links": [
+      {
+        "name": "LinkedIn",
+        "url": "https://linkedin.com/in/yourprofile",
+        "icon": "fab fa-linkedin"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/yourusername",
+        "icon": "fab fa-github"
+      },
+      {
+        "name": "Email",
+        "url": "mailto:hello@example.com",
+        "icon": "fas fa-envelope"
+      }
+    ]
+  }
+}
 }
