@@ -1,4 +1,3 @@
-// Fetch and populate data
 fetch('data.json')
   .then(res => res.json())
   .then(data => {
@@ -68,6 +67,34 @@ fetch('data.json')
       `;
       skillsDiv.appendChild(div);
     });
+
+    // ===== FOOTER IMPLEMENTATION =====
+    if (data.footer) {
+      // Copyright text
+      const copyrightText = data.footer.copyright
+        .replace('[year]', new Date().getFullYear())
+        .replace('[name]', data.name);
+      document.getElementById('copyright-text').textContent = copyrightText;
+
+      // Social links
+      const socialLinksContainer = document.getElementById('social-links');
+      if (data.footer.social_links) {
+        data.footer.social_links.forEach(link => {
+          const a = document.createElement('a');
+          a.href = link.url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.setAttribute('aria-label', link.name);
+          
+          const icon = document.createElement('i');
+          icon.className = link.icon;
+          
+          a.appendChild(icon);
+          socialLinksContainer.appendChild(a);
+        });
+      }
+    }
+    // ===== END FOOTER =====
   })
   .catch(err => {
     console.error("Error loading resume data:", err);
@@ -109,7 +136,3 @@ window.addEventListener('scroll', () => {
     }
   });
 });
-
-// Set footer year and name
-document.getElementById('year').textContent = new Date().getFullYear();
-document.getElementById('footer-name').textContent = document.getElementById('name').textContent;
