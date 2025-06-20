@@ -1,59 +1,71 @@
 {
   "profile_image": "assets/profile.jpg",
-  "name": "Firstname Lastname",
-  "title": "Professional Title",
-  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus.",
-  "phone": "+123-456-7890",
-  "email": "hello@example.com",
-  "location": "123 Anywhere St., Any City",
+  "name": "John Doe",
+  "title": "Web Developer & Designer",
+  "about": "Passionate web developer with 5+ years of experience creating responsive and user-friendly websites. Specialized in JavaScript frameworks and UI/UX design.",
+  "phone": "+1 (555) 123-4567",
+  "email": "john.doe@example.com",
+  "location": "San Francisco, CA",
   "languages": [
-    "English",
-    "German (basic)",
-    "Spanish (basic)"
+    "English (Fluent)",
+    "Spanish (Intermediate)",
+    "French (Basic)"
   ],
   "expertise": [
-    "Management Skills",
-    "Creativity",
-    "Digital Marketing",
-    "Negotiation",
-    "Critical Thinking",
-    "Leadership"
+    "Frontend Development",
+    "UI/UX Design",
+    "Responsive Design",
+    "Web Accessibility",
+    "Performance Optimization",
+    "Cross-Browser Compatibility"
   ],
-  "summary": "A compassionate professional with strong background in providing support and guidance.",
+  "summary": "Creative problem-solver with a strong eye for design and attention to detail. Proven track record of delivering high-quality web applications that meet both user needs and business objectives.",
   "experience": [
     {
-      "role": "Position Title",
-      "company": "Company Name - Location",
-      "period": "2020 - 2022",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet quam rhoncus."
+      "role": "Senior Frontend Developer",
+      "company": "Tech Solutions Inc. - San Francisco, CA",
+      "period": "2020 - Present",
+      "description": "Lead a team of 5 developers to build responsive web applications using React.js. Improved page load performance by 40% through code optimization and lazy loading techniques."
     },
     {
-      "role": "Another Role",
-      "company": "Company Name - Location",
-      "period": "2016 - 2020",
-      "description": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip."
+      "role": "Web Developer",
+      "company": "Digital Creations LLC - New York, NY",
+      "period": "2018 - 2020",
+      "description": "Developed and maintained 15+ client websites using WordPress and custom HTML/CSS. Implemented ADA compliance standards across all projects."
     }
   ],
   "education": [
     {
-      "institution": "University Name",
-      "degree": "Bachelor of Subject",
-      "year": "2014 - 2018"
+      "institution": "Stanford University",
+      "degree": "Master of Computer Science",
+      "year": "2016 - 2018"
     },
     {
-      "institution": "University Name",
-      "degree": "Master of Subject",
-      "year": "2018 - 2020"
+      "institution": "University of California",
+      "degree": "Bachelor of Arts in Design",
+      "year": "2012 - 2016"
     }
   ],
   "skills": [
     {
-      "name": "Design Process",
-      "level": 78
+      "name": "HTML/CSS",
+      "level": 95
     },
     {
-      "name": "Project Management",
-      "level": 81
+      "name": "JavaScript",
+      "level": 90
+    },
+    {
+      "name": "React",
+      "level": 85
+    },
+    {
+      "name": "UI/UX Design",
+      "level": 80
+    },
+    {
+      "name": "Node.js",
+      "level": 75
     }
   ],
   "footer": {
@@ -61,20 +73,24 @@
     "social_links": [
       {
         "name": "LinkedIn",
-        "url": "https://linkedin.com/in/yourprofile",
+        "url": "https://linkedin.com/in/johndoe",
         "icon": "fab fa-linkedin"
       },
       {
         "name": "GitHub",
-        "url": "https://github.com/yourusername",
+        "url": "https://github.com/johndoe",
         "icon": "fab fa-github"
       },
       {
+        "name": "Twitter",
+        "url": "https://twitter.com/johndoe",
+        "icon": "fab fa-twitter"
+      },
+      {
         "name": "Email",
-        "url": "mailto:hello@example.com",
+        "url": "mailto:john.doe@example.com",
         "icon": "fas fa-envelope"
       }
     ]
   }
-}
 }
