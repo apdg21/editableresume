@@ -1,14 +1,12 @@
 {
-  "firstName": "Adolf",
-  "lastName": "de Guzman",
+  "name": "RICHARD SANCHEZ",
   "title": "Marketing Manager",
   "contact": {
     "phone": "+123-456-7890",
     "email": "hello@reallygreatsite.com",
-    "address": "123 Anywhere St., Any City",
-    "website": "www.reallygreatsite.com"
+    "address": "123 Anywhere St., Any City"
   },
-  "profile": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.",
+  "about": "Experienced Marketing Manager skilled in developing and executing comprehensive marketing strategies. Adept at leading teams, managing budgets, and delivering measurable results for diverse clients.",
   "education": [
     {
       "degree": "Master of Business Management",
@@ -40,35 +38,35 @@
   ],
   "experience": [
     {
-      "company": "Borcelle Studio",
-      "role": "Marketing Manager & Specialist",
       "start": "2030",
       "end": "Present",
+      "company": "Borcelle Studio",
+      "role": "Marketing Manager & Specialist",
       "details": [
-        "Develop and execute comprehensive marketing strategies and campaigns that align with the company's goals and objectives.",
-        "Lead, mentor, and manage a high-performing marketing team, fostering a collaborative and results-driven work environment.",
+        "Develop and execute comprehensive marketing strategies and campaigns.",
+        "Lead, mentor, and manage a high-performing marketing team.",
         "Monitor brand consistency across marketing channels and materials."
       ]
     },
     {
-      "company": "Fauget Studio",
-      "role": "Marketing Manager & Specialist",
       "start": "2025",
       "end": "2029",
+      "company": "Fauget Studio",
+      "role": "Marketing Manager & Specialist",
       "details": [
-        "Create and manage the marketing budget, ensuring efficient allocation of resources and optimizing ROI.",
-        "Oversee market research to identify emerging trends, customer needs, and competitor strategies.",
+        "Create and manage the marketing budget, optimizing ROI.",
+        "Oversee market research to identify trends and competitor strategies.",
         "Monitor brand consistency across marketing channels and materials."
       ]
     },
     {
-      "company": "Studio Shodwe",
-      "role": "Marketing Manager & Specialist",
       "start": "2024",
       "end": "2025",
+      "company": "Studio Shodwe",
+      "role": "Marketing Manager & Specialist",
       "details": [
-        "Develop and maintain strong relationships with partners, agencies, and vendors to support marketing initiatives.",
-        "Monitor and maintain brand consistency across all marketing channels and materials."
+        "Develop and maintain strong relationships with partners and vendors.",
+        "Monitor and maintain brand consistency across all marketing channels."
       ]
     }
   ],
