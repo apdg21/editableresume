@@ -8,17 +8,45 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // Update profile section
+            // Update profile section on hero card
             document.getElementById('user-name').textContent = data.name;
             document.getElementById('user-title').textContent = data.title;
 
             // Update About Me section
             document.getElementById('about-me-text').textContent = data.aboutMe;
 
-            // Update Contact section
-            document.getElementById('contact-phone').textContent = data.contact.phone;
-            document.getElementById('contact-email').textContent = data.contact.email;
-            document.getElementById('contact-address').textContent = data.contact.address;
+            // Update Education section
+            const educationItems = document.getElementById('education-items');
+            data.education.forEach((edu, index) => {
+                const div = document.createElement('div');
+                div.classList.add('education-item');
+                div.innerHTML = `
+                    <p class="text-sm text-gray-500">(${edu.years})</p>
+                    <h3>${edu.degree}</h3>
+                    <p>${edu.university}</p>
+                    <p>${edu.grade}</p>
+                    <div class="timeline-dot"></div>
+                    ${index < data.education.length - 1 ? '<div class="timeline-line"></div>' : ''}
+                `;
+                educationItems.appendChild(div);
+            });
+
+            // Update Experience section
+            const experienceItems = document.getElementById('experience-items');
+            data.experience.forEach((exp, index) => {
+                const div = document.createElement('div');
+                div.classList.add('experience-item');
+                const responsibilitiesHtml = exp.responsibilities.map(resp => `<li>${resp}</li>`).join('');
+                div.innerHTML = `
+                    <p class="text-sm text-gray-500">(${exp.years})</p>
+                    <h3>${exp.title}</h3>
+                    <p>${exp.company}</p>
+                    <ul>${responsibilitiesHtml}</ul>
+                    <div class="timeline-dot"></div>
+                    ${index < data.experience.length - 1 ? '<div class="timeline-line"></div>' : ''}
+                `;
+                experienceItems.appendChild(div);
+            });
 
             // Update Skills section
             const skillsList = document.getElementById('skills-list');
@@ -36,39 +64,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 languageList.appendChild(li);
             });
 
-            // Update Education section
-            const educationItems = document.getElementById('education-items');
-            data.education.forEach((edu, index) => {
-                const div = document.createElement('div');
-                div.classList.add('education-item');
-                div.innerHTML = `
-                    <div class="timeline-dot"></div>
-                    ${index < data.education.length - 1 ? '<div class="timeline-line"></div>' : ''}
-                    <p class="text-sm text-gray-500">(${edu.years})</p>
-                    <h3>${edu.degree}</h3>
-                    <p>${edu.university}</p>
-                    <p>${edu.grade}</p>
-                `;
-                educationItems.appendChild(div);
-            });
-
-            // Update Experience section
-            const experienceItems = document.getElementById('experience-items');
-            data.experience.forEach((exp, index) => {
-                const div = document.createElement('div');
-                div.classList.add('experience-item');
-                const responsibilitiesHtml = exp.responsibilities.map(resp => `<li>${resp}</li>`).join('');
-                div.innerHTML = `
-                    <div class="timeline-dot"></div>
-                    ${index < data.experience.length - 1 ? '<div class="timeline-line"></div>' : ''}
-                    <p class="text-sm text-gray-500">(${exp.years})</p>
-                    <h3>${exp.title}</h3>
-                    <p>${exp.company}</p>
-                    <ul>${responsibilitiesHtml}</ul>
-                `;
-                experienceItems.appendChild(div);
-            });
+            // Update Contact section
+            document.getElementById('contact-phone').textContent = data.contact.phone;
+            document.getElementById('contact-email').textContent = data.contact.email;
+            document.getElementById('contact-address').textContent = data.contact.address;
 
         })
         .catch(error => console.error('Error loading resume data:', error));
+
+    // Hamburger menu functionality
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navList = document.getElementById('nav-list');
+
+    mobileMenu.addEventListener('click', () => {
+        navList.classList.toggle('active');
+    });
+
+    // Close mobile menu when a link is clicked
+    navList.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navList.classList.remove('active');
+        });
+    });
+
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
 });
