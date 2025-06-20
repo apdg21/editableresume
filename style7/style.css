@@ -200,6 +200,51 @@ footer p {
   margin-bottom: 1rem;
 }
 
+/* Footer Styles */
+#main-footer {
+  background: var(--primary);
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+#main-footer p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  color: white;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.social-links a:hover {
+  transform: translateY(-3px);
+  color: #f0f0f0;
+}
+
+/* Ensure content doesn't hide behind footer */
+.container {
+  padding-bottom: 100px; /* Adjust based on your footer height */
+}
+
 .social-links {
   display: flex;
   gap: 1rem;
