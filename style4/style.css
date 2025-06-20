@@ -774,3 +774,59 @@ ul {
         padding: 10px;
     }
 }
+/* About Section Padding */
+#about.section {
+    padding: 80px 5%; /* Added horizontal padding */
+}
+
+.about-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px; /* Inner padding */
+}
+
+/* Mobile Padding Adjustments */
+@media (max-width: 768px) {
+    .section {
+        padding: 60px 5% !important; /* Consistent side padding */
+    }
+    
+    .hero {
+        padding: 100px 5% 50px !important;
+    }
+    
+    .timeline-item {
+        padding-left: 60px !important; /* Reduced padding */
+    }
+    
+    .timeline-date {
+        width: 100px !important; /* Smaller date box */
+        font-size: 0.9rem;
+    }
+    
+    .timeline-content {
+        padding: 20px !important;
+    }
+    
+    .contact-form {
+        padding: 20px !important;
+    }
+}
+
+/* Tablet View Adjustments */
+@media (min-width: 769px) and (max-width: 992px) {
+    .section {
+        padding: 80px 8% !important;
+    }
+    
+    .about-content,
+    .timeline,
+    .skills-container,
+    .education-container,
+    .contact-container {
+        padding: 0 15px;
+    }
+}
+.section {
+    contain: content;
+}
