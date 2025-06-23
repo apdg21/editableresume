@@ -83,5 +83,13 @@
       "phone": "123-456-7890",
       "email": "hello@reallygreatsite.com"
     }
-  ]
+  ],
+  "footer": {
+    "text": "© 2025 Richard Sanchez. All rights reserved.",
+    "socials": [
+      { "name": "LinkedIn", "url": "https://linkedin.com/in/richardsanchez", "icon": "linkedin.svg" },
+      { "name": "Twitter", "url": "https://twitter.com/richardsanchez", "icon": "twitter.svg" },
+      { "name": "Facebook", "url": "https://facebook.com/richardsanchez", "icon": "facebook.svg" }
+    ]
+  }
 }

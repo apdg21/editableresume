@@ -29,11 +29,17 @@ window.addEventListener('scroll', () => {
   });
 });
 
-// Load resume data
+// Load resume data and render dynamic content
 fetch('data.json')
   .then(res => res.json())
   .then(data => {
-    // Header
+    // Update page title dynamically
+    document.title = `${data.name} – Resume`;
+
+    // Navbar brand (title)
+    document.getElementById('nav-brand').textContent = data.name;
+
+    // Header content
     document.getElementById('name').textContent = data.name;
     document.getElementById('job-title').textContent = data.title;
 
@@ -91,4 +97,28 @@ fetch('data.json')
       <li><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg><a href="mailto:${data.contact.email}" style="color:#6d7a8a">${data.contact.email}</a></li>
       <li><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 12.414A8 8 0 1 0 12 20h.01"/></svg>${data.contact.address}</li>
     `;
+
+    // Footer text
+    document.getElementById('footer-copy').textContent = data.footer?.text || '';
+
+    // Footer socials
+    const footerSocials = document.getElementById('footer-socials');
+    footerSocials.innerHTML = '';
+    if (data.footer?.socials) {
+      data.footer.socials.forEach(social => {
+        const a = document.createElement('a');
+        a.href = social.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.setAttribute('aria-label', social.name);
+        const img = document.createElement('img');
+        img.src = `assets/${social.icon}`;
+        img.alt = social.name;
+        a.appendChild(img);
+        footerSocials.appendChild(a);
+      });
+    }
+  })
+  .catch(err => {
+    console.error('Failed to load resume data:', err);
   });
