@@ -286,13 +286,14 @@ main {
     right: 0;
     background: var(--nav-bg);
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     padding: 1.5rem 0;
     display: none;
     box-shadow: 0 2px 10px rgba(44, 62, 80, 0.08);
   }
   .nav-links.open {
     display: flex;
+    padding: 20px;
   }
   .nav-toggle {
     display: flex;
