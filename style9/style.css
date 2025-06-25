@@ -10,12 +10,16 @@ body {
     line-height: 1.6;
     background-color: #f4f4f4;
     color: #333;
+    /* Remove full width, center and constrain */
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 15px;
 }
 
 header {
@@ -88,6 +92,22 @@ section h2 {
     color: #007acc;
 }
 
+/* About section with profile image */
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#profile-photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+}
+
 footer {
     background-color: #222;
     color: white;
@@ -146,5 +166,17 @@ footer {
 
     nav {
         position: relative;
+    }
+
+    /* Stack About content vertically on small screens */
+    .about-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #profile-photo {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
     }
 }
