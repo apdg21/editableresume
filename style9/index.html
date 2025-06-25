@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Editable Resume</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome CDN for social media icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 id="header-title"></h1>
+            <nav>
+                <ul id="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#languages">Languages</a></li>
+                    <li><a href="#references">References</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="about">
+            <h2>About</h2>
+            <p id="about-text"></p>
+        </section>
+
+        <section id="experience">
+            <h2>Experience</h2>
+            <div id="experience-list"></div>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <div id="education-list"></div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <ul id="skills-list"></ul>
+        </section>
+
+        <section id="languages">
+            <h2>Languages</h2>
+            <ul id="languages-list"></ul>
+        </section>
+
+        <section id="references">
+            <h2>References</h2>
+            <div id="references-list"></div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <p id="contact-info"></p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-icons" id="social-icons"></div>
+        <p id="footer-text"></p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

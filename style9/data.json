@@ -1,0 +1,58 @@
+{
+  "htmlTitle": "John Doe - Resume",
+  "header": "John Doe",
+  "about": "Experienced software developer with a passion for building modern web applications.",
+  "experience": [
+    {
+      "position": "Senior Developer",
+      "company": "Tech Solutions",
+      "duration": "2019 - Present",
+      "description": "Lead developer on multiple projects, focusing on frontend and backend integration."
+    },
+    {
+      "position": "Junior Developer",
+      "company": "Web Innovations",
+      "duration": "2016 - 2019",
+      "description": "Worked on client websites and internal tools development."
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Sc. Computer Science",
+      "institution": "State University",
+      "year": "2016"
+    }
+  ],
+  "skills": ["JavaScript", "React", "Node.js", "CSS", "HTML"],
+  "languages": ["English", "Spanish"],
+  "references": [
+    {
+      "name": "Jane Smith",
+      "contact": "jane.smith@example.com"
+    }
+  ],
+  "contact": "Email: john.doe@example.com | Phone: (123) 456-7890",
+  "footer": "© 2025 John Doe. All rights reserved.",
+  "socialLinks": [
+    {
+      "name": "Facebook",
+      "url": "https://facebook.com/johndoe",
+      "icon": "fa-facebook"
+    },
+    {
+      "name": "Twitter",
+      "url": "https://twitter.com/johndoe",
+      "icon": "fa-twitter"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://linkedin.com/in/johndoe",
+      "icon": "fa-linkedin"
+    },
+    {
+      "name": "Instagram",
+      "url": "https://instagram.com/johndoe",
+      "icon": "fa-instagram"
+    }
+  ]
+}
