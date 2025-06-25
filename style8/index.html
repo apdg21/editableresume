@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span id="logo-text">Resume</span>
+                </div>
+                <nav class="nav" id="nav">
+                    <ul class="nav-list" id="nav-list">
+                        <!-- Navigation links will be loaded from JSON -->
+                    </ul>
+                    <button class="hamburger" id="hamburger">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 id="hero-title">Your Name</h1>
+                        <h2 id="hero-subtitle">Your Profession</h2>
+                        <p id="hero-description">Brief introduction about yourself</p>
+                        <div class="hero-buttons">
+                            <a href="#contact" class="btn btn-primary">Contact Me</a>
+                            <a href="#" class="btn btn-secondary" id="download-cv">Download CV</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <img src="assets/profile.jpg" alt="Profile Photo" id="profile-photo">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section about" id="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p id="about-text">About me text goes here...</p>
+                    </div>
+                    <div class="about-info">
+                        <ul class="info-list" id="personal-info">
+                            <!-- Personal info loaded from JSON -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section experience" id="experience">
+            <div class="container">
+                <h2 class="section-title">Experience</h2>
+                <div class="timeline" id="experience-timeline">
+                    <!-- Experience items loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+        <section class="section education" id="education">
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                <div class="timeline" id="education-timeline">
+                    <!-- Education items loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+        <section class="section skills" id="skills">
+            <div class="container">
+                <h2 class="section-title">Skills</h2>
+                <div class="skills-container" id="skills-container">
+                    <!-- Skills loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+        <section class="section languages" id="languages">
+            <div class="container">
+                <h2 class="section-title">Languages</h2>
+                <div class="languages-container" id="languages-container">
+                    <!-- Languages loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+        <section class="section references" id="references">
+            <div class="container">
+                <h2 class="section-title">References</h2>
+                <div class="references-container" id="references-container">
+                    <!-- References loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+        <section class="section contact" id="contact">
+            <div class="container">
+                <h2 class="section-title">Contact</h2>
+                <div class="contact-content">
+                    <div class="contact-info" id="contact-info">
+                        <!-- Contact info loaded from JSON -->
+                    </div>
+                    <div class="contact-map">
+                        <iframe id="map-iframe" src="" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <!-- Footer content loaded from JSON -->
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
