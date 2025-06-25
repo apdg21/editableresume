@@ -11,7 +11,7 @@ body {
     background-color: #f4f4f4;
     color: #333;
     /* Remove full width, center and constrain */
-    max-width: 900px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 15px;
 }
