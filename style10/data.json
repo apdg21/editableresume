@@ -1,0 +1,65 @@
+{
+  "title": "John Doe's Resume",
+  "header": {
+    "title": "John Doe"
+  },
+  "profile": {
+    "name": "John Doe",
+    "title": "Software Engineer"
+  },
+  "about": "A passionate software engineer with over 5 years of experience in developing web applications and solving complex technical problems. Skilled in multiple programming languages and frameworks, with a focus on delivering user-friendly solutions.",
+  "experience": [
+    {
+      "position": "Senior Software Engineer",
+      "company": "Tech Corp",
+      "date": "Jan 2022 - Present",
+      "description": "Led a team of developers to build scalable web applications using React and Node.js. Improved application performance by 30% through optimization techniques."
+    },
+    {
+      "position": "Software Engineer",
+      "company": "Innovate Solutions",
+      "date": "Jun 2018 - Dec 2021",
+      "description": "Developed and maintained full-stack applications. Collaborated with cross-functional teams to deliver projects on time."
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.S. in Computer Science",
+      "institution": "University of Technology",
+      "date": "2014 - 2018"
+    }
+  ],
+  "skills": [
+    "JavaScript",
+    "React",
+    "Node.js",
+    "Python",
+    "SQL",
+    "Git"
+  ],
+  "languages": [
+    "English (Fluent)",
+    "Spanish (Intermediate)"
+  ],
+  "references": [
+    {
+      "name": "Jane Smith",
+      "position": "CTO",
+      "company": "Tech Corp",
+      "contact": "jane.smith@techcorp.com"
+    },
+    {
+      "name": "Mark Johnson",
+      "position": "Project Manager",
+      "company": "Innovate Solutions",
+      "contact": "mark.johnson@innovatesolutions.com"
+    }
+  ],
+  "contact": {
+    "Email": "john.doe@example.com",
+    "Phone": "(123) 456-7890",
+    "LinkedIn": "linkedin.com/in/johndoe",
+    "GitHub": "github.com/johndoe"
+  },
+  "footer": "© 2025 John Doe. All rights reserved."
+}

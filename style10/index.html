@@ -1,0 +1,134 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title"></title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- Header -->
+  <header class="bg-blue-900 text-white fixed w-full top-0 z-50 shadow-md">
+    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 id="header-title" class="text-2xl font-bold"></h1>
+      <div class="md:hidden">
+        <button id="hamburger" class="focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+      <ul id="nav-links" class="hidden md:flex space-x-6">
+        <!-- Navigation links will be populated by JavaScript -->
+      </ul>
+    </nav>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-blue-900 text-white">
+      <ul id="mobile-nav-links" class="flex flex-col space-y-2 px-4 py-4">
+        <!-- Mobile navigation links will be populated by JavaScript -->
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 pt-24 pb-12">
+    <!-- Profile Section -->
+    <section id="profile" class="mb-12 text-center">
+      <img id="profile-image" src="assets/profile.jpg" alt="Profile Picture" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+      <h2 id="profile-name" class="text-3xl font-semibold"></h2>
+      <p id="profile-title" class="text-gray-600"></p>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">About</h2>
+      <p id="about-text" class="text-gray-700"></p>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Experience</h2>
+      <div id="experience-list" class="space-y-6"></div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Education</h2>
+      <div id="education-list" class="space-y-6"></div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Skills</h2>
+      <ul id="skills-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></ul>
+    </section>
+
+    <!-- Languages Section -->
+    <section id="languages" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Languages</h2>
+      <ul id="languages-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></ul>
+    </section>
+
+    <!-- References Section -->
+    <section id="references" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">References</h2>
+      <div id="references-list" class="space-y-6"></div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Contact</h2>
+      <ul id="contact-list" class="space-y-2"></ul>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white py-6">
+    <div class="container mx-auto px-4 text-center">
+      <p id="footer-text"></p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

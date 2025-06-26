@@ -1,0 +1,34 @@
+/* Custom styles to enhance Tailwind */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+header {
+  transition: all 0.3s ease;
+}
+
+nav ul li a {
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #93c5fd;
+}
+
+#mobile-menu.active {
+  display: block;
+}
+
+section {
+  scroll-margin-top: 80px; /* Adjust for fixed header */
+}
+
+h2 {
+  color: #1e40af;
+}
+
+@media (max-width: 768px) {
+  #nav-links {
+    display: none;
+  }
+}
