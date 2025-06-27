@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2c3e50;
+      --light-gray: #f5f5f5;
+      --dark-gray: #333;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--dark-gray);
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    
+    h1, h2 {
+      color: var(--secondary-color);
+    }
+    
+    h1 {
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+    }
+    
+    h2 {
+      margin-top: 30px;
+      border-left: 4px solid var(--primary-color);
+      padding-left: 10px;
+    }
+    
+    .form-section {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: 600;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    
+    textarea {
+      min-height: 80px;
+    }
+    
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px 10px 0;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+    }
+    
+    .remove-btn {
+      background-color: #e74c3c;
+    }
+    
+    .remove-btn:hover {
+      background-color: #c0392b;
+    }
+    
+    .dynamic-section {
+      background-color: var(--light-gray);
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+      position: relative;
+    }
+    
+    .dynamic-section h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .skill-level {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .skill-level input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 8px;
+      background: #ddd;
+      border-radius: 5px;
+      outline: none;
+    }
+    
+    .skill-level input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    .skill-level span {
+      font-weight: bold;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Resume Builder</h1>
+  
+  <!-- Personal Information -->
+  <div class="form-section">
+    <h2>Personal Information</h2>
+    <div class="two-column">
+      <div>
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" required>
+      </div>
+      <div>
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" required>
+      </div>
+    </div>
+    
+    <label for="jobTitle">Job Title</label>
+    <input type="text" id="jobTitle" required>
+    
+    <div class="two-column">
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div>
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" required>
+      </div>
+    </div>
+    
+    <label for="location">Location</label>
+    <input type="text" id="location" required>
+  </div>
+
+  <!-- About Section -->
+  <div class="form-section">
+    <h2>About You</h2>
+    <label for="about">Professional Summary</label>
+    <textarea id="about" required></textarea>
+  </div>
+
+  <!-- Skills -->
+  <div class="form-section">
+    <h2>Skills</h2>
+    <div id="skills-container"></div>
+    <button type="button" onclick="addSkillField()">+ Add Skill</button>
+  </div>
+
+  <!-- Experience -->
+  <div class="form-section">
+    <h2>Work Experience</h2>
+    <div id="experience-container"></div>
+    <button type="button" onclick="addExperienceField()">+ Add Experience</button>
+  </div>
+
+  <!-- Education -->
+  <div class="form-section">
+    <h2>Education</h2>
+    <div id="education-container"></div>
+    <button type="button" onclick="addEducationField()">+ Add Education</button>
+  </div>
+
+  <!-- Languages -->
+  <div class="form-section">
+    <h2>Languages</h2>
+    <div id="languages-container"></div>
+    <button type="button" onclick="addLanguageField()">+ Add Language</button>
+  </div>
+
+  <!-- Projects -->
+  <div class="form-section">
+    <h2>Projects</h2>
+    <div id="projects-container"></div>
+    <button type="button" onclick="addProjectField()">+ Add Project</button>
+  </div>
+
+  <!-- Social Links -->
+  <div class="form-section">
+    <h2>Social Links</h2>
+    <div id="social-container"></div>
+    <button type="button" onclick="addSocialField()">+ Add Social Link</button>
+  </div>
+
+  <!-- Generate Button -->
+  <div style="text-align: center; margin: 30px 0;">
+    <button type="button" onclick="generateResume()" style="padding: 12px 30px; font-size: 18px;">
+      <i class="fas fa-file-download"></i> Generate Resume
+    </button>
+  </div>
+
+  <script src="form.js"></script>
+</body>
+</html>

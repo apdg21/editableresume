@@ -6,26 +6,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const mobileNav = document.querySelector('.mobile-nav');
     
-    hamburger.addEventListener('click', () => {
-        mobileNav.classList.toggle('active');
-    });
-
-    // Close mobile menu when clicking a link
-    document.querySelectorAll('.mobile-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileNav.classList.remove('active');
+    if (hamburger && mobileNav) {
+        hamburger.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
         });
-    });
 
-    // Load resume data from JSON
-    fetch('data.json')
-        .then(response => response.json())
-        .then(data => {
-            populateResume(data);
-            setupEditModal(data);
-            setupNavigationHighlight();
-        })
-        .catch(error => console.error('Error loading resume data:', error));
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+            });
+        });
+    }
+
+    // Load resume data with fallback for local file access
+    loadResumeData();
 
     // Smooth scrolling for navigation
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -44,6 +39,88 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+async function loadResumeData() {
+    try {
+        // First try to fetch the data.json file
+        const response = await fetch('data.json');
+        if (!response.ok) throw new Error('File not found');
+        
+        const data = await response.json();
+        populateResume(data);
+        setupEditModal(data);
+        setupNavigationHighlight();
+    } catch (error) {
+        console.log('Could not load data.json directly, trying alternative methods:', error);
+        
+        // Fallback 1: Check if data is in URL hash
+        if (window.location.hash && window.location.hash.startsWith('#data=')) {
+            try {
+                const jsonData = decodeURIComponent(window.location.hash.substring(6));
+                const data = JSON.parse(jsonData);
+                populateResume(data);
+                setupEditModal(data);
+                setupNavigationHighlight();
+                return;
+            } catch (e) {
+                console.error('Error parsing data from URL:', e);
+            }
+        }
+        
+        // Fallback 2: Show file upload option
+        showFileUploadOption();
+    }
+}
+
+function showFileUploadOption() {
+    const mainContent = document.querySelector('main') || document.body;
+    
+    const uploadContainer = document.createElement('div');
+    uploadContainer.className = 'file-upload-container';
+    uploadContainer.style.textAlign = 'center';
+    uploadContainer.style.padding = '2rem';
+    uploadContainer.style.backgroundColor = '#f5f5f5';
+    uploadContainer.style.borderRadius = '8px';
+    uploadContainer.style.margin = '2rem auto';
+    uploadContainer.style.maxWidth = '600px';
+    
+    uploadContainer.innerHTML = `
+        <h2>Load Your Resume Data</h2>
+        <p>To view your resume, please upload your <code>data.json</code> file:</p>
+        <input type="file" id="jsonFileUpload" accept=".json" style="display: none;">
+        <button id="uploadBtn" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Select JSON File
+        </button>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Don't have a file? <a href="form.html">Create one first</a></p>
+    `;
+    
+    mainContent.prepend(uploadContainer);
+    
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileInput = document.getElementById('jsonFileUpload');
+    
+    uploadBtn.addEventListener('click', () => fileInput.click());
+    
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                populateResume(data);
+                setupEditModal(data);
+                setupNavigationHighlight();
+                uploadContainer.style.display = 'none';
+            } catch (error) {
+                alert('Error parsing JSON file. Please check the file format.');
+                console.error('Error parsing JSON:', error);
+            }
+        };
+        reader.readAsText(file);
+    });
+}
 
 function populateResume(data) {
     // Personal Info
