@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Data Input</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+    h1 { color: #2c3e50; }
+    h2 { 
+      color: #3498db; 
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 5px;
+    }
+    .form-section {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover { background: #2980b9; }
+    .remove-btn { background: #e74c3c; }
+    .remove-btn:hover { background: #c0392b; }
+    .dynamic-field {
+      background: white;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>Resume Data Input</h1>
+  
+  <!-- Personal Info -->
+  <div class="form-section">
+    <h2>Personal Information</h2>
+    <label>Full Name:</label>
+    <input type="text" id="name" placeholder="John Doe">
+    
+    <label>Job Title:</label>
+    <input type="text" id="title" placeholder="Marketing Manager">
+    
+    <label>About You:</label>
+    <textarea id="about" rows="4" placeholder="Experienced professional skilled in..."></textarea>
+  </div>
+
+  <!-- Contact Info -->
+  <div class="form-section">
+    <h2>Contact Information</h2>
+    <label>Phone:</label>
+    <input type="text" id="phone" placeholder="+123-456-7890">
+    
+    <label>Email:</label>
+    <input type="email" id="email" placeholder="hello@example.com">
+    
+    <label>Address:</label>
+    <input type="text" id="address" placeholder="123 Anywhere St., Any City">
+  </div>
+
+  <!-- Experience -->
+  <div class="form-section">
+    <h2>Work Experience</h2>
+    <div id="experience-fields"></div>
+    <button onclick="addExperienceField()">+ Add Experience</button>
+  </div>
+
+  <!-- Education -->
+  <div class="form-section">
+    <h2>Education</h2>
+    <div id="education-fields"></div>
+    <button onclick="addEducationField()">+ Add Education</button>
+  </div>
+
+  <!-- Skills -->
+  <div class="form-section">
+    <h2>Skills</h2>
+    <div id="skills-fields"></div>
+    <button onclick="addSkillField()">+ Add Skill</button>
+  </div>
+
+  <!-- Languages -->
+  <div class="form-section">
+    <h2>Languages</h2>
+    <div id="languages-fields"></div>
+    <button onclick="addLanguageField()">+ Add Language</button>
+  </div>
+
+  <!-- References -->
+  <div class="form-section">
+    <h2>References</h2>
+    <div id="references-fields"></div>
+    <button onclick="addReferenceField()">+ Add Reference</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="form-section">
+    <h2>Footer & Social Media</h2>
+    <label>Copyright Text:</label>
+    <input type="text" id="footer-text" placeholder="© 2023 John Doe. All rights reserved.">
+    
+    <h3>Social Media Links</h3>
+    <div id="socials-fields"></div>
+    <button onclick="addSocialField()">+ Add Social Link</button>
+  </div>
+
+  <!-- Generate Button -->
+  <button onclick="generateJSON()" style="background: #27ae60; padding: 10px 20px;">Generate Resume</button>
+
+  <script src="form.js"></script>
+</body>
+</html>
