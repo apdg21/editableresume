@@ -40,10 +40,10 @@
         "address": "123 Anywhere St., Any City",
         "email": "morgan@example.com",
         "social": [
-            {"name": "LinkedIn", "url": "https://linkedin.com/in/yourprofile", "icon": "fa-linkedin"},
-            {"name": "Dribbble", "url": "https://dribbble.com/yourprofile", "icon": "fa-dribbble"},
-            {"name": "Behance", "url": "https://behance.net/yourprofile", "icon": "fa-behance"},
-            {"name": "Instagram", "url": "https://instagram.com/yourprofile", "icon": "fa-instagram"}
+            {"name": "LinkedIn", "url": "https://linkedin.com/in/yourprofile", "icon": "linkedin"},
+            {"name": "Dribbble", "url": "https://dribbble.com/yourprofile", "icon": "dribbble"},
+            {"name": "Behance", "url": "https://behance.net/yourprofile", "icon": "behance"},
+            {"name": "Instagram", "url": "https://instagram.com/yourprofile", "icon": "instagram"}
         ]
     }
 }
