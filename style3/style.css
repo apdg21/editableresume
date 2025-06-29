@@ -54,7 +54,7 @@ body {
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 2rem;
+    gap: 0rem;
     margin: 0;
     padding: 0;
 }
@@ -180,6 +180,7 @@ footer a:hover {
     }
     .nav-links.active {
         display: flex;
+        padding: 20px;
     }
     .nav-links li {
         margin: 0.5rem 0;
