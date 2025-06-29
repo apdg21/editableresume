@@ -58,7 +58,8 @@ ul {
 }
 
 .section {
-    padding: 80px 0;
+    padding: 80px 5%;
+    contain: content;
 }
 
 .section-title {
@@ -92,7 +93,7 @@ ul {
     height: 100vh;
     background: var(--light);
     box-shadow: var(--shadow);
-    padding: 30px;
+    padding: 10px;
     z-index: 100;
     transition: var(--transition);
 }
@@ -226,6 +227,9 @@ ul {
     display: flex;
     gap: 50px;
     align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .about-text {
@@ -287,6 +291,7 @@ ul {
     position: relative;
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .timeline::before {
@@ -385,6 +390,7 @@ ul {
     gap: 30px;
     max-width: 900px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .skill-category {
@@ -422,6 +428,7 @@ ul {
 .education-container {
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .education-item {
@@ -468,12 +475,64 @@ ul {
     color: var(--gray);
 }
 
+/* Awards Section */
+.awards-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.award-item {
+    display: flex;
+    margin-bottom: 30px;
+    background: var(--secondary);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.award-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.award-date {
+    min-width: 120px;
+    background: var(--primary-dark);
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.award-content {
+    padding: 25px;
+    flex: 1;
+}
+
+.award-content h3 {
+    color: var(--primary-dark);
+    margin-bottom: 5px;
+}
+
+.award-content h4 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--gray);
+}
+
+.award-content p {
+    color: var(--gray);
+}
+
 /* Contact Section */
 .contact-container {
     display: flex;
     gap: 50px;
     max-width: 1000px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .contact-info {
@@ -704,6 +763,18 @@ ul {
     .contact-container {
         flex-direction: column;
     }
+    
+    .education-item,
+    .award-item {
+        flex-direction: column;
+    }
+    
+    .education-date,
+    .award-date {
+        width: 100%;
+        min-width: auto;
+        padding: 10px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -725,7 +796,7 @@ ul {
     
     .hero {
         flex-direction: column;
-        padding: 100px 30px 50px;
+        padding: 100px 5% 50px !important;
         text-align: center;
     }
     
@@ -747,11 +818,20 @@ ul {
         flex-direction: column;
         gap: 30px;
     }
+    
+    .about-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .timeline-date {
+        width: 100px;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 576px) {
     .section {
-        padding: 60px 0;
+        padding: 60px 5% !important;
     }
     
     .section-title {
@@ -766,67 +846,16 @@ ul {
         grid-template-columns: 1fr;
     }
     
-    .education-item {
-        flex-direction: column;
-    }
-    
-    .education-date {
-        padding: 10px;
-    }
-}
-/* About Section Padding */
-#about.section {
-    padding: 80px 5%; /* Added horizontal padding */
-}
-
-.about-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px; /* Inner padding */
-}
-
-/* Mobile Padding Adjustments */
-@media (max-width: 768px) {
-    .section {
-        padding: 60px 5% !important; /* Consistent side padding */
-    }
-    
-    .hero {
-        padding: 100px 5% 50px !important;
-    }
-    
     .timeline-item {
-        padding-left: 60px !important; /* Reduced padding */
+        padding-left: 60px !important;
     }
     
-    .timeline-date {
-        width: 100px !important; /* Smaller date box */
-        font-size: 0.9rem;
-    }
-    
-    .timeline-content {
-        padding: 20px !important;
+    .education-content,
+    .award-content {
+        padding: 20px;
     }
     
     .contact-form {
-        padding: 20px !important;
+        padding: 20px;
     }
-}
-
-/* Tablet View Adjustments */
-@media (min-width: 769px) and (max-width: 992px) {
-    .section {
-        padding: 80px 8% !important;
-    }
-    
-    .about-content,
-    .timeline,
-    .skills-container,
-    .education-container,
-    .contact-container {
-        padding: 0 15px;
-    }
-}
-.section {
-    contain: content;
 }

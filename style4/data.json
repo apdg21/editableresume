@@ -1,94 +1,112 @@
 {
-    "personalInfo": {
-        "firstName": "Morgan",
-        "lastName": "Maxwell",
-        "jobTitle": "Graphic Designer",
-        "email": "morgan@example.com",
-        "phone": "+123-456-7890",
-        "website": "www.reallygreatsite.com",
-        "location": "123 Anywhere St., Any City"
+    "title": "Morgan Maxwell | Graphic Designer",
+    "profile": {
+        "name": "Morgan Maxwell",
+        "image": "assets/profile.jpg",
+        "social_links": [
+            { "platform": "linkedin", "url": "https://linkedin.com", "icon": "fab fa-linkedin" },
+            { "platform": "dribbble", "url": "https://dribbble.com", "icon": "fab fa-dribbble" },
+            { "platform": "behance", "url": "https://behance.net", "icon": "fab fa-behance" },
+            { "platform": "instagram", "url": "https://instagram.com", "icon": "fab fa-instagram" }
+        ]
     },
-    "about": "Creative and detail-oriented graphic designer with 4 years of experience in developing visually compelling designs for print and digital media. Adept at collaborating with cross-functional teams and managing multiple projects to deliver high-quality results on time and within budget.",
-    "skills": [
-        {
-            "name": "Graphic Design",
-            "level": 90
+    "hero": {
+        "title": "Graphic Designer & Brand Specialist",
+        "description": "Creating visual experiences that tell compelling stories",
+        "image": "assets/designer-work.jpg"
+    },
+    "about": {
+        "description": [
+            "Creative and detail-oriented graphic designer with 4 years of experience in developing visually compelling designs for print and digital media. Adept at collaborating with cross-functional teams and managing multiple projects to deliver high-quality results on time and within budget."
+        ],
+        "personal_info": {
+            "email": "morgan@example.com",
+            "location": "123 Anywhere St., Any City",
+            "availability": "Open to work"
         },
-        {
-            "name": "Typography",
-            "level": 87
-        },
-        {
-            "name": "Branding & Identity",
-            "level": 95
-        },
-        {
-            "name": "Print & Digital Media",
-            "level": 84
-        },
-        {
-            "name": "Project Management",
-            "level": 92
-        }
-    ],
+        "stats": [
+            { "value": "4+", "label": "Years Experience" },
+            { "value": "120+", "label": "Projects Completed" },
+            { "value": "98%", "label": "Client Satisfaction" }
+        ]
+    },
     "experience": [
         {
-            "position": "Senior Graphic Designer",
+            "date": "June 2022 - May 2024",
+            "title": "Senior Graphic Designer",
             "company": "Fradel and Spies Company",
-            "startDate": "June 2022",
-            "endDate": "May 2024",
-            "description": "Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement.",
-            "details": [
+            "responsibilities": [
+                "Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement.",
                 "Collaborated with marketing and product teams to develop visually appealing and effective campaigns.",
                 "Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines.",
                 "Mentored junior designers and conducted design workshops for cross-functional teams."
             ]
         },
         {
-            "position": "Graphic Designer",
+            "date": "January 2020 - March 2022",
+            "title": "Graphic Designer",
             "company": "Borcelle Company",
-            "startDate": "January 2020",
-            "endDate": "March 2022",
-            "description": "Created website and mobile app designs that enhanced user experience and increased engagement by 20%.",
-            "details": [
+            "responsibilities": [
+                "Created website and mobile app designs that enhanced user experience and increased engagement by 20%.",
                 "Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback.",
                 "Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations.",
                 "Developed brand guidelines and design systems for consistent visual identity across all platforms."
             ]
         }
     ],
-    "education": [
+    "skills": [
         {
-            "degree": "Bachelor of Fine Arts in Graphic Design",
-            "institution": "Paucek and Lage University",
-            "location": "123 Anywhere St., Any City",
-            "year": "2016 - 2020"
+            "category": "Design",
+            "items": [
+                { "name": "Graphic Design", "progress": 90 },
+                { "name": "Typography", "progress": 87 },
+                { "name": "Branding & Identity", "progress": 95 }
+            ]
+        },
+        {
+            "category": "Technical",
+            "items": [
+                { "name": "Print & Digital Media", "progress": 84 },
+                { "name": "Project Management", "progress": 92 }
+            ]
+        },
+        {
+            "category": "Languages",
+            "items": [
+                { "name": "Russian", "progress": 94 },
+                { "name": "Chinese", "progress": 86 },
+                { "name": "Korean", "progress": 84 }
+            ]
         }
     ],
-    "languages": [
+    "education": [
         {
-            "name": "Russian",
-            "level": 94
-        },
-        {
-            "name": "Chinese",
-            "level": 86
-        },
-        {
-            "name": "Korean",
-            "level": 84
+            "date": "2016 - 2020",
+            "title": "Bachelor of Fine Arts in Graphic Design",
+            "institution": "Paucek and Lage University",
+            "description": "Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City"
         }
     ],
     "awards": [
         {
-            "name": "Design Excellence Award",
-            "organization": "International Design Association",
-            "year": "2023"
+            "date": "2023",
+            "title": "Design Excellence Award",
+            "institution": "International Design Association",
+            "description": "Received for outstanding contributions to graphic design"
         },
         {
-            "name": "Best Brand Identity",
-            "organization": "Creative Design Awards",
-            "year": "2021"
+            "date": "2021",
+            "title": "Best Brand Identity",
+            "institution": "Creative Design Awards",
+            "description": "Awarded for exceptional brand identity design"
         }
-    ]
+    ],
+    "contact": {
+        "email": "morgan@example.com",
+        "phone": "+123-456-7890",
+        "location": "123 Anywhere St., Any City"
+    },
+    "footer": {
+        "copyright": "© {year} Morgan Maxwell. All rights reserved."
+    }
 }

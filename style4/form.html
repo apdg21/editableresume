@@ -1,0 +1,477 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Submission Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      padding-top: 2rem;
+    }
+    .social-entry {
+      position: relative;
+    }
+    .icon-preview {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: #4B5563;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl overflow-y-auto">
+    <h1 class="text-2xl font-bold mb-6 text-center">Portfolio Submission Form</h1>
+    <form id="portfolioForm" class="space-y-6">
+      <!-- Profile -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Profile</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+            <input type="text" id="name" name="name" value="Morgan Maxwell" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+          </div>
+          <div>
+            <label for="profile-image" class="block text-sm font-medium text-gray-700">Profile Image</label>
+            <input type="file" id="profile-image" name="profile-image" accept="image/*" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Choose profile.jpg">
+            <span class="text-sm text-gray-500">Sample: assets/profile.jpg</span>
+          </div>
+        </div>
+        <div id="social-links-container" class="space-y-4 mt-4">
+          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="relative">
+              <label for="social-platform-0" class="block text-sm font-medium text-gray-700">Social Platform</label>
+              <select id="social-platform-0" name="social-platform-0" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
+                <option value="" disabled>Select a platform</option>
+                <option value="linkedin" selected>LinkedIn</option>
+                <option value="twitter">Twitter</option>
+                <option value="facebook">Facebook</option>
+              </select>
+              <i class="icon-preview fas fa-linkedin" data-index="0"></i>
+            </div>
+            <div>
+              <label for="social-url-0" class="block text-sm font-medium text-gray-700">URL</label>
+              <input type="url" id="social-url-0" name="social-url-0" value="https://linkedin.com/in/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://linkedin.com/in/yourprofile">
+            </div>
+          </div>
+          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="relative">
+              <label for="social-platform-1" class="block text-sm font-medium text-gray-700">Social Platform</label>
+              <select id="social-platform-1" name="social-platform-1" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
+                <option value="" disabled>Select a platform</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="twitter" selected>Twitter</option>
+                <option value="facebook">Facebook</option>
+              </select>
+              <i class="icon-preview fas fa-x-twitter" data-index="1"></i>
+            </div>
+            <div>
+              <label for="social-url-1" class="block text-sm font-medium text-gray-700">URL</label>
+              <input type="url" id="social-url-1" name="social-url-1" value="https://twitter.com/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://twitter.com/yourprofile">
+            </div>
+          </div>
+          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="relative">
+              <label for="social-platform-2" class="block text-sm font-medium text-gray-700">Social Platform</label>
+              <select id="social-platform-2" name="social-platform-2" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
+                <option value="" disabled>Select a platform</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="twitter">Twitter</option>
+                <option value="facebook" selected>Facebook</option>
+              </select>
+              <i class="icon-preview fas fa-facebook" data-index="2"></i>
+            </div>
+            <div>
+              <label for="social-url-2" class="block text-sm font-medium text-gray-700">URL</label>
+              <input type="url" id="social-url-2" name="social-url-2" value="https://facebook.com/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://facebook.com/yourprofile">
+            </div>
+          </div>
+        </div>
+        <button type="button" id="add-social" class="mt-2 text-blue-600 hover:underline">Add Another Social Link</button>
+      </div>
+
+      <!-- Hero -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Hero</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="hero-title" class="block text-sm font-medium text-gray-700">Title</label>
+            <input type="text" id="hero-title" name="hero-title" value="Graphic Designer & Brand Specialist" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., Graphic Designer & Brand Specialist">
+          </div>
+          <div>
+            <label for="hero-image" class="block text-sm font-medium text-gray-700">Hero Image</label>
+            <input type="file" id="hero-image" name="hero-image" accept="image/*" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Choose designer-work.jpg">
+            <span class="text-sm text-gray-500">Sample: assets/designer-work.jpg</span>
+          </div>
+        </div>
+        <div>
+          <label for="hero-description" class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea id="hero-description" name="hero-description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Creating visual experiences that tell compelling stories">Creating visual experiences that tell compelling stories</textarea>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">About</h2>
+        <div>
+          <label for="about-description" class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea id="about-description" name="about-description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="e.g., Creative and detail-oriented graphic designer...">Creative and detail-oriented graphic designer with 4 years of experience in developing visually compelling designs for print and digital media. Adept at collaborating with cross-functional teams and managing multiple projects to deliver high-quality results on time and within budget.</textarea>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="personal-email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="personal-email" name="personal-email" value="morgan@example.com" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., your.email@example.com">
+          </div>
+          <div>
+            <label for="personal-location" class="block text-sm font-medium text-gray-700">Location</label>
+            <input type="text" id="personal-location" name="personal-location" value="123 Anywhere St., Any City" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 123 Anywhere St., Any City">
+          </div>
+          <div>
+            <label for="personal-availability" class="block text-sm font-medium text-gray-700">Availability</label>
+            <input type="text" id="personal-availability" name="personal-availability" value="Open to work" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Open to work">
+          </div>
+        </div>
+        <div id="stats-container" class="space-y-4 mt-4">
+          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="stats-value-0" class="block text-sm font-medium text-gray-700">Value</label>
+              <input type="text" id="stats-value-0" name="stats-value-0" value="4+" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 4+">
+            </div>
+            <div>
+              <label for="stats-label-0" class="block text-sm font-medium text-gray-700">Label</label>
+              <input type="text" id="stats-label-0" name="stats-label-0" value="Years Experience" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Years Experience">
+            </div>
+          </div>
+          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="stats-value-1" class="block text-sm font-medium text-gray-700">Value</label>
+              <input type="text" id="stats-value-1" name="stats-value-1" value="120+" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 120+">
+            </div>
+            <div>
+              <label for="stats-label-1" class="block text-sm font-medium text-gray-700">Label</label>
+              <input type="text" id="stats-label-1" name="stats-label-1" value="Projects Completed" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Projects Completed">
+            </div>
+          </div>
+          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="stats-value-2" class="block text-sm font-medium text-gray-700">Value</label>
+              <input type="text" id="stats-value-2" name="stats-value-2" value="98%" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 98%">
+            </div>
+            <div>
+              <label for="stats-label-2" class="block text-sm font-medium text-gray-700">Label</label>
+              <input type="text" id="stats-label-2" name="stats-label-2" value="Client Satisfaction" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Client Satisfaction">
+            </div>
+          </div>
+        </div>
+        <button type="button" id="add-stats" class="mt-2 text-blue-600 hover:underline">Add Another Stat</button>
+      </div>
+
+      <!-- Experience -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Experience</h2>
+        <div id="experience-container" class="space-y-4">
+          <div class="experience-entry">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="exp-date-0" class="block text-sm font-medium text-gray-700">Date</label>
+                <input type="text" id="exp-date-0" name="exp-date-0" value="June 2022 - May 2024" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., June 2022 - May 2024">
+              </div>
+              <div>
+                <label for="exp-title-0" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="exp-title-0" name="exp-title-0" value="Senior Graphic Designer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Senior Graphic Designer">
+              </div>
+              <div>
+                <label for="exp-company-0" class="block text-sm font-medium text-gray-700">Company</label>
+                <input type="text" id="exp-company-0" name="exp-company-0" value="Fradel and Spies Company" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Fradel and Spies Company">
+              </div>
+            </div>
+            <label for="exp-responsibilities-0" class="block text-sm font-medium text-gray-700 mt-2">Responsibilities (one per line)</label>
+            <textarea id="exp-responsibilities-0" name="exp-responsibilities-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter one responsibility per line, e.g.:
+Designed branding materials...
+Collaborated with teams...">Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement.
+Collaborated with marketing and product teams to develop visually appealing and effective campaigns.
+Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines.
+Mentored junior designers and conducted design workshops for cross-functional teams.</textarea>
+          </div>
+          <div class="experience-entry mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="exp-date-1" class="block text-sm font-medium text-gray-700">Date</label>
+                <input type="text" id="exp-date-1" name="exp-date-1" value="January 2020 - March 2022" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., January 2020 - March 2022">
+              </div>
+              <div>
+                <label for="exp-title-1" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="exp-title-1" name="exp-title-1" value="Graphic Designer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Graphic Designer">
+              </div>
+              <div>
+                <label for="exp-company-1" class="block text-sm font-medium text-gray-700">Company</label>
+                <input type="text" id="exp-company-1" name="exp-company-1" value="Borcelle Company" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Borcelle Company">
+              </div>
+            </div>
+            <label for="exp-responsibilities-1" class="block text-sm font-medium text-gray-700 mt-2">Responsibilities (one per line)</label>
+            <textarea id="exp-responsibilities-1" name="exp-responsibilities-1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter one responsibility per line, e.g.:
+Created website designs...
+Led the redesign...">Created website and mobile app designs that enhanced user experience and increased engagement by 20%.
+Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback.
+Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations.
+Developed brand guidelines and design systems for consistent visual identity across all platforms.</textarea>
+          </div>
+        </div>
+        <button type="button" id="add-experience" class="mt-2 text-blue-600 hover:underline">Add Another Experience</button>
+      </div>
+
+      <!-- Skills -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Skills</h2>
+        <div id="skills-container" class="space-y-4">
+          <div class="skills-entry">
+            <label for="skill-category-0" class="block text-sm font-medium text-gray-700">Category</label>
+            <input type="text" id="skill-category-0" name="skill-category-0" value="Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Design">
+            <div id="skill-items-0" class="space-y-2 mt-2">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-0-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-0-0" name="skill-name-0-0" value="Graphic Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Graphic Design">
+                </div>
+                <div>
+                  <label for="skill-progress-0-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-0-0" name="skill-progress-0-0" value="90" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 90" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-0-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-0-1" name="skill-name-0-1" value="Typography" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Typography">
+                </div>
+                <div>
+                  <label for="skill-progress-0-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-0-1" name="skill-progress-0-1" value="87" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 87" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-0-2" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-0-2" name="skill-name-0-2" value="Branding & Identity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Branding & Identity">
+                </div>
+                <div>
+                  <label for="skill-progress-0-2" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-0-2" name="skill-progress-0-2" value="95" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 95" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+            </div>
+            <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="0">Add Another Skill Item</button>
+          </div>
+          <div class="skills-entry mt-4">
+            <label for="skill-category-1" class="block text-sm font-medium text-gray-700">Category</label>
+            <input type="text" id="skill-category-1" name="skill-category-1" value="Technical" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Technical">
+            <div id="skill-items-1" class="space-y-2 mt-2">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-1-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-1-0" name="skill-name-1-0" value="Print & Digital Media" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Print & Digital Media">
+                </div>
+                <div>
+                  <label for="skill-progress-1-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-1-0" name="skill-progress-1-0" value="84" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 84" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-1-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-1-1" name="skill-name-1-1" value="Project Management" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Project Management">
+                </div>
+                <div>
+                  <label for="skill-progress-1-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-1-1" name="skill-progress-1-1" value="92" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 92" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+            </div>
+            <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="1">Add Another Skill Item</button>
+          </div>
+          <div class="skills-entry mt-4">
+            <label for="skill-category-2" class="block text-sm font-medium text-gray-700">Category</label>
+            <input type="text" id="skill-category-2" name="skill-category-2" value="Languages" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Languages">
+            <div id="skill-items-2" class="space-y-2 mt-2">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-2-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-2-0" name="skill-name-2-0" value="Russian" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Russian">
+                </div>
+                <div>
+                  <label for="skill-progress-2-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-2-0" name="skill-progress-2-0" value="94" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 94" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-2-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-2-1" name="skill-name-2-1" value="Chinese" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Chinese">
+                </div>
+                <div>
+                  <label for="skill-progress-2-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-2-1" name="skill-progress-2-1" value="86" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 86" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="skill-name-2-2" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                  <input type="text" id="skill-name-2-2" name="skill-name-2-2" value="Korean" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Korean">
+                </div>
+                <div>
+                  <label for="skill-progress-2-2" class="block text-sm font-medium text-gray-700">Progress (%)</label>
+                  <input type="number" id="skill-progress-2-2" name="skill-progress-2-2" value="84" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 84" title="Enter a number between 0 and 100">
+                </div>
+              </div>
+            </div>
+            <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="2">Add Another Skill Item</button>
+          </div>
+        </div>
+        <button type="button" id="add-skill-category" class="mt-2 text-blue-600 hover:underline">Add Another Skill Category</button>
+      </div>
+
+      <!-- Education -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Education</h2>
+        <div id="education-container" class="space-y-4">
+          <div class="education-entry">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="edu-date-0" class="block text-sm font-medium text-gray-700">Date</label>
+                <input type="text" id="edu-date-0" name="edu-date-0" value="2016 - 2020" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2016 - 2020">
+              </div>
+              <div>
+                <label for="edu-title-0" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="edu-title-0" name="edu-title-0" value="Bachelor of Fine Arts in Graphic Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Bachelor of Fine Arts in Graphic Design">
+              </div>
+              <div>
+                <label for="edu-institution-0" class="block text-sm font-medium text-gray-700">Institution</label>
+                <input type="text" id="edu-institution-0" name="edu-institution-0" value="Paucek and Lage University" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Paucek and Lage University">
+              </div>
+            </div>
+            <label for="edu-description-0" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
+            <textarea id="edu-description-0" name="edu-description-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City">Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City</textarea>
+          </div>
+        </div>
+        <button type="button" id="add-education" class="mt-2 text-blue-600 hover:underline">Add Another Education</button>
+      </div>
+
+      <!-- Awards -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Awards</h2>
+        <div id="awards-container" class="space-y-4">
+          <div class="awards-entry">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="award-date-0" class="block text-sm font-medium text-gray-700">Date</label>
+                <input type="text" id="award-date-0" name="award-date-0" value="2023" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2023">
+              </div>
+              <div>
+                <label for="award-title-0" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="award-title-0" name="award-title-0" value="Design Excellence Award" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Design Excellence Award">
+              </div>
+              <div>
+                <label for="award-institution-0" class="block text-sm font-medium text-gray-700">Institution</label>
+                <input type="text" id="award-institution-0" name="award-institution-0" value="International Design Association" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., International Design Association">
+              </div>
+            </div>
+            <label for="award-description-0" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
+            <textarea id="award-description-0" name="award-description-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Received for outstanding contributions to graphic design">Received for outstanding contributions to graphic design</textarea>
+          </div>
+          <div class="awards-entry mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="award-date-1" class="block text-sm font-medium text-gray-700">Date</label>
+                <input type="text" id="award-date-1" name="award-date-1" value="2021" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2021">
+              </div>
+              <div>
+                <label for="award-title-1" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="award-title-1" name="award-title-1" value="Best Brand Identity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Best Brand Identity">
+              </div>
+              <div>
+                <label for="award-institution-1" class="block text-sm font-medium text-gray-700">Institution</label>
+                <input type="text" id="award-institution-1" name="award-institution-1" value="Creative Design Awards" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Creative Design Awards">
+              </div>
+            </div>
+            <label for="award-description-1" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
+            <textarea id="award-description-1" name="award-description-1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Awarded for exceptional brand identity design">Awarded for exceptional brand identity design</textarea>
+          </div>
+        </div>
+        <button type="button" id="add-award" class="mt-2 text-blue-600 hover:underline">Add Another Award</button>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Contact</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="contact-email" name="contact-email" value="morgan@example.com" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., morgan@example.com">
+          </div>
+          <div>
+            <label for="contact-phone" class="block text-sm font-medium text-gray-700">Phone</label>
+            <input type="tel" id="contact-phone" name="contact-phone" value="+123-456-7890" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., +123-456-7890">
+          </div>
+          <div>
+            <label for="contact-location" class="block text-sm font-medium text-gray-700">Location</label>
+            <input type="text" id="contact-location" name="contact-location" value="123 Anywhere St., Any City" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 123 Anywhere St., Any City">
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Submit Portfolio</button>
+      </div>
+    </form>
+  </div>
+  <script src="form.js"></script>
+</body>
+</html>

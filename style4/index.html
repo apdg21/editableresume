@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Morgan Maxwell | Graphic Designer</title>
+    <title id="page-title">Loading...</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
 </head>
 <body>
     <!-- Mobile Menu -->
@@ -22,6 +21,7 @@
             <a href="#experience">Experience</a>
             <a href="#skills">Skills</a>
             <a href="#education">Education</a>
+            <a href="#awards">Awards</a>
             <a href="#contact">Contact</a>
         </nav>
     </div>
@@ -29,13 +29,11 @@
     <!-- Desktop Sidebar Navigation -->
     <aside class="sidebar">
         <div class="profile-card">
-            <img src="assets/profile.jpg" alt="Morgan Maxwell" class="profile-img">
-            <h1>Morgan Maxwell</h1>
-            <p class="title">Graphic Designer</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-dribbble"></i></a>
-                <a href="#"><i class="fab fa-behance"></i></a>
+            <img id="profile-img" src="assets/profile.jpg" alt="Profile Image" class="profile-img">
+            <h1 id="profile-name">Loading...</h1>
+            <p id="profile-title" class="title">Loading...</p>
+            <div class="social-links" id="profile-social-links">
+                <!-- Social links will be populated dynamically -->
             </div>
         </div>
 
@@ -52,6 +50,9 @@
             <a href="#education" class="nav-link">
                 <i class="fas fa-graduation-cap"></i> Education
             </a>
+            <a href="#awards" class="nav-link">
+                <i class="fas fa-trophy"></i> Awards
+            </a>
             <a href="#contact" class="nav-link">
                 <i class="fas fa-envelope"></i> Contact
             </a>
@@ -63,13 +64,13 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-text">
-                <h2>Hello, I'm <span>Morgan</span></h2>
-                <h1>Graphic Designer & Brand Specialist</h1>
-                <p>Creating visual experiences that tell compelling stories</p>
+                <h2>Hello, I'm <span id="hero-name">Loading...</span></h2>
+                <h1 id="hero-title">Loading...</h1>
+                <p id="hero-description">Loading...</p>
                 <a href="#contact" class="btn">Get In Touch</a>
             </div>
             <div class="hero-image">
-                <img src="assets/designer-work.jpg" alt="Designer at work">
+                <img id="hero-image" src="assets/designer-work.jpg" alt="Designer at work">
             </div>
         </section>
 
@@ -78,32 +79,20 @@
             <h2 class="section-title"><span>About</span> Me</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p>Creative and detail-oriented graphic designer with 4+ years of experience developing visually compelling designs for print and digital media. Specializing in brand identity and user-focused design solutions.</p>
-                    <p>My approach combines aesthetic sensibility with strategic thinking to create designs that are not just beautiful, but effective at communicating your message and achieving business goals.</p>
+                    <p id="about-description">Loading...</p>
                     <div class="personal-info">
                         <div>
-                            <p><strong>Name:</strong> Morgan Maxwell</p>
-                            <p><strong>Email:</strong> morgan@example.com</p>
+                            <p><strong>Name:</strong> <span id="info-name">Loading...</span></p>
+                            <p><strong>Email:</strong> <span id="info-email">Loading...</span></p>
                         </div>
                         <div>
-                            <p><strong>Location:</strong> San Francisco, CA</p>
-                            <p><strong>Availability:</strong> Open to work</p>
+                            <p><strong>Location:</strong> <span id="info-location">Loading...</span></p>
+                            <p><strong>Availability:</strong> <span id="info-availability">Loading...</span></p>
                         </div>
                     </div>
                 </div>
-                <div class="about-stats">
-                    <div class="stat-item">
-                        <h3>4+</h3>
-                        <p>Years Experience</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>120+</h3>
-                        <p>Projects Completed</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>98%</h3>
-                        <p>Client Satisfaction</p>
-                    </div>
+                <div class="about-stats" id="about-stats">
+                    <!-- Stats will be populated dynamically -->
                 </div>
             </div>
         </section>
@@ -111,103 +100,32 @@
         <!-- Experience Section -->
         <section id="experience" class="section">
             <h2 class="section-title">Work <span>Experience</span></h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-date">2022 - Present</div>
-                    <div class="timeline-content">
-                        <h3>Senior Graphic Designer</h3>
-                        <h4>Fradel & Spies Company</h4>
-                        <ul>
-                            <li>Lead design team creating branding materials and digital assets</li>
-                            <li>Increased client engagement by 25% through improved visual design</li>
-                            <li>Developed design systems for consistent brand experiences</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2020 - 2022</div>
-                    <div class="timeline-content">
-                        <h3>Graphic Designer</h3>
-                        <h4>Borcelle Company</h4>
-                        <ul>
-                            <li>Created website and app designs improving engagement by 20%</li>
-                            <li>Led website redesign increasing traffic by 30%</li>
-                            <li>Managed client presentations and design iterations</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="timeline" id="experience-timeline">
+                <!-- Experience items will be populated dynamically -->
             </div>
         </section>
 
         <!-- Skills Section -->
         <section id="skills" class="section">
             <h2 class="section-title">My <span>Skills</span></h2>
-            <div class="skills-container">
-                <div class="skill-category">
-                    <h3>Design</h3>
-                    <div class="skill-item">
-                        <p>Graphic Design</p>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <p>Typography</p>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <p>Brand Identity</p>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 92%"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Technical</h3>
-                    <div class="skill-item">
-                        <p>Adobe Creative Suite</p>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 94%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <p>Figma</p>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 88%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <p>HTML/CSS</p>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 80%"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="skills-container" id="skills-container">
+                <!-- Skills will be populated dynamically -->
             </div>
         </section>
 
         <!-- Education Section -->
         <section id="education" class="section">
             <h2 class="section-title">My <span>Education</span></h2>
-            <div class="education-container">
-                <div class="education-item">
-                    <div class="education-date">2016 - 2020</div>
-                    <div class="education-content">
-                        <h3>Bachelor of Fine Arts</h3>
-                        <h4>Paucek & Lage University</h4>
-                        <p>Major in Graphic Design with minor in Digital Media</p>
-                    </div>
-                </div>
-                <div class="education-item">
-                    <div class="education-date">2018</div>
-                    <div class="education-content">
-                        <h3>UX Design Certification</h3>
-                        <h4>Design Institute</h4>
-                        <p>Specialized training in user experience principles</p>
-                    </div>
-                </div>
+            <div class="education-container" id="education-container">
+                <!-- Education items will be populated dynamically -->
+            </div>
+        </section>
+
+        <!-- Awards Section -->
+        <section id="awards" class="section">
+            <h2 class="section-title">My <span>Awards</span></h2>
+            <div class="awards-container" id="awards-container">
+                <!-- Awards will be populated dynamically -->
             </div>
         </section>
 
@@ -220,21 +138,21 @@
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h3>Email</h3>
-                            <p>morgan@example.com</p>
+                            <p id="contact-email">Loading...</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <div>
                             <h3>Phone</h3>
-                            <p>+1 (123) 456-7890</p>
+                            <p id="contact-phone">Loading...</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h3>Location</h3>
-                            <p>San Francisco, CA</p>
+                            <p id="contact-location">Loading...</p>
                         </div>
                     </div>
                 </div>
@@ -260,24 +178,23 @@
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <h2>Morgan Maxwell</h2>
-                    <p>Graphic Designer & Brand Specialist</p>
+                    <h2 id="footer-name">Loading...</h2>
+                    <p id="footer-title">Loading...</p>
                 </div>
                 <div class="footer-links">
                     <a href="#about">About</a>
                     <a href="#experience">Experience</a>
                     <a href="#skills">Skills</a>
+                    <a href="#education">Education</a>
+                    <a href="#awards">Awards</a>
                     <a href="#contact">Contact</a>
                 </div>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-dribbble"></i></a>
-                    <a href="#"><i class="fab fa-behance"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                <div class="footer-social" id="footer-social-links">
+                    <!-- Social links will be populated dynamically -->
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; <span id="year"></span> Morgan Maxwell. All rights reserved.</p>
+                <p id="footer-copyright">Loading...</p>
             </div>
         </footer>
     </main>

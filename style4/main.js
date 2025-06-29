@@ -1,113 +1,184 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Set current year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-    
-    // Mobile menu toggle
-    const hamburger = document.querySelector('.hamburger');
-    const mobileNav = document.querySelector('.mobile-nav');
-    const sidebar = document.querySelector('.sidebar');
-    
-    hamburger.addEventListener('click', function() {
-        this.classList.toggle('active');
-        mobileNav.classList.toggle('active');
-        sidebar.classList.toggle('active');
-    });
-    
-    // Smooth scrolling for navigation
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                // Close mobile menu if open
-                hamburger.classList.remove('active');
-                mobileNav.classList.remove('active');
-                sidebar.classList.remove('active');
-                
-                // Scroll to target
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                
-                // Update active nav link
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                
-                if (targetId !== '#') {
-                    document.querySelector(`.nav-link[href="${targetId}"]`).classList.add('active');
-                }
-            }
-        });
-    });
-    
-    // Highlight active section in sidebar
-    window.addEventListener('scroll', function() {
-        const scrollPosition = window.scrollY;
+document.addEventListener('DOMContentLoaded', async () => {
+    async function loadDataFromJson(data) {
+        // Update page title
+        document.getElementById('page-title').textContent = data.title;
+
+        // Update profile card (using single source for name and title)
+        document.getElementById('profile-name').textContent = data.profile.name;
+        document.getElementById('profile-title').textContent = data.hero.title; // Using hero.title as single source
+        document.getElementById('profile-img').src = data.profile.image;
+        const profileSocialLinks = document.getElementById('profile-social-links');
+        profileSocialLinks.innerHTML = data.profile.social_links.map(link => 
+            `<a href="${link.url}" target="_blank"><i class="${link.icon}"></i></a>`
+        ).join('');
+
+        // Update hero section (using single source for name and title)
+        document.getElementById('hero-name').textContent = data.profile.name; // Using profile.name
+        document.getElementById('hero-title').textContent = data.hero.title;
+        document.getElementById('hero-description').textContent = data.hero.description;
+        document.getElementById('hero-image').src = data.hero.image;
+
+        // Update about section (using single source for name)
+        document.getElementById('about-description').innerHTML = data.about.description.map(p => `<p>${p}</p>`).join('');
+        document.getElementById('info-name').textContent = data.profile.name; // Using profile.name
+        document.getElementById('info-email').textContent = data.about.personal_info.email;
+        document.getElementById('info-location').textContent = data.about.personal_info.location;
+        document.getElementById('info-availability').textContent = data.about.personal_info.availability;
         
-        document.querySelectorAll('section').forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionHeight = section.offsetHeight;
-            const sectionId = section.getAttribute('id');
-            
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                
-                const correspondingLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-                if (correspondingLink) {
-                    correspondingLink.classList.add('active');
-                }
-            }
-        });
-    });
-    
-    // Form submission
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Here you would typically send the data to a server
-            console.log('Form submitted:', data);
-            
-            // Show success message
-            alert('Thank you for your message! I will get back to you soon.');
-            this.reset();
-        });
+        const aboutStats = document.getElementById('about-stats');
+        aboutStats.innerHTML = data.about.stats.map(stat => `
+            <div class="stat-item">
+                <h3>${stat.value}</h3>
+                <p>${stat.label}</p>
+            </div>
+        `).join('');
+
+        // Update experience section
+        const experienceTimeline = document.getElementById('experience-timeline');
+        experienceTimeline.innerHTML = data.experience.map(exp => `
+            <div class="timeline-item">
+                <div class="timeline-date">${exp.date}</div>
+                <div class="timeline-content">
+                    <h3>${exp.title}</h3>
+                    <h4>${exp.company}</h4>
+                    <ul>
+                        ${exp.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        `).join('');
+
+        // Update skills section
+        const skillsContainer = document.getElementById('skills-container');
+        skillsContainer.innerHTML = data.skills.map(category => `
+            <div class="skill-category">
+                <h3>${category.category}</h3>
+                ${category.items.map(item => `
+                    <div class="skill-item">
+                        <p>${item.name}</p>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: ${item.progress}%"></div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
+
+        // Update education section
+        const educationContainer = document.getElementById('education-container');
+        educationContainer.innerHTML = data.education.map(edu => `
+            <div class="education-item">
+                <div class="education-date">${edu.date}</div>
+                <div class="education-content">
+                    <h3>${edu.title}</h3>
+                    <h4>${edu.institution}</h4>
+                    <p>${edu.description}</p>
+                </div>
+            </div>
+        `).join('');
+
+        // NEW: Update awards section
+        const awardsContainer = document.getElementById('awards-container');
+        awardsContainer.innerHTML = data.awards.map(award => `
+            <div class="award-item">
+                <div class="award-date">${award.date}</div>
+                <div class="award-content">
+                    <h3>${award.title}</h3>
+                    <h4>${award.institution}</h4>
+                    <p>${award.description}</p>
+                </div>
+            </div>
+        `).join('');
+
+        // Update contact section
+        document.getElementById('contact-email').textContent = data.contact.email;
+        document.getElementById('contact-phone').textContent = data.contact.phone;
+        document.getElementById('contact-location').textContent = data.contact.location;
+
+        // Update footer (using single source for name and title)
+        document.getElementById('footer-name').textContent = data.profile.name; // Using profile.name
+        document.getElementById('footer-title').textContent = data.hero.title; // Using hero.title
+        document.getElementById('footer-copyright').textContent = data.footer.copyright.replace('{year}', new Date().getFullYear());
+        
+        const footerSocialLinks = document.getElementById('footer-social-links');
+        footerSocialLinks.innerHTML = data.profile.social_links.map(link => 
+            `<a href="${link.url}" target="_blank"><i class="${link.icon}"></i></a>`
+        ).join('');
     }
-    
-    // Animation on scroll
-    const animateOnScroll = function() {
-        const elements = document.querySelectorAll('.timeline-item, .skill-item, .education-item, .contact-item');
-        
-        elements.forEach(element => {
-            const elementPosition = element.getBoundingClientRect().top;
-            const screenPosition = window.innerHeight / 1.2;
-            
-            if (elementPosition < screenPosition) {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
+
+    try {
+        // Check if running locally (file:// protocol)
+        if (window.location.protocol === 'file:') {
+            // Create a visible button for file selection
+            const fileSelectContainer = document.createElement('div');
+            fileSelectContainer.style.position = 'fixed';
+            fileSelectContainer.style.top = '20px';
+            fileSelectContainer.style.left = '20px';
+            fileSelectContainer.style.zIndex = '1000';
+            fileSelectContainer.style.backgroundColor = '#fff';
+            fileSelectContainer.style.padding = '10px';
+            fileSelectContainer.style.border = '1px solid #ccc';
+            fileSelectContainer.style.borderRadius = '5px';
+            fileSelectContainer.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json';
+            fileInput.style.display = 'none';
+
+            const selectButton = document.createElement('button');
+            selectButton.textContent = 'Select data.json';
+            selectButton.style.padding = '8px 16px';
+            selectButton.style.backgroundColor = '#007bff';
+            selectButton.style.color = '#fff';
+            selectButton.style.border = 'none';
+            selectButton.style.borderRadius = '3px';
+            selectButton.style.cursor = 'pointer';
+
+            fileSelectContainer.appendChild(selectButton);
+            fileSelectContainer.appendChild(fileInput);
+            document.body.appendChild(fileSelectContainer);
+
+            // Handle button click to trigger file input
+            selectButton.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            // Handle file selection
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            await loadDataFromJson(data);
+                            // Hide the file select button after successful load
+                            fileSelectContainer.style.display = 'none';
+                        } catch (error) {
+                            console.error('Error parsing JSON file:', error);
+                            alert('Failed to parse data.json. Please ensure it is a valid JSON file.');
+                        }
+                    };
+                    reader.readAsText(file);
+                } else {
+                    console.error('No file selected');
+                    alert('Please select a data.json file to load the content.');
+                }
+            });
+        } else {
+            // Running on a server, fetch data.json from same directory
+            const response = await fetch('data.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        });
-    };
-    
-    // Set initial state for animated elements
-    document.querySelectorAll('.timeline-item, .skill-item, .education-item, .contact-item').forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    });
-    
-    window.addEventListener('scroll', animateOnScroll);
-    animateOnScroll(); // Run once on load
+            const data = await response.json();
+            await loadDataFromJson(data);
+        }
+    } catch (error) {
+        console.error('Error loading data:', error);
+        if (window.location.protocol !== 'file:') {
+            alert('Failed to load data.json. Please ensure the file is available in the same directory.');
+        }
+    }
 });
