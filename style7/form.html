@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - John Doe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .form-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .skill-item, .language-item, .expertise-item, .experience-item, .education-item {
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .add-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .save-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .range-slider {
+            width: 100%;
+        }
+        .social-link-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .social-link-item select {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .social-link-item input {
+            flex: 3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Profile</h1>
+    
+    <form id="profileForm">
+        <!-- Basic Information Section -->
+        <div class="form-section">
+            <h2>Basic Information</h2>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Professional Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="about">About</label>
+                <textarea id="about" name="about" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="summary">Professional Summary</label>
+                <textarea id="summary" name="summary" required></textarea>
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="form-section">
+            <h2>Contact Information</h2>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+        </div>
+
+        <!-- Languages Section -->
+        <div class="form-section">
+            <h2>Languages</h2>
+            <div id="languagesContainer">
+                <!-- Languages will be added here dynamically -->
+            </div>
+            <button type="button" class="add-btn" id="addLanguage">Add Language</button>
+        </div>
+
+        <!-- Expertise Section -->
+        <div class="form-section">
+            <h2>Areas of Expertise</h2>
+            <div id="expertiseContainer">
+                <!-- Expertise items will be added here dynamically -->
+            </div>
+            <button type="button" class="add-btn" id="addExpertise">Add Expertise</button>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="form-section">
+            <h2>Work Experience</h2>
+            <div id="experienceContainer">
+                <!-- Experience items will be added here dynamically -->
+            </div>
+            <button type="button" class="add-btn" id="addExperience">Add Experience</button>
+        </div>
+
+        <!-- Education Section -->
+        <div class="form-section">
+            <h2>Education</h2>
+            <div id="educationContainer">
+                <!-- Education items will be added here dynamically -->
+            </div>
+            <button type="button" class="add-btn" id="addEducation">Add Education</button>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="form-section">
+            <h2>Skills</h2>
+            <div id="skillsContainer">
+                <!-- Skills will be added here dynamically -->
+            </div>
+            <button type="button" class="add-btn" id="addSkill">Add Skill</button>
+        </div>
+
+        <!-- Social Links Section -->
+        <div class="form-section">
+            <h2>Social Links</h2>
+            <div id="socialLinksContainer">
+                <!-- Social links will be added here dynamically -->
+            </div>
+            <button type="button" class="add-btn" id="addSocialLink">Add Social Link</button>
+        </div>
+
+        <button type="submit" class="save-btn">Save Profile</button>
+    </form>
+
+    <script src="form.js"></script>
+</body>
+</html>

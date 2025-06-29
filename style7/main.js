@@ -1,38 +1,95 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Try loading from localStorage first
-  const cachedData = localStorage.getItem('resumeData');
-  if (cachedData) {
-    try {
-      populateData(JSON.parse(cachedData));
-      return;
-    } catch (e) {
-      console.error("Error parsing cached data:", e);
-      localStorage.removeItem('resumeData');
-    }
-  }
+    // First try to load the data.json file directly
+    loadResumeData();
+    
+    // Mobile menu toggle (if you have one)
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navbar = document.getElementById('navbar');
+    
+    if (menuToggle && navbar) {
+        menuToggle.addEventListener('click', () => {
+            navbar.classList.toggle('active');
+        });
 
-  // Fetch fresh data
-  fetch('data.json')
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      populateData(data);
-      // Cache the data
-      localStorage.setItem('resumeData', JSON.stringify(data));
-    })
-    .catch(err => {
-      console.error("Error loading resume data:", err);
-      showError();
-    });
+        // Close menu when clicking on a link
+        document.querySelectorAll('#navbar a').forEach(link => {
+            link.addEventListener('click', () => {
+                navbar.classList.remove('active');
+            });
+        });
+    }
 });
 
-function populateData(data) {
-  try {
+async function loadResumeData() {
+    try {
+        // First try to fetch the data.json file
+        const response = await fetch('data.json');
+        if (!response.ok) throw new Error('File not found');
+        
+        const data = await response.json();
+        populateResume(data);
+    } catch (error) {
+        console.log('Could not load data.json directly, trying alternative method:', error);
+        
+        // Fallback: Show file upload option
+        showFileUploadOption();
+    }
+}
+
+function showFileUploadOption() {
+    const container = document.querySelector('.container') || document.body;
+    
+    const uploadContainer = document.createElement('div');
+    uploadContainer.className = 'file-upload-container';
+    uploadContainer.style.textAlign = 'center';
+    uploadContainer.style.padding = '2rem';
+    uploadContainer.style.margin = '2rem auto';
+    uploadContainer.style.maxWidth = '600px';
+    
+    uploadContainer.innerHTML = `
+        <h2>Load Your Resume Data</h2>
+        <p>To view your resume, please upload your <code>data.json</code> file:</p>
+        <input type="file" id="jsonFileUpload" accept=".json" style="display: none;">
+        <button id="uploadBtn" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">
+            Select JSON File
+        </button>
+    `;
+    
+    container.prepend(uploadContainer);
+    
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileInput = document.getElementById('jsonFileUpload');
+    
+    uploadBtn.addEventListener('click', () => fileInput.click());
+    
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                populateResume(data);
+                uploadContainer.style.display = 'none';
+            } catch (error) {
+                alert('Error parsing JSON file. Please check the file format.');
+                console.error('Error parsing JSON:', error);
+            }
+        };
+        reader.onerror = function() {
+            alert('Error reading file. Please try again.');
+        };
+        reader.readAsText(file);
+    });
+}
+
+function populateResume(data) {
     // Basic Info
-    document.getElementById('profileImage').src = data.profile_image || 'assets/default-profile.jpg';
-    document.getElementById('profileImage').alt = `Profile photo of ${data.name}`;
+    if (data.profile_image) {
+        document.getElementById('profileImage').src = data.profile_image;
+        document.getElementById('profileImage').alt = `Profile photo of ${data.name}`;
+    }
     document.getElementById('name').textContent = data.name;
     document.getElementById('title').textContent = data.title;
     document.getElementById('about').textContent = data.about;
@@ -43,139 +100,91 @@ function populateData(data) {
 
     // Languages
     const langList = document.getElementById('languages');
-    data.languages?.forEach(lang => {
-      const li = document.createElement('li');
-      li.textContent = lang;
-      langList.appendChild(li);
-    });
+    if (langList && data.languages) {
+        langList.innerHTML = data.languages.map(lang => `<li>${lang}</li>`).join('');
+    }
 
     // Experience
     const expDiv = document.getElementById('experience');
-    data.experience?.forEach(job => {
-      const div = document.createElement('div');
-      div.className = 'job';
-      div.innerHTML = `
-        <h4>${job.role}</h4>
-        <p class="company">${job.company}</p>
-        <p class="period"><em>${job.period}</em></p>
-        <p class="description">${job.description}</p>
-      `;
-      expDiv.appendChild(div);
-    });
+    if (expDiv && data.experience) {
+        expDiv.innerHTML = data.experience.map(job => `
+            <div class="job">
+                <h4>${job.role}</h4>
+                <p class="company">${job.company}</p>
+                <p class="period"><em>${job.period}</em></p>
+                <p class="description">${job.description}</p>
+            </div>
+        `).join('');
+    }
 
     // Education
     const eduDiv = document.getElementById('education');
-    data.education?.forEach(edu => {
-      const div = document.createElement('div');
-      div.className = 'education';
-      div.innerHTML = `
-        <h4>${edu.institution}</h4>
-        <p class="degree">${edu.degree}</p>
-        <p class="year"><em>${edu.year}</em></p>
-      `;
-      eduDiv.appendChild(div);
-    });
+    if (eduDiv && data.education) {
+        eduDiv.innerHTML = data.education.map(edu => `
+            <div class="education">
+                <h4>${edu.institution}</h4>
+                <p class="degree">${edu.degree}</p>
+                <p class="year"><em>${edu.year}</em></p>
+            </div>
+        `).join('');
+    }
 
     // Expertise
     const expList = document.getElementById('expertise');
-    data.expertise?.forEach(skill => {
-      const li = document.createElement('li');
-      li.textContent = skill;
-      expList.appendChild(li);
-    });
+    if (expList && data.expertise) {
+        expList.innerHTML = data.expertise.map(skill => `<li>${skill}</li>`).join('');
+    }
 
     // Skills
     const skillsDiv = document.getElementById('skills');
-    data.skills?.forEach(skill => {
-      const div = document.createElement('div');
-      div.className = 'skill-bar';
-      div.innerHTML = `
-        <span>${skill.name}</span>
-        <div class="bar">
-          <div style="width: ${skill.level}%"></div>
-        </div>
-      `;
-      skillsDiv.appendChild(div);
-    });
+    if (skillsDiv && data.skills) {
+        skillsDiv.innerHTML = data.skills.map(skill => `
+            <div class="skill-bar">
+                <span>${skill.name}</span>
+                <div class="bar">
+                    <div style="width: ${skill.level}%"></div>
+                </div>
+            </div>
+        `).join('');
+    }
 
     // Footer
     if (data.footer) {
-      const copyrightText = data.footer.copyright
-        ?.replace('[year]', new Date().getFullYear())
-        ?.replace('[name]', data.name);
-      if (copyrightText) document.getElementById('copyright-text').textContent = copyrightText;
+        if (data.footer.copyright) {
+            const copyrightText = data.footer.copyright
+                .replace('[year]', new Date().getFullYear())
+                .replace('[name]', data.name);
+            document.getElementById('copyright-text').textContent = copyrightText;
+        }
 
-      const socialLinksContainer = document.getElementById('social-links');
-      data.footer.social_links?.forEach(link => {
-        const a = document.createElement('a');
-        a.href = link.url || '#';
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.setAttribute('aria-label', link.name || 'Social link');
-        
-        const icon = document.createElement('i');
-        icon.className = link.icon || 'fas fa-link';
-        
-        a.appendChild(icon);
-        socialLinksContainer.appendChild(a);
-      });
+        const socialLinksContainer = document.getElementById('social-links');
+        if (socialLinksContainer && data.footer.social_links) {
+            socialLinksContainer.innerHTML = data.footer.social_links.map(link => `
+                <a href="${link.url || '#'}" target="_blank" rel="noopener noreferrer" aria-label="${link.name || 'Social link'}">
+                    <i class="${link.icon || 'fas fa-link'}"></i>
+                </a>
+            `).join('');
+        }
     }
-  } catch (error) {
-    console.error("Error populating data:", error);
-    showError();
-  }
-}
-
-function showError() {
-  const container = document.querySelector('.container');
-  container.innerHTML = `
-    <div class="error-message">
-      <h2>Oops! Something went wrong</h2>
-      <p>We couldn't load the resume data. Please:</p>
-      <ul>
-        <li>Check your internet connection</li>
-        <li>Refresh the page</li>
-        <li>Ensure data.json exists</li>
-      </ul>
-      <button onclick="location.reload()">Try Again</button>
-    </div>
-  `;
-}
-
-// Mobile Menu Toggle
-const menuToggle = document.querySelector('.menu-toggle');
-const navbar = document.getElementById('navbar');
-
-if (menuToggle && navbar) {
-  menuToggle.addEventListener('click', () => {
-    navbar.classList.toggle('active');
-  });
-
-  // Close menu when clicking on a link
-  document.querySelectorAll('#navbar a').forEach(link => {
-    link.addEventListener('click', () => {
-      navbar.classList.remove('active');
-    });
-  });
 }
 
 // Highlight active section in navbar
 window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll('section');
-  const navLinks = document.querySelectorAll('#navbar a');
-  
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 100;
-    const sectionHeight = section.clientHeight;
-    const sectionId = section.getAttribute('id');
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('#navbar a');
     
-    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${sectionId}`) {
-          link.classList.add('active');
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.clientHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
         }
-      });
-    }
-  });
+    });
 });

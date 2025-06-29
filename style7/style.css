@@ -375,3 +375,35 @@ footer p {
     margin: 0.5rem 0 0;
   }
 }
+.local-file-selector {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  text-align: center;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.local-file-selector input[type="file"] {
+  margin: 1rem 0;
+}
+
+.local-file-selector button {
+  padding: 0.5rem 1rem;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.local-file-selector button:hover {
+  background: #45a049;
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 1rem;
+}
