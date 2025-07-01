@@ -1,26 +1,47 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize hamburger menu functionality
+    function setupHamburgerMenu() {
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+        }
+    }
+
     async function loadDataFromJson(data) {
         // Update page title
         document.getElementById('page-title').textContent = data.title;
 
         // Update profile card (using single source for name and title)
         document.getElementById('profile-name').textContent = data.profile.name;
-        document.getElementById('profile-title').textContent = data.hero.title; // Using hero.title as single source
+        document.getElementById('profile-title').textContent = data.hero.title;
         document.getElementById('profile-img').src = data.profile.image;
         const profileSocialLinks = document.getElementById('profile-social-links');
         profileSocialLinks.innerHTML = data.profile.social_links.map(link => 
             `<a href="${link.url}" target="_blank"><i class="${link.icon}"></i></a>`
         ).join('');
 
-        // Update hero section (using single source for name and title)
-        document.getElementById('hero-name').textContent = data.profile.name; // Using profile.name
+        // Update hero section
+        document.getElementById('hero-name').textContent = data.profile.name;
         document.getElementById('hero-title').textContent = data.hero.title;
         document.getElementById('hero-description').textContent = data.hero.description;
         document.getElementById('hero-image').src = data.hero.image;
 
-        // Update about section (using single source for name)
+        // Update about section
         document.getElementById('about-description').innerHTML = data.about.description.map(p => `<p>${p}</p>`).join('');
-        document.getElementById('info-name').textContent = data.profile.name; // Using profile.name
+        document.getElementById('info-name').textContent = data.profile.name;
         document.getElementById('info-email').textContent = data.about.personal_info.email;
         document.getElementById('info-location').textContent = data.about.personal_info.location;
         document.getElementById('info-availability').textContent = data.about.personal_info.availability;
@@ -77,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
         `).join('');
 
-        // NEW: Update awards section
+        // Update awards section
         const awardsContainer = document.getElementById('awards-container');
         awardsContainer.innerHTML = data.awards.map(award => `
             <div class="award-item">
@@ -95,15 +116,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('contact-phone').textContent = data.contact.phone;
         document.getElementById('contact-location').textContent = data.contact.location;
 
-        // Update footer (using single source for name and title)
-        document.getElementById('footer-name').textContent = data.profile.name; // Using profile.name
-        document.getElementById('footer-title').textContent = data.hero.title; // Using hero.title
+        // Update footer
+        document.getElementById('footer-name').textContent = data.profile.name;
+        document.getElementById('footer-title').textContent = data.hero.title;
         document.getElementById('footer-copyright').textContent = data.footer.copyright.replace('{year}', new Date().getFullYear());
         
         const footerSocialLinks = document.getElementById('footer-social-links');
         footerSocialLinks.innerHTML = data.profile.social_links.map(link => 
             `<a href="${link.url}" target="_blank"><i class="${link.icon}"></i></a>`
         ).join('');
+
+        // Setup hamburger menu after loading content
+        setupHamburgerMenu();
     }
 
     try {
@@ -161,9 +185,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     };
                     reader.readAsText(file);
-                } else {
-                    console.error('No file selected');
-                    alert('Please select a data.json file to load the content.');
                 }
             });
         } else {
