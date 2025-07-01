@@ -1,62 +1,123 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Load JSON data
+    // First try to load the data.json file directly
     fetch('data.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('File not found');
+            return response.json();
+        })
         .then(data => {
-            // Set page title
-            document.title = data.pageTitle || 'Resume';
-            
-            // Set logo text if available
-            if (data.logoText) {
-                document.getElementById('logo-text').textContent = data.logoText;
-            }
-            
-            // Load navigation
-            loadNavigation(data.navigation);
-            
-            // Load hero section
-            loadHero(data.hero);
-            
-            // Load about section
-            loadAbout(data.about);
-            
-            // Load experience
-            loadExperience(data.experience);
-            
-            // Load education
-            loadEducation(data.education);
-            
-            // Load skills
-            loadSkills(data.skills);
-            
-            // Load languages
-            loadLanguages(data.languages);
-            
-            // Load references
-            loadReferences(data.references);
-            
-            // Load contact
-            loadContact(data.contact);
-            
-            // Load footer
-            loadFooter(data.footer);
-            
-            // Set up hamburger menu
-            setupHamburgerMenu();
-            
-            // Set up smooth scrolling
-            setupSmoothScrolling();
-            
-            // Set up download CV button if available
-            if (data.downloadCvLink) {
-                document.getElementById('download-cv').href = data.downloadCvLink;
-            }
+            // If successful, populate the resume
+            populateResume(data);
         })
         .catch(error => {
-            console.error('Error loading the JSON data:', error);
+            console.log('Could not load data.json directly, trying alternative methods:', error);
+            // Fallback: Show file upload option
+            showFileUploadOption();
         });
 });
 
+function showFileUploadOption() {
+    const container = document.querySelector('main') || document.body;
+    
+    const uploadContainer = document.createElement('div');
+    uploadContainer.className = 'file-upload-container';
+    uploadContainer.style.textAlign = 'center';
+    uploadContainer.style.padding = '2rem';
+    uploadContainer.style.margin = '2rem auto';
+    uploadContainer.style.maxWidth = '600px';
+    
+    uploadContainer.innerHTML = `
+        <h2>Load Your Resume Data</h2>
+        <p>To view your resume, please upload your <code>data.json</code> file:</p>
+        <input type="file" id="jsonFileUpload" accept=".json" style="display: none;">
+        <button id="uploadBtn" class="btn-primary">
+            <i class="fas fa-upload"></i> Select JSON File
+        </button>
+    `;
+    
+    container.prepend(uploadContainer);
+    
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileInput = document.getElementById('jsonFileUpload');
+    
+    uploadBtn.addEventListener('click', () => fileInput.click());
+    
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                populateResume(data);
+                uploadContainer.style.display = 'none';
+            } catch (error) {
+                alert('Error parsing JSON file. Please check the file format.');
+                console.error('Error parsing JSON:', error);
+            }
+        };
+        reader.onerror = function() {
+            alert('Error reading file. Please try again.');
+        };
+        reader.readAsText(file);
+    });
+}
+
+function populateResume(data) {
+    if (!data) return;
+    
+    // Set page title
+    document.title = data.pageTitle || 'Resume';
+    
+    // Set logo text if available
+    if (data.logoText) {
+        document.getElementById('logo-text').textContent = data.logoText;
+    }
+    
+    // Load navigation
+    loadNavigation(data.navigation);
+    
+    // Load hero section
+    loadHero(data.hero);
+    
+    // Load about section
+    loadAbout(data.about);
+    
+    // Load experience
+    loadExperience(data.experience);
+    
+    // Load education
+    loadEducation(data.education);
+    
+    // Load skills
+    loadSkills(data.skills);
+    
+    // Load languages
+    loadLanguages(data.languages);
+    
+    // Load references
+    loadReferences(data.references);
+    
+    // Load contact
+    loadContact(data.contact);
+    
+    // Load footer
+    loadFooter(data.footer);
+    
+    // Set up hamburger menu
+    setupHamburgerMenu();
+    
+    // Set up smooth scrolling
+    setupSmoothScrolling();
+    
+    // Set up download CV button if available
+    if (data.downloadCvLink) {
+        document.getElementById('download-cv').href = data.downloadCvLink;
+    }
+}
+
+// All the existing load functions remain the same:
 function loadNavigation(navItems) {
     const navList = document.getElementById('nav-list');
     

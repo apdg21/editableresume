@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Professional Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1, h2, h3 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .form-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .item-card {
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            position: relative;
+            background-color: #f9f9f9;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .add-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-btn i {
+            font-size: 14px;
+        }
+        
+        .save-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 14px 28px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+        
+        .save-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .range-slider {
+            flex: 1;
+        }
+        
+        .range-value {
+            width: 50px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .help-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .navigation-preview {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .navigation-preview ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .navigation-preview li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+        }
+        
+        .navigation-preview li:last-child {
+            border-bottom: none;
+        }
+        
+        .navigation-preview .nav-text {
+            font-weight: 600;
+            width: 100px;
+            color: var(--dark-color);
+        }
+        
+        .navigation-preview .nav-link {
+            color: var(--primary-color);
+            font-family: monospace;
+        }
+        
+        .reference-photo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px 0;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .reference-photo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        small {
+            font-size: 0.8em;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .navigation-preview li {
+                flex-direction: column;
+            }
+            
+            .navigation-preview .nav-text {
+                width: auto;
+                margin-bottom: 4px;
+            }
+            
+            .reference-photo-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Professional Resume</h1>
+        
+        <form id="resumeForm">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="form-group">
+                    <label for="pageTitle">Page Title</label>
+                    <input type="text" id="pageTitle" name="pageTitle" required value="John Doe - Professional Resume">
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required value="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="professionalTitle">Professional Title</label>
+                    <input type="text" id="professionalTitle" name="professionalTitle" required value="Senior Web Developer">
+                </div>
+                <div class="form-group">
+                    <label>Profile Photo</label>
+                    <p class="help-text">Save your photo as "profile.jpg" in the assets folder</p>
+                </div>
+            </div>
+
+            <!-- Fixed Navigation Section -->
+            <div class="form-section">
+                <h2>Navigation Menu <small>(Fixed structure)</small></h2>
+                <div class="navigation-preview">
+                    <ul>
+                        <li>
+                            <span class="nav-text">Home</span>
+                            <span class="nav-link">#home</span>
+                        </li>
+                        <li>
+                            <span class="nav-text">About</span>
+                            <span class="nav-link">#about</span>
+                        </li>
+                        <li>
+                            <span class="nav-text">Experience</span>
+                            <span class="nav-link">#experience</span>
+                        </li>
+                        <li>
+                            <span class="nav-text">Education</span>
+                            <span class="nav-link">#education</span>
+                        </li>
+                        <li>
+                            <span class="nav-text">Skills</span>
+                            <span class="nav-link">#skills</span>
+                        </li>
+                    </ul>
+                    <p class="help-text">This navigation structure is fixed and will appear automatically in your resume.</p>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="form-section">
+                <h2>About Section</h2>
+                <div class="form-group">
+                    <label for="aboutText">Professional Summary</label>
+                    <textarea id="aboutText" name="aboutText" required>Passionate web developer with 8+ years of experience building modern web applications. Specialized in JavaScript frameworks and responsive design.</textarea>
+                </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div class="form-section">
+                <h2>Work Experience</h2>
+                <div id="experienceContainer">
+                    <div class="item-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="text" name="experience[0][date]" value="2020 - Present" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Job Title</label>
+                                <input type="text" name="experience[0][title]" value="Senior Web Developer" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Company</label>
+                            <input type="text" name="experience[0][company]" value="Tech Solutions Inc." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea name="experience[0][description]" required>Lead a team of 5 developers to build responsive web applications using React.js. Improved page load performance by 40%.</textarea>
+                        </div>
+                        <button type="button" class="remove-btn">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="add-btn" id="addExperience"><i class="fas fa-plus"></i> Add Experience</button>
+            </div>
+
+            <!-- Education Section -->
+            <div class="form-section">
+                <h2>Education</h2>
+                <div id="educationContainer">
+                    <div class="item-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="text" name="education[0][date]" value="2016 - 2018" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Degree</label>
+                                <input type="text" name="education[0][degree]" value="Master of Computer Science" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Institution</label>
+                            <input type="text" name="education[0][institution]" value="Stanford University" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea name="education[0][description]">Specialized in Web Technologies and Software Engineering.</textarea>
+                        </div>
+                        <button type="button" class="remove-btn">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="add-btn" id="addEducation"><i class="fas fa-plus"></i> Add Education</button>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="form-section">
+                <h2>Skills</h2>
+                <div id="skillsContainer">
+                    <div class="item-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Skill Name</label>
+                                <input type="text" name="skills[0][name]" value="JavaScript" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Icon Class</label>
+                                <input type="text" name="skills[0][icon]" value="fab fa-js" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Skill Level (0-100)</label>
+                            <div class="range-container">
+                                <input type="range" name="skills[0][level]" min="0" max="100" value="90" class="range-slider" required>
+                                <span class="range-value">90</span>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-btn">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="add-btn" id="addSkill"><i class="fas fa-plus"></i> Add Skill</button>
+            </div>
+
+            <!-- References Section -->
+            <div class="form-section">
+                <h2>References</h2>
+                <div id="referencesContainer">
+                    <div class="item-card">
+                        <div class="form-group">
+                            <label>Reference Photo URL</label>
+                            <input type="url" name="references[0][photo]" value="https://randomuser.me/api/portraits/men/32.jpg" required>
+                            <p class="help-text">Use a square profile photo (e.g. from <a href="https://randomuser.me" target="_blank">randomuser.me</a>)</p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="references[0][name]" value="Michael Johnson" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Position</label>
+                                <input type="text" name="references[0][position]" value="CTO at Tech Solutions Inc." required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact</label>
+                            <input type="text" name="references[0][contact]" value="michael.johnson@techsolutions.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Reference Text</label>
+                            <textarea name="references[0][text]" required>John is an exceptional developer who consistently delivers high-quality work. His problem-solving skills are outstanding.</textarea>
+                        </div>
+                        <button type="button" class="remove-btn">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="add-btn" id="addReference"><i class="fas fa-plus"></i> Add Reference</button>
+            </div>
+
+            <button type="submit" class="save-btn"><i class="fas fa-save"></i> Save Resume</button>
+        </form>
+    </div>
+
+    <script src="form.js"></script>
+</body>
+</html>

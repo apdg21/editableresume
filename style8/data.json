@@ -1,173 +1,186 @@
 {
-    "pageTitle": "John Doe - Professional Resume",
-    "logoText": "JD",
-    "navigation": [
-        {"text": "Home", "link": "#home"},
-        {"text": "About", "link": "#about"},
-        {"text": "Experience", "link": "#experience"},
-        {"text": "Education", "link": "#education"},
-        {"text": "Skills", "link": "#skills"},
-        {"text": "Languages", "link": "#languages"},
-        {"text": "References", "link": "#references"},
-        {"text": "Contact", "link": "#contact"}
-    ],
-    "hero": {
-        "title": "John Doe",
-        "subtitle": "Senior Web Developer",
-        "description": "Passionate web developer with 8+ years of experience building modern web applications. Specialized in JavaScript frameworks and responsive design.",
-        "profilePhoto": "assets/profile.jpg"
+  "pageTitle": "John Doe - Professional Resume",
+  "logoText": "JD",
+  "navigation": [
+    {
+      "text": "Home",
+      "link": "#home"
     },
-    "downloadCvLink": "#",
-    "about": {
-        "text": "I am a dedicated web developer with extensive experience in creating efficient, scalable, and user-friendly web applications. My expertise includes front-end development with React and Vue.js, back-end development with Node.js, and database management with MongoDB and PostgreSQL. I'm committed to writing clean, maintainable code and staying up-to-date with the latest web technologies.",
-        "personalInfo": [
-            {"label": "Name", "value": "John Doe"},
-            {"label": "Age", "value": "32"},
-            {"label": "Location", "value": "San Francisco, CA"},
-            {"label": "Email", "value": "john.doe@example.com"},
-            {"label": "Phone", "value": "+1 (555) 123-4567"},
-            {"label": "Freelance", "value": "Available"}
-        ]
+    {
+      "text": "About",
+      "link": "#about"
     },
-    "experience": [
-        {
-            "date": "2019 - Present",
-            "title": "Senior Web Developer",
-            "company": "Tech Solutions Inc.",
-            "description": "Lead a team of developers in building enterprise-level web applications. Implemented modern front-end architectures and improved application performance by 40%."
-        },
-        {
-            "date": "2016 - 2019",
-            "title": "Web Developer",
-            "company": "Digital Creations LLC",
-            "description": "Developed and maintained multiple client websites using React and Node.js. Collaborated with designers to implement responsive UI components."
-        },
-        {
-            "date": "2014 - 2016",
-            "title": "Junior Web Developer",
-            "company": "WebStart Agency",
-            "description": "Assisted in developing WordPress themes and plugins. Gained experience with HTML, CSS, JavaScript, and PHP."
-        }
-    ],
-    "education": [
-        {
-            "date": "2010 - 2014",
-            "degree": "Bachelor of Science in Computer Science",
-            "institution": "University of California",
-            "description": "Specialized in Web Technologies and Software Engineering. Graduated with honors."
-        },
-        {
-            "date": "2008 - 2010",
-            "degree": "Associate Degree in Information Technology",
-            "institution": "Community College",
-            "description": "Learned fundamentals of programming and computer systems."
-        }
-    ],
-    "skills": [
-        {
-            "name": "JavaScript",
-            "icon": "fab fa-js",
-            "level": "90"
-        },
-        {
-            "name": "React",
-            "icon": "fab fa-react",
-            "level": "85"
-        },
-        {
-            "name": "Node.js",
-            "icon": "fab fa-node-js",
-            "level": "80"
-        },
-        {
-            "name": "HTML5",
-            "icon": "fab fa-html5",
-            "level": "95"
-        },
-        {
-            "name": "CSS3",
-            "icon": "fab fa-css3-alt",
-            "level": "90"
-        },
-        {
-            "name": "Git",
-            "icon": "fab fa-git-alt",
-            "level": "75"
-        }
-    ],
-    "languages": [
-        {
-            "name": "English",
-            "level": "Native"
-        },
-        {
-            "name": "Spanish",
-            "level": "Fluent"
-        },
-        {
-            "name": "French",
-            "level": "Intermediate"
-        }
-    ],
-    "references": [
-        {
-            "photo": "https://randomuser.me/api/portraits/men/32.jpg",
-            "name": "Michael Johnson",
-            "position": "CTO at Tech Solutions Inc.",
-            "text": "John is an exceptional developer who consistently delivers high-quality work. His problem-solving skills are outstanding.",
-            "contact": "michael.johnson@techsolutions.com"
-        },
-        {
-            "photo": "https://randomuser.me/api/portraits/women/44.jpg",
-            "name": "Sarah Williams",
-            "position": "Project Manager at Digital Creations",
-            "text": "Working with John was a pleasure. He's reliable, skilled, and a great team player.",
-            "contact": "sarah.williams@digitalcreations.com"
-        }
-    ],
-    "contact": {
-        "items": [
-            {
-                "icon": "fas fa-map-marker-alt",
-                "text": "San Francisco, CA"
-            },
-            {
-                "icon": "fas fa-envelope",
-                "text": "john.doe@example.com",
-                "link": "mailto:john.doe@example.com"
-            },
-            {
-                "icon": "fas fa-phone",
-                "text": "+1 (555) 123-4567",
-                "link": "tel:+15551234567"
-            },
-            {
-                "icon": "fas fa-globe",
-                "text": "www.johndoe.dev",
-                "link": "https://www.johndoe.dev"
-            }
-        ],
-        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.444043405755!2d-122.4194155846823!3d37.77492997975921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
+    {
+      "text": "Experience",
+      "link": "#experience"
     },
-    "footer": {
-        "socialLinks": [
-            {
-                "icon": "fab fa-github",
-                "url": "https://github.com/johndoe"
-            },
-            {
-                "icon": "fab fa-linkedin-in",
-                "url": "https://linkedin.com/in/johndoe"
-            },
-            {
-                "icon": "fab fa-twitter",
-                "url": "https://twitter.com/johndoe"
-            },
-            {
-                "icon": "fab fa-instagram",
-                "url": "https://instagram.com/johndoe"
-            }
-        ],
-        "copyright": "© 2023 John Doe. All rights reserved."
+    {
+      "text": "Education",
+      "link": "#education"
+    },
+    {
+      "text": "Skills",
+      "link": "#skills"
     }
+  ],
+  "hero": {
+    "title": "John Doe",
+    "subtitle": "Senior Web Developer",
+    "description": "Passionate web developer with 8+ years of experience building modern web applications. Specialized in JavaScript frameworks and responsive design.",
+    "profilePhoto": "assets/profile.jpg"
+  },
+  "downloadCvLink": "#",
+  "about": {
+    "text": "I am a dedicated web developer with extensive experience in creating efficient, scalable, and user-friendly web applications. My expertise includes front-end development with React and Vue.js, back-end development with Node.js, and database management with MongoDB and PostgreSQL. I'm committed to writing clean, maintainable code and staying up-to-date with the latest web technologies.",
+    "personalInfo": [
+      {
+        "label": "Name",
+        "value": "John Doe"
+      },
+      {
+        "label": "Title",
+        "value": "Senior Web Developer"
+      },
+      {
+        "label": "Email",
+        "value": "john.doe@example.com"
+      },
+      {
+        "label": "Location",
+        "value": "San Francisco, CA"
+      }
+    ]
+  },
+  "experience": [
+    {
+      "date": "2019 - Present",
+      "title": "Senior Web Developer",
+      "company": "Tech Solutions Inc.",
+      "description": "Lead a team of developers in building enterprise-level web applications. Implemented modern front-end architectures and improved application performance by 40%."
+    },
+    {
+      "date": "2016 - 2019",
+      "title": "Web Developer",
+      "company": "Digital Creations LLC",
+      "description": "Developed and maintained multiple client websites using React and Node.js. Collaborated with designers to implement responsive UI components."
+    },
+    {
+      "date": "2014 - 2016",
+      "title": "Junior Web Developer",
+      "company": "WebStart Agency",
+      "description": "Assisted in developing WordPress themes and plugins. Gained experience with HTML, CSS, JavaScript, and PHP."
+    }
+  ],
+  "education": [
+    {
+      "date": "2010 - 2014",
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "University of California",
+      "description": "Specialized in Web Technologies and Software Engineering. Graduated with honors."
+    },
+    {
+      "date": "2008 - 2010",
+      "degree": "Associate Degree in Information Technology",
+      "institution": "Community College",
+      "description": "Learned fundamentals of programming and computer systems."
+    }
+  ],
+  "skills": [
+    {
+      "name": "JavaScript",
+      "icon": "fab fa-js",
+      "level": "90"
+    },
+    {
+      "name": "React",
+      "icon": "fab fa-react",
+      "level": "85"
+    },
+    {
+      "name": "Node.js",
+      "icon": "fab fa-node-js",
+      "level": "80"
+    },
+    {
+      "name": "HTML5",
+      "icon": "fab fa-html5",
+      "level": "95"
+    },
+    {
+      "name": "CSS3",
+      "icon": "fab fa-css3-alt",
+      "level": "90"
+    },
+    {
+      "name": "Git",
+      "icon": "fab fa-git-alt",
+      "level": "75"
+    }
+  ],
+  "references": [
+    {
+      "photo": "https://randomuser.me/api/portraits/men/32.jpg",
+      "name": "Michael Johnson",
+      "position": "CTO at Tech Solutions Inc.",
+      "contact": "michael.johnson@techsolutions.com",
+      "text": "John is an exceptional developer who consistently delivers high-quality work. His problem-solving skills are outstanding."
+    },
+    {
+      "photo": "https://randomuser.me/api/portraits/women/44.jpg",
+      "name": "Sarah Williams",
+      "position": "Project Manager at Digital Creations",
+      "contact": "sarah.williams@digitalcreations.com",
+      "text": "Working with John was a pleasure. He's reliable, skilled, and a great team player."
+    }
+  ],
+  "languages": [
+    {
+      "name": "English",
+      "level": "Native"
+    },
+    {
+      "name": "Spanish",
+      "level": "Fluent"
+    },
+    {
+      "name": "French",
+      "level": "Intermediate"
+    }
+  ],
+  "contact": {
+    "items": [
+      {
+        "icon": "fas fa-envelope",
+        "text": "john.doe@example.com",
+        "link": "mailto:john.doe@example.com"
+      },
+      {
+        "icon": "fas fa-phone",
+        "text": "+1 (555) 123-4567",
+        "link": "tel:+15551234567"
+      }
+    ],
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.444043405755!2d-122.4194155846823!3d37.77492997975921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
+  },
+  "footer": {
+    "socialLinks": [
+      {
+        "icon": "fab fa-github",
+        "url": "https://github.com/johndoe"
+      },
+      {
+        "icon": "fab fa-linkedin-in",
+        "url": "https://linkedin.com/in/johndoe"
+      },
+      {
+        "icon": "fab fa-twitter",
+        "url": "https://twitter.com/johndoe"
+      },
+      {
+        "icon": "fab fa-instagram",
+        "url": "https://instagram.com/johndoe"
+      }
+    ],
+    "copyright": "© 2023 John Doe. All rights reserved."
+  }
 }
