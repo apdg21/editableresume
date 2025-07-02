@@ -242,7 +242,7 @@ footer p {
 
 /* Ensure content doesn't hide behind footer */
 .container {
-  padding-bottom: 100px; /* Adjust based on your footer height */
+  padding-bottom: 0px; /* Adjust based on your footer height */
 }
 
 .social-links {
