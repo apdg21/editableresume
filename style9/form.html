@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Edit Your Resume</h1>
+                <nav>
+                    <!-- No hamburger menu needed on the form page, but keeping nav for consistency -->
+                    <a href="index.html" class="file-select-btn back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Resume
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <form id="resume-form">
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="form-group">
+                    <label for="htmlTitle">HTML Page Title</label>
+                    <input type="text" id="htmlTitle" name="htmlTitle" placeholder="e.g., John Doe - Resume">
+                </div>
+                <div class="form-group">
+                    <label for="header">Header Name</label>
+                    <input type="text" id="header" name="header" placeholder="e.g., John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="about">About Me</label>
+                    <textarea id="about" name="about" placeholder="A brief introduction about yourself..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profilePhoto">Profile Photo URL</label>
+                    <input type="url" id="profilePhoto" name="profilePhoto" placeholder="e.g., assets/profile.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact Information</label>
+                    <input type="text" id="contact" name="contact" placeholder="e.g., Email: email@example.com | Phone: (123) 456-7890">
+                </div>
+                <div class="form-group">
+                    <label for="footer">Footer Text</label>
+                    <input type="text" id="footer" name="footer" placeholder="e.g., © 2025 John Doe. All rights reserved.">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Experience</h2>
+                <div id="experience-form-list">
+                    <!-- Experience items will be dynamically added here by JS -->
+                </div>
+                <button type="button" class="add-item-btn" id="add-experience-btn">
+                    <i class="fas fa-plus"></i> Add Experience
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h2>Education</h2>
+                <div id="education-form-list">
+                    <!-- Education items will be dynamically added here by JS -->
+                </div>
+                <button type="button" class="add-item-btn" id="add-education-btn">
+                    <i class="fas fa-plus"></i> Add Education
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h2>Skills</h2>
+                <div id="skills-form-list">
+                    <!-- Skill items will be dynamically added here by JS -->
+                </div>
+                <button type="button" class="add-item-btn" id="add-skill-btn">
+                    <i class="fas fa-plus"></i> Add Skill
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h2>Languages</h2>
+                <div id="languages-form-list">
+                    <!-- Language items will be dynamically added here by JS -->
+                </div>
+                <button type="button" class="add-item-btn" id="add-language-btn">
+                    <i class="fas fa-plus"></i> Add Language
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h2>References</h2>
+                <div id="references-form-list">
+                    <!-- Reference items will be dynamically added here by JS -->
+                </div>
+                <button type="button" class="add-item-btn" id="add-reference-btn">
+                    <i class="fas fa-plus"></i> Add Reference
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h2>Social Links</h2>
+                <div id="social-links-form-list">
+                    <!-- Social links will be dynamically added here by JS -->
+                </div>
+                <button type="button" class="add-item-btn" id="add-social-link-btn">
+                    <i class="fas fa-plus"></i> Add Social Link
+                </button>
+            </div>
+
+            <button type="submit" class="form-action-btn">
+                <i class="fas fa-save"></i> Save Resume Data
+            </button>
+            <a href="index.html" class="form-action-btn back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Resume
+            </a>
+        </form>
+    </main>
+
+    <footer class="container">
+        <p>© 2025 Resume Editor. All rights reserved.</p>
+    </footer>
+
+    <script src="form.js"></script>
+</body>
+</html>

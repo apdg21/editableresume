@@ -1,7 +1,7 @@
 {
   "htmlTitle": "John Doe - Resume",
   "header": "John Doe",
-  "about": "Experienced software developer with a passion for building modern web applications.",
+  "about": "I am an experienced software developer with a strong background in building scalable and user-friendly web applications. My passion lies in crafting robust solutions that not only meet business requirements but also provide seamless experiences for end users. I thrive in collaborative environments and enjoy working closely with cross-functional teams to deliver high-quality software products. With expertise in both frontend and backend development, I bring a holistic approach to solving complex problems and continuously strive to improve my skills through learning and hands-on practice.",
   "experience": [
     {
       "position": "Senior Developer",
@@ -14,6 +14,18 @@
       "company": "Web Innovations",
       "duration": "2016 - 2019",
       "description": "Worked on client websites and internal tools development."
+    },
+    {
+      "position": "Full Stack Developer",
+      "company": "InnovateX",
+      "duration": "2022 - 2024",
+      "description": "Developed and maintained scalable APIs and responsive UI components using React and Node.js. Collaborated with UX designers to implement accessible and mobile-first interfaces."
+    },
+    {
+      "position": "Freelance Web Developer",
+      "company": "Self-Employed",
+      "duration": "2015 - 2016",
+      "description": "Built custom WordPress themes and plugins for small businesses. Provided SEO optimization and ongoing maintenance services while managing multiple clients simultaneously."
     }
   ],
   "education": [
@@ -21,6 +33,11 @@
       "degree": "B.Sc. Computer Science",
       "institution": "State University",
       "year": "2016"
+    },
+    {
+      "degree": "Online Full Stack Development Certificate",
+      "institution": "CodeAcademy Pro",
+      "year": "2018"
     }
   ],
   "skills": ["JavaScript", "React", "Node.js", "CSS", "HTML"],
@@ -36,22 +53,22 @@
   "socialLinks": [
     {
       "name": "Facebook",
-      "url": "https://facebook.com/johndoe",
+      "url": "https://facebook.com/johndoe ",
       "icon": "fa-facebook"
     },
     {
       "name": "Twitter",
-      "url": "https://twitter.com/johndoe",
+      "url": "https://twitter.com/johndoe ",
       "icon": "fa-twitter"
     },
     {
       "name": "LinkedIn",
-      "url": "https://linkedin.com/in/johndoe",
+      "url": "https://linkedin.com/in/johndoe ",
       "icon": "fa-linkedin"
     },
     {
       "name": "Instagram",
-      "url": "https://instagram.com/johndoe",
+      "url": "https://instagram.com/johndoe ",
       "icon": "fa-instagram"
     }
   ]
