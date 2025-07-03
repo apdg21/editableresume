@@ -392,11 +392,12 @@ footer p {
 }
 #profile-photo-display {
     /* Your desired styling for the profile image */
-    width: 150px; /* Example: adjust as needed */
-    height: 150px; /* Example: adjust as needed */
+    width: 250px; /* Example: adjust as needed */
+    height: 250px; /* Example: adjust as needed */
     border-radius: 50%; /* Example: for a circular image */
     object-fit: cover;
     margin-bottom: 20px; /* Example: spacing */
+    margin-top: 20px;
     /* Add any other original styling here */
 }
 .profile-header {
@@ -405,6 +406,6 @@ footer p {
     align-items: center;       /* Centers items horizontally within the flex container */
     text-align: center;        /* Ensures text (name/title) inside is also centered */
     padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid grey;
     margin-bottom: 20px;
 }
