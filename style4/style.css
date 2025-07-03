@@ -313,13 +313,13 @@ ul {
 
 .timeline-item:nth-child(odd) {
     justify-content: flex-start;
-    padding-right: calc(50% + 30px);
+    padding-right: calc(55% + 30px);
     text-align: right;
 }
 
 .timeline-item:nth-child(even) {
     justify-content: flex-end;
-    padding-left: calc(50% + 30px);
+    padding-left: calc(55% + 30px);
 }
 
 .timeline-date {
@@ -344,7 +344,7 @@ ul {
 
 .timeline-content {
     background: var(--light);
-    padding: 30px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: var(--shadow);
     width: 100%;
@@ -782,6 +782,7 @@ html {
     .timeline-item:nth-child(even) .timeline-date {
         left: 0;
         right: auto;
+        z-index:20;
     }
     
     .skills-container {
