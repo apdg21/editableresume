@@ -344,7 +344,7 @@ ul {
 
 .timeline-content {
     background: var(--light);
-    padding: 40px;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: var(--shadow);
     width: 100%;
@@ -853,7 +853,7 @@ html {
     }
     
     .timeline-date {
-        width: 100px;
+        width: 80px;
         font-size: 0.9rem;
     }
 }
