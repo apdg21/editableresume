@@ -237,7 +237,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center; /* This ensures vertical centering */
-    gap: 0;
+    gap: 0px;
     margin-top: 1.5rem;
 }
 
