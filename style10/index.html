@@ -1,134 +1,95 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title"></title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Editable Resume</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Header -->
-  <header class="bg-blue-900 text-white fixed w-full top-0 z-50 shadow-md">
-    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 id="header-title" class="text-2xl font-bold"></h1>
-      <div class="md:hidden">
-        <button id="hamburger" class="focus:outline-none">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-      <ul id="nav-links" class="hidden md:flex space-x-6">
-        <!-- Navigation links will be populated by JavaScript -->
-      </ul>
-    </nav>
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-blue-900 text-white">
-      <ul id="mobile-nav-links" class="flex flex-col space-y-2 px-4 py-4">
-        <!-- Mobile navigation links will be populated by JavaScript -->
-      </ul>
-    </div>
-  </header>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1 id="header-title">My Resume</h1>
+                <nav>
+                    <button class="hamburger" id="hamburger" aria-label="Menu">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                    <ul id="nav-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#experience">Experience</a></li>
+                        <li><a href="#education">Education</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#languages">Languages</a></li>
+                        <li><a href="#references">References</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-  <!-- Main Content -->
-  <main class="container mx-auto px-4 pt-24 pb-12">
-    <!-- Profile Section -->
-    <section id="profile" class="mb-12 text-center">
-      <img id="profile-image" src="assets/profile.jpg" alt="Profile Picture" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
-      <h2 id="profile-name" class="text-3xl font-semibold"></h2>
-      <p id="profile-title" class="text-gray-600"></p>
-    </section>
+    <main class="container">
+        <section id="profile-display">
+            <div class="profile-header">
+                <img src="assets/profile.jpg" alt="Profile Photo" id="profile-photo-display" />
+                <h2 id="profile-name-display" style="margin-bottom: 0;"></h2>
+                <h3 id="profile-title-display"></h3>
+            </div>
+        </section>
 
-    <!-- About Section -->
-    <section id="about" class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">About</h2>
-      <p id="about-text" class="text-gray-700"></p>
-    </section>
+        <section id="about">
+            <h2>About</h2>
+            <div class="about-content">
+                <p id="about-text-display"></p>
+            </div>
+        </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Experience</h2>
-      <div id="experience-list" class="space-y-6"></div>
-    </section>
+        <section id="experience">
+            <h2>Experience</h2>
+            <div id="experience-list"></div>
+        </section>
 
-    <!-- Education Section -->
-    <section id="education" class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Education</h2>
-      <div id="education-list" class="space-y-6"></div>
-    </section>
+        <section id="education">
+            <h2>Education</h2>
+            <div id="education-list"></div>
+        </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Skills</h2>
-      <ul id="skills-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></ul>
-    </section>
+        <section id="skills">
+            <h2>Skills</h2>
+            <ul id="skills-list"></ul>
+        </section>
 
-    <!-- Languages Section -->
-    <section id="languages" class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Languages</h2>
-      <ul id="languages-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></ul>
-    </section>
+        <section id="languages">
+            <h2>Languages</h2>
+            <ul id="languages-list"></ul>
+        </section>
 
-    <!-- References Section -->
-    <section id="references" class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">References</h2>
-      <div id="references-list" class="space-y-6"></div>
-    </section>
+        <section id="references">
+            <h2>References</h2>
+            <div id="references-list"></div>
+        </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Contact</h2>
-      <ul id="contact-list" class="space-y-2"></ul>
-    </section>
-  </main>
+        <section id="contact">
+            <h2>Contact</h2>
+            <div id="contact-info"></div>
+        </section>
+    </main>
 
-  <!-- Footer -->
-  <footer class="bg-blue-900 text-white py-6">
-    <div class="container mx-auto px-4 text-center">
-      <p id="footer-text"></p>
-    </div>
-  </footer>
+    <footer>
+        <div class="container">
+            <div class="social-icons" id="social-icons">
+                </div>
+            <p id="footer-text">© 2023 My Resume</p>
+        </div>
+    </footer>
 
-  <script src="main.js"></script>
-</body>
+    <script src="main.js"></script>
+    </body>
 </html>

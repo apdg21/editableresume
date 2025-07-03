@@ -1,32 +1,50 @@
 {
   "title": "John Doe's Resume",
   "header": {
-    "title": "John Doe"
+    "title": "JD"
   },
   "profile": {
     "name": "John Doe",
-    "title": "Software Engineer"
+    "title": "Software Engineer",
+    "photo": "assets/profile.jpg"
   },
-  "about": "A passionate software engineer with over 5 years of experience in developing web applications and solving complex technical problems. Skilled in multiple programming languages and frameworks, with a focus on delivering user-friendly solutions.",
+  "socials": {
+    "LinkedIn": "linkedin.com/in/johndoe",
+    "GitHub": "github.com/johndoe",
+    "Twitter": "twitter.com/johndoe_dev",
+    "Facebook": "facebook.com/johndoe"
+  },
+  "about": "A passionate and results-driven software engineer with over 7 years of hands-on experience in full-stack web development. I excel at building scalable, high-performance applications from conception to deployment. My expertise spans across various technologies including modern JavaScript frameworks, backend services, and database management. I am adept at collaborating with cross-functional teams to deliver innovative solutions that meet business objectives and enhance user experience. I am committed to continuous learning and staying updated with the latest industry trends to bring the best practices to every project.",
   "experience": [
     {
-      "position": "Senior Software Engineer",
+      "position": "Senior Developer",
       "company": "Tech Corp",
-      "date": "Jan 2022 - Present",
-      "description": "Led a team of developers to build scalable web applications using React and Node.js. Improved application performance by 30% through optimization techniques."
+      "date": "Jan 2020 - Present",
+      "description": "Led a team of developers to build a cloud-based SaaS platform, improving performance by 30% and significantly enhancing user engagement through new feature implementations. Championed code reviews and mentored junior developers."
     },
     {
-      "position": "Software Engineer",
+      "position": "Junior Developer",
       "company": "Innovate Solutions",
-      "date": "Jun 2018 - Dec 2021",
-      "description": "Developed and maintained full-stack applications. Collaborated with cross-functional teams to deliver projects on time."
+      "date": "Jun 2017 - Dec 2019",
+      "description": "Developed front-end features using React and integrated REST APIs, contributing to a 20% improvement in application responsiveness. Participated in daily stand-ups and sprint planning."
+    },
+    {
+      "position": "Software Intern",
+      "company": "Global Tech Co.",
+      "date": "May 2016 - Aug 2016",
+      "description": "Assisted senior engineers in debugging and testing existing software modules. Developed scripts to automate routine data processing tasks, saving approximately 5 hours per week."
     }
   ],
   "education": [
     {
       "degree": "B.S. in Computer Science",
-      "institution": "University of Technology",
-      "date": "2014 - 2018"
+      "institution": "University of Example",
+      "date": "2013 - 2017"
+    },
+    {
+      "degree": "Associate of Science",
+      "institution": "Community College",
+      "date": "2011 - 2013"
     }
   ],
   "skills": [
@@ -35,7 +53,9 @@
     "Node.js",
     "Python",
     "SQL",
-    "Git"
+    "Docker",
+    "AWS",
+    "RESTful APIs"
   ],
   "languages": [
     "English (Fluent)",
@@ -44,22 +64,26 @@
   "references": [
     {
       "name": "Jane Smith",
-      "position": "CTO",
+      "position": "Engineering Manager",
       "company": "Tech Corp",
       "contact": "jane.smith@techcorp.com"
     },
     {
-      "name": "Mark Johnson",
-      "position": "Project Manager",
+      "name": "Bob Johnson",
+      "position": "Senior Developer",
       "company": "Innovate Solutions",
-      "contact": "mark.johnson@innovatesolutions.com"
+      "contact": "bob.johnson@innovatesolutions.com"
+    },
+    {
+      "name": "Dr. Emily White",
+      "position": "Professor, Computer Science",
+      "company": "University of Example",
+      "contact": "emily.white@example.edu"
     }
   ],
   "contact": {
     "Email": "john.doe@example.com",
-    "Phone": "(123) 456-7890",
-    "LinkedIn": "linkedin.com/in/johndoe",
-    "GitHub": "github.com/johndoe"
+    "Phone": "(123) 456-7890"
   },
-  "footer": "© 2025 John Doe. All rights reserved."
+  "footer": "© 2023 John Doe. All rights reserved."
 }
