@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // PDF Download Button Event Listener
+    const downloadPdfBtn = document.getElementById('downloadPdf');
+    if (downloadPdfBtn) {
+        downloadPdfBtn.addEventListener('click', generatePdf);
+    }
 });
 
 async function loadResumeData() {
@@ -28,6 +34,7 @@ async function loadResumeData() {
         
         const data = await response.json();
         populateResume(data);
+        document.getElementById('main-content').style.display = 'flex'; // Show content after loading
     } catch (error) {
         console.log('Could not load data.json directly, trying alternative method:', error);
         
@@ -53,6 +60,7 @@ function showFileUploadOption() {
         <button id="uploadBtn" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">
             Select JSON File
         </button>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Don't have a file? <a href="form.html">Create one first</a></p>
     `;
     
     container.prepend(uploadContainer);
@@ -72,6 +80,7 @@ function showFileUploadOption() {
                 const data = JSON.parse(e.target.result);
                 populateResume(data);
                 uploadContainer.style.display = 'none';
+                document.getElementById('main-content').style.display = 'flex'; // Show content after upload
             } catch (error) {
                 alert('Error parsing JSON file. Please check the file format.');
                 console.error('Error parsing JSON:', error);
@@ -188,3 +197,56 @@ window.addEventListener('scroll', () => {
         }
     });
 });
+
+async function generatePdf() {
+    const mainContent = document.getElementById('main-content'); // Or the specific container you want to print
+    if (!mainContent) {
+        alert('Resume content not found!');
+        return;
+    }
+
+    // Temporarily hide elements that shouldn't appear in the PDF, e.g., the menu toggle or the download button itself
+    const menuToggle = document.querySelector('.menu-toggle');
+    const downloadBtn = document.getElementById('downloadPdf');
+    if (menuToggle) menuToggle.style.display = 'none';
+    if (downloadBtn) downloadBtn.style.display = 'none';
+
+    try {
+        const canvas = await html2canvas(mainContent, {
+            scale: 2, // Increase scale for better quality
+            useCORS: true, // If you have images from other origins
+            logging: true, // For debugging
+            // You might need to adjust scrollY or windowWidth/windowHeight
+            // depending on how your content is laid out.
+            // For a single page resume, often just capturing the main content is enough.
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF('p', 'mm', 'a4'); // 'p' for portrait, 'mm' for millimeters, 'a4' size
+        const imgWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+
+        let position = 0;
+
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+        }
+
+        pdf.save('resume.pdf');
+    } catch (error) {
+        console.error("Error generating PDF:", error);
+        alert("Failed to generate PDF. Please try again.");
+    } finally {
+        // Restore hidden elements
+        if (menuToggle) menuToggle.style.display = '';
+        if (downloadBtn) downloadBtn.style.display = '';
+    }
+}
