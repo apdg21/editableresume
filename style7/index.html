@@ -1,134 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Resume</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css ">
-    <link rel="stylesheet" href="style.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> <script>
-        // Make jsPDF.jsPDF available globally as 'jspdf' for easier access
-        // This is a common pattern for UMD modules that expose the library on 'window'
-        window.jspdf = window.jspdf.jsPDF;
-    </script>
-
-    <style>
-        /* Add styling for the PDF download button */
-        .download-pdf-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 10px;
-            display: inline-block;
-            text-align: center;
-        }
-        .download-pdf-btn:hover {
-            background: #2980b9;
-        }
-
-        /* Style for the file upload container */
-        .file-upload-container {
-            text-align: center;
-            padding: 2rem;
-            margin: 2rem auto;
-            max-width: 600px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            z-index: 1000; /* Ensure it's on top */
-            position: relative; /* Allows z-index to work */
-        }
-
-        /* Initially hide the main content until data is loaded */
-        #main-content {
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Resume</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button class="menu-toggle" aria-label="Toggle menu">
-        <i class="fas fa-bars"></i>
-    </button>
+  <!-- Mobile Menu Button -->
+  <button class="menu-toggle" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </button>
 
-    <nav id="navbar">
-        <ul>
-            <li><a href="#about-section">About</a></li>
-            <li><a href="#experience-section">Experience</a></li>
-            <li><a href="#education-section">Education</a></li>
-            <li><a href="#skills-section">Skills</a></li>
-            </ul>
-    </nav>
+  <!-- Navigation -->
+  <nav id="navbar">
+    <ul>
+      <li><a href="#about-section">About</a></li>
+      <li><a href="#experience-section">Experience</a></li>
+      <li><a href="#education-section">Education</a></li>
+      <li><a href="#skills-section">Skills</a></li>
+    </ul>
+  </nav>
 
-    <div class="container">
-        <div id="main-content">
-            <aside class="sidebar">
-                <div class="profile-container">
-                    <img src="assets/profile.jpg" alt="Profile photo" class="profile-img" id="profileImage">
-                    <h1 id="name"></h1>
-                    <h2 id="title"></h2>
-                    <button class="download-pdf-btn" id="downloadPdf">Download PDF</button>
-                </div>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile-container">
+        <img src="assets/profile.jpg" alt="Profile photo" class="profile-img" id="profileImage">
+        <h1 id="name"></h1>
+        <h2 id="title"></h2>
+      </div>
 
-                <div class="section" id="about-section">
-                    <h3>About Me</h3>
-                    <p id="about"></p>
-                </div>
+      <div class="section" id="about-section">
+        <h3>About Me</h3>
+        <p id="about"></p>
+      </div>
 
-                <div class="contact">
-                    <p><i class="fas fa-phone"></i> <span id="phone"></span></p>
-                    <p><i class="fas fa-envelope"></i> <span id="email"></span></p>
-                    <p><i class="fas fa-map-marker-alt"></i> <span id="location"></span></p>
-                </div>
+      <div class="contact">
+        <p><i class="fas fa-phone"></i> <span id="phone"></span></p>
+        <p><i class="fas fa-envelope"></i> <span id="email"></span></p>
+        <p><i class="fas fa-map-marker-alt"></i> <span id="location"></span></p>
+      </div>
 
-                <div class="section">
-                    <h3>Languages</h3>
-                    <ul id="languages"></ul>
-                </div>
+      <div class="section">
+        <h3>Languages</h3>
+        <ul id="languages"></ul>
+      </div>
 
-                <div class="section">
-                    <h3>Areas of Expertise</h3>
-                    <ul id="expertise"></ul>
-                </div>
-            </aside>
+      <div class="section">
+        <h3>Expertise</h3>
+        <ul id="expertise"></ul>
+      </div>
+    </aside>
 
-            <main class="content">
-                <section id="summary-section">
-                    <h3>Professional Summary</h3>
-                    <p id="summary"></p>
-                </section>
+    <!-- Main Content -->
+    <main class="content">
+      <section id="summary-section">
+        <h3>Professional Summary</h3>
+        <p id="summary"></p>
+      </section>
 
-                <section id="experience-section">
-                    <h3 class="section-title">Work Experience</h3>
-                    <div id="experience"></div>
-                </section>
+      <section id="experience-section">
+        <h3 class="section-title">Experience</h3>
+        <div id="experience"></div>
+      </section>
 
-                <section id="education-section">
-                    <h3 class="section-title">Education</h3>
-                    <div id="education"></div>
-                </section>
+      <section id="education-section">
+        <h3 class="section-title">Education</h3>
+        <div id="education"></div>
+      </section>
 
-                <section id="skills-section">
-                    <h3 class="section-title">Skills Summary</h3>
-                    <div id="skills"></div>
-                </section>
-            </main>
-        </div>
+      <section id="skills-section">
+        <h3 class="section-title">Skills Summary</h3>
+        <div id="skills"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Fixed Footer Section -->
+  <footer id="main-footer">
+    <div class="footer-container">
+      <p id="copyright-text">Loading...</p>
+      <div class="social-links" id="social-links">
+        <!-- Will be populated by JavaScript -->
+      </div>
     </div>
+  </footer>
 
-    <footer id="main-footer">
-        <div class="footer-container">
-            <p id="copyright-text">Loading...</p>
-            <div class="social-links" id="social-links">
-                </div>
-        </div>
-    </footer>
-
-    <script src="main.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

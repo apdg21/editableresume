@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Load existing data from data.json if it exists
+    // Create file input for loading JSON
+    const fileInputContainer = document.createElement('div');
+    fileInputContainer.innerHTML = `
+        <input type="file" id="loadJson" accept=".json" style="margin-bottom: 20px;">
+        <button type="button" id="loadJsonButton" class="add-btn">Load JSON File</button>
+    `;
+    document.querySelector('form').prepend(fileInputContainer);
+
+    // Load existing data from localStorage if it exists
     let profileData = {};
     try {
         const data = localStorage.getItem('profileData');
@@ -108,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error loading profile data:', e);
     }
 
-    // Populate form with existing data
+    // Function to populate form with data
     function populateForm() {
         document.getElementById('name').value = profileData.name || '';
         document.getElementById('title').value = profileData.title || '';
@@ -161,7 +169,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // [Keep all the existing addField functions unchanged...]
     // Add language field
     function addLanguageField(value = '', index) {
         const container = document.getElementById('languagesContainer');
@@ -361,6 +368,28 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addSocialLink').addEventListener('click', function() {
         const index = document.querySelectorAll('.social-link-item').length;
         addSocialLinkField({}, index);
+    });
+
+    // Handle JSON file loading
+    document.getElementById('loadJsonButton').addEventListener('click', function() {
+        const fileInput = document.getElementById('loadJson');
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    profileData = JSON.parse(e.target.result);
+                    localStorage.setItem('profileData', JSON.stringify(profileData));
+                    populateForm();
+                    alert('JSON file loaded successfully!');
+                } catch (error) {
+                    alert('Error loading JSON file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Please select a JSON file to load.');
+        }
     });
 
     // Form submission handler
