@@ -1,55 +1,73 @@
 {
-    "name": "Isabel Schumacher",
-    "title": "Graphics Designer",
-    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum.",
-    "contact": {
-        "phone": "+123-456-7890",
-        "email": "hello@reallygreatsite.com",
-        "address": "123 Anywhere Street., Any City"
+  "name": "Isabel Schumacher",
+  "title": "Graphics Designer",
+  "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum.",
+  "contact": {
+    "phone": "+123-456-7890",
+    "email": "hello@reallygreatsite.com",
+    "address": "123 Anywhere Street., Any City"
+  },
+  "social_links": [
+    {
+      "platform": "linkedin",
+      "url": "https://linkedin.com/in/example",
+      "icon": "fab fa-linkedin"
     },
-    "skills": [
-        "Web Design",
-        "Branding",
-        "Graphic Design",
-        "SEO",
-        "Marketing"
-    ],
-    "languages": [
-        "English",
-        "French"
-    ],
-    "education": [
-        {
-            "years": "2011-2015",
-            "degree": "Bachelor of Design",
-            "university": "WARDIERE UNIVERSITY",
-            "grade": "3.65"
-        },
-        {
-            "years": "2014-2019",
-            "degree": "Bachelor of Design",
-            "university": "WARDIERE UNIVERSITY",
-            "grade": "3.74"
-        }
-    ],
-    "experience": [
-        {
-            "years": "2020-2023",
-            "title": "SENIOR GRAPHIC DESIGNER",
-            "company": "Fauget Studio",
-            "responsibilities": [
-                "create more than 100 graphic designs for big companies",
-                "complete a lot of complicated work"
-            ]
-        },
-        {
-            "years": "2017-2019",
-            "title": "SENIOR GRAPHIC DESIGNER",
-            "company": "Larana, Inc.",
-            "responsibilities": [
-                "create more than 100 graphic designs for big companies",
-                "complete a lot of complicated work"
-            ]
-        }
-    ]
+    {
+      "platform": "twitter",
+      "url": "https://twitter.com/example",
+      "icon": "fab fa-x-twitter"
+    },
+    {
+      "platform": "facebook",
+      "url": "https://www.facebook.com/adolfdg",
+      "icon": "fab fa-facebook"
+    }
+  ],
+  "skills": [
+    "Web Design",
+    "Branding",
+    "Graphic Design",
+    "SEO",
+    "Marketing"
+  ],
+  "languages": [
+    "English",
+    "French",
+    "Tagalog"
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Arts",
+      "university": "Example University",
+      "years": "2015-2019",
+      "grade": "3.8 GPA"
+    },
+    {
+      "degree": "Bachelor of Design",
+      "university": "WARDIERE UNIVERSITY",
+      "years": "2014-2019",
+      "grade": "3.74"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Graphic Designer",
+      "company": "Creative Agency",
+      "years": "2019-2021",
+      "responsibilities": [
+        "Designed marketing materials",
+        "Led branding projects"
+      ]
+    },
+    {
+      "title": "SENIOR GRAPHIC DESIGNER",
+      "company": "Larana, Inc.",
+      "years": "2017-2019",
+      "responsibilities": [
+        "create more than 100 graphic designs for big companies",
+        "complete a lot of complicated work"
+      ]
+    }
+  ]
 }

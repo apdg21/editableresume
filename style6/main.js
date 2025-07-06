@@ -12,12 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render resume data
   const renderResume = (data) => {
-    // Update page title
-    document.title = `${data.name || 'Unknown Name'} - Portfolio`;
+    // Update page title, site title, and footer name
+    const userName = data.name || 'Resume';
+    document.title = userName;
+    document.getElementById('site-title').textContent = userName;
+    document.getElementById('footer-name').textContent = userName;
+    document.getElementById('user-name').textContent = userName;
 
     // Update profile section on hero card
-    document.getElementById('user-name').textContent = data.name || 'Unknown Name';
-    document.getElementById('user-title').textContent = data.title || 'Unknown Title';
+    document.getElementById('user-title').textContent = data.title || 'N/A';
 
     // Update About Me section
     document.getElementById('about-me-text').textContent = data.aboutMe || 'No description provided.';
@@ -124,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       uploadLabel.className = 'file-upload-prompt';
       uploadLabel.innerHTML = `
         <div class="text-center mt-4">
-          <p class="text-sm font-medium text-gray-700 mb-2">Please select your portfolio data file (data.json):</p>
+          <p class="text-sm font-medium text-gray-500 mb-2">Please select your portfolio data file (data.json):</p>
           <button class="upload-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Select File</button>
         </div>
       `;

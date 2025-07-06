@@ -43,61 +43,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio Submission Form</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      padding-top: 2rem;
-    }
-    .social-entry {
-      position: relative;
-    }
-    .icon-preview {
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      color: #4B5563;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 flex flex-col items-center min-h-screen">
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl overflow-y-auto">
-    <h1 class="text-2xl font-bold mb-6 text-center">Portfolio Submission Form</h1>
-    <form id="portfolioForm" class="space-y-6">
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <nav class="container">
+      <a href="#home" class="site-title">Portfolio Form</a>
+      <div class="menu-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <ul class="nav-list">
+        <li><a href="#basic-info">Basic Info</a></li>
+        <li><a href="#social-links">Social Links</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#languages">Languages</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Form Content -->
+  <div class="form-container">
+    <h1 class="form-title">Portfolio Submission Form</h1>
+    
+    <!-- File Upload for JSON -->
+    <div class="form-section">
+      <label for="json-upload" class="form-label">Load Existing Portfolio (JSON)</label>
+      <input type="file" id="json-upload" accept=".json" class="form-input">
+    </div>
+
+    <form id="portfolioForm" class="form-content">
       <!-- Basic Info -->
-      <div>
-        <h2 class="text-lg font-semibold mb-2">Basic Information</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="form-section" id="basic-info">
+        <h2 class="form-section-title"><i class="fas fa-user section-icon"></i>Basic Information</h2>
+        <div class="form-grid">
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-            <input type="text" id="name" name="name" value="Isabel Schumacher" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., Isabel Schumacher">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" id="name" name="name" value="Isabel Schumacher" class="form-input" required placeholder="e.g., Isabel Schumacher">
           </div>
           <div>
-            <label for="title" class="block text-sm font-medium text-gray-700">Professional Title</label>
-            <input type="text" id="title" name="title" value="Graphics Designer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., Graphics Designer">
+            <label for="title" class="form-label">Professional Title</label>
+            <input type="text" id="title" name="title" value="Graphics Designer" class="form-input" required placeholder="e.g., Graphics Designer">
           </div>
         </div>
         <div>
-          <label for="aboutMe" class="block text-sm font-medium text-gray-700 mt-4">About Me</label>
-          <textarea id="aboutMe" name="aboutMe" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="e.g., Lorem ipsum dolor sit amet...">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum.</textarea>
+          <label for="aboutMe" class="form-label">About Me</label>
+          <textarea id="aboutMe" name="aboutMe" class="form-input form-textarea" rows="4" placeholder="e.g., Lorem ipsum dolor sit amet...">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum.</textarea>
         </div>
       </div>
 
       <!-- Social Links -->
-      <div>
-        <h2 class="text-lg font-semibold mb-2">Social Links (Optional)</h2>
-        <div id="social-links-container" class="space-y-4">
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="relative">
-              <label for="social-platform-0" class="block text-sm font-medium text-gray-700">Social Platform</label>
-              <select id="social-platform-0" name="social-platform-0" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
+      <div class="form-section" id="social-links">
+        <h2 class="form-section-title"><i class="fas fa-link section-icon"></i>Social Links (Optional)</h2>
+        <div id="social-links-container" class="form-entry-container">
+          <div class="social-entry form-grid">
+            <div class="form-social-select">
+              <label for="social-platform-0" class="form-label">Social Platform</label>
+              <select id="social-platform-0" name="social-platform-0" class="form-input">
                 <option value="" disabled>Select a platform</option>
                 <option value="linkedin" selected>LinkedIn</option>
                 <option value="twitter">Twitter</option>
@@ -105,15 +114,18 @@
               </select>
               <i class="icon-preview fas fa-linkedin" data-index="0"></i>
             </div>
-            <div>
-              <label for="social-url-0" class="block text-sm font-medium text-gray-700">URL</label>
-              <input type="url" id="social-url-0" name="social-url-0" value="https://linkedin.com/in/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://linkedin.com/in/yourprofile">
+            <div class="form-social-url">
+              <label for="social-url-0" class="form-label">URL</label>
+              <div class="form-input-with-button">
+                <input type="url" id="social-url-0" name="social-url-0" value="https://linkedin.com/in/example" class="form-input" placeholder="e.g., https://linkedin.com/in/yourprofile">
+                <button type="button" class="remove-social form-remove-button" data-index="0" style="visibility: hidden;"><i class="fas fa-trash"></i></button>
+              </div>
             </div>
           </div>
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="relative">
-              <label for="social-platform-1" class="block text-sm font-medium text-gray-700">Social Platform</label>
-              <select id="social-platform-1" name="social-platform-1" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
+          <div class="social-entry form-grid">
+            <div class="form-social-select">
+              <label for="social-platform-1" class="form-label">Social Platform</label>
+              <select id="social-platform-1" name="social-platform-1" class="form-input">
                 <option value="" disabled>Select a platform</option>
                 <option value="linkedin">LinkedIn</option>
                 <option value="twitter" selected>Twitter</option>
@@ -121,182 +133,253 @@
               </select>
               <i class="icon-preview fas fa-x-twitter" data-index="1"></i>
             </div>
-            <div>
-              <label for="social-url-1" class="block text-sm font-medium text-gray-700">URL</label>
-              <input type="url" id="social-url-1" name="social-url-1" value="https://twitter.com/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://twitter.com/yourprofile">
+            <div class="form-social-url">
+              <label for="social-url-1" class="form-label">URL</label>
+              <div class="form-input-with-button">
+                <input type="url" id="social-url-1" name="social-url-1" value="https://twitter.com/example" class="form-input" placeholder="e.g., https://twitter.com/yourprofile">
+                <button type="button" class="remove-social form-remove-button" data-index="1"><i class="fas fa-trash"></i></button>
+              </div>
             </div>
           </div>
         </div>
-        <button type="button" id="add-social" class="mt-2 text-blue-600 hover:underline">Add Another Social Link</button>
+        <button type="button" id="add-social" class="form-add-button">Add Another Social Link</button>
       </div>
 
       <!-- Contact -->
-      <div>
-        <h2 class="text-lg font-semibold mb-2">Contact</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="form-section" id="contact">
+        <h2 class="form-section-title"><i class="fas fa-address-book section-icon"></i>Contact</h2>
+        <div class="form-grid">
           <div>
-            <label for="contact-phone" class="block text-sm font-medium text-gray-700">Phone</label>
-            <input type="tel" id="contact-phone" name="contact-phone" value="+123-456-7890" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., +123-456-7890">
+            <label for="contact-phone" class="form-label">Phone</label>
+            <input type="tel" id="contact-phone" name="contact-phone" value="+123-456-7890" class="form-input" placeholder="e.g., +123-456-7890">
           </div>
           <div>
-            <label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" id="contact-email" name="contact-email" value="hello@reallygreatsite.com" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., hello@reallygreatsite.com">
+            <label for="contact-email" class="form-label">Email</label>
+            <input type="email" id="contact-email" name="contact-email" value="hello@reallygreatsite.com" class="form-input" required placeholder="e.g., hello@reallygreatsite.com">
           </div>
           <div>
-            <label for="contact-address" class="block text-sm font-medium text-gray-700">Address</label>
-            <input type="text" id="contact-address" name="contact-address" value="123 Anywhere Street., Any City" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 123 Anywhere Street., Any City">
+            <label for="contact-address" class="form-label">Address</label>
+            <input type="text" id="contact-address" name="contact-address" value="123 Anywhere Street., Any City" class="form-input" placeholder="e.g., 123 Anywhere Street., Any City">
           </div>
         </div>
       </div>
 
       <!-- Skills -->
-      <div>
-        <h2 class="text-lg font-semibold mb-2">Skills</h2>
-        <div id="skills-container" class="space-y-4">
-          <div class="skills-entry">
-            <label for="skill-0" class="block text-sm font-medium text-gray-700">Skill</label>
-            <input type="text" id="skill-0" name="skill-0" value="Web Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Web Design">
+      <div class="form-section" id="skills">
+        <h2 class="form-section-title"><i class="fas fa-cog section-icon"></i>Skills</h2>
+        <div id="skills-container" class="form-entry-container">
+          <div class="skills-entry form-grid">
+            <div>
+              <label for="skill-0" class="form-label">Skill</label>
+              <div class="form-input-with-button">
+                <input type="text" id="skill-0" name="skill-0" value="Web Design" class="form-input" placeholder="e.g., Web Design">
+                <button type="button" class="remove-skill form-remove-button" data-index="0" style="visibility: hidden;"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
           </div>
-          <div class="skills-entry">
-            <label for="skill-1" class="block text-sm font-medium text-gray-700">Skill</label>
-            <input type="text" id="skill-1" name="skill-1" value="Branding" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Branding">
+          <div class="skills-entry form-grid">
+            <div>
+              <label for="skill-1" class="form-label">Skill</label>
+              <div class="form-input-with-button">
+                <input type="text" id="skill-1" name="skill-1" value="Branding" class="form-input" placeholder="e.g., Branding">
+                <button type="button" class="remove-skill form-remove-button" data-index="1"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
           </div>
-          <div class="skills-entry">
-            <label for="skill-2" class="block text-sm font-medium text-gray-700">Skill</label>
-            <input type="text" id="skill-2" name="skill-2" value="Graphic Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Graphic Design">
+          <div class="skills-entry form-grid">
+            <div>
+              <label for="skill-2" class="form-label">Skill</label>
+              <div class="form-input-with-button">
+                <input type="text" id="skill-2" name="skill-2" value="Graphic Design" class="form-input" placeholder="e.g., Graphic Design">
+                <button type="button" class="remove-skill form-remove-button" data-index="2"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
           </div>
-          <div class="skills-entry">
-            <label for="skill-3" class="block text-sm font-medium text-gray-700">Skill</label>
-            <input type="text" id="skill-3" name="skill-3" value="SEO" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., SEO">
+          <div class="skills-entry form-grid">
+            <div>
+              <label for="skill-3" class="form-label">Skill</label>
+              <div class="form-input-with-button">
+                <input type="text" id="skill-3" name="skill-3" value="SEO" class="form-input" placeholder="e.g., SEO">
+                <button type="button" class="remove-skill form-remove-button" data-index="3"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
           </div>
-          <div class="skills-entry">
-            <label for="skill-4" class="block text-sm font-medium text-gray-700">Skill</label>
-            <input type="text" id="skill-4" name="skill-4" value="Marketing" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Marketing">
+          <div class="skills-entry form-grid">
+            <div>
+              <label for="skill-4" class="form-label">Skill</label>
+              <div class="form-input-with-button">
+                <input type="text" id="skill-4" name="skill-4" value="Marketing" class="form-input" placeholder="e.g., Marketing">
+                <button type="button" class="remove-skill form-remove-button" data-index="4"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
           </div>
         </div>
-        <button type="button" id="add-skill" class="mt-2 text-blue-600 hover:underline">Add Another Skill</button>
+        <button type="button" id="add-skill" class="form-add-button">Add Another Skill</button>
       </div>
 
       <!-- Languages -->
-      <div>
-        <h2 class="text-lg font-semibold mb-2">Languages</h2>
-        <div id="languages-container" class="space-y-4">
-          <div class="languages-entry">
-            <label for="language-0" class="block text-sm font-medium text-gray-700">Language</label>
-            <input type="text" id="language-0" name="language-0" value="English" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., English">
+      <div class="form-section" id="languages">
+        <h2 class="form-section-title"><i class="fas fa-globe section-icon"></i>Languages</h2>
+        <div id="languages-container" class="form-entry-container">
+          <div class="languages-entry form-grid">
+            <div>
+              <label for="language-0" class="form-label">Language</label>
+              <div class="form-input-with-button">
+                <input type="text" id="language-0" name="language-0" value="English" class="form-input" placeholder="e.g., English">
+                <button type="button" class="remove-language form-remove-button" data-index="0" style="visibility: hidden;"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
           </div>
-          <div class="languages-entry">
-            <label for="language-1" class="block text-sm font-medium text-gray-700">Language</label>
-            <input type="text" id="language-1" name="language-1" value="French" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., French">
+          <div class="languages-entry form-grid">
+            <div>
+              <label for="language-1" class="form-label">Language</label>
+              <div class="form-input-with-button">
+                <input type="text" id="language-1" name="language-1" value="Spanish" class="form-input" placeholder="e.g., Spanish">
+                <button type="button" class="remove-language form-remove-button" data-index="1"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
           </div>
         </div>
-        <button type="button" id="add-language" class="mt-2 text-blue-600 hover:underline">Add Another Language</button>
+        <button type="button" id="add-language" class="form-add-button">Add Another Language</button>
       </div>
 
       <!-- Education -->
-      <div>
-        <h2 class="text-lg font-semibold mb-2">Education</h2>
-        <div id="education-container" class="space-y-4">
-          <div class="education-entry">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="edu-years-0" class="block text-sm font-medium text-gray-700">Years</label>
-                <input type="text" id="edu-years-0" name="edu-years-0" value="2011-2015" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2011-2015">
-              </div>
-              <div>
-                <label for="edu-degree-0" class="block text-sm font-medium text-gray-700">Degree</label>
-                <input type="text" id="edu-degree-0" name="edu-degree-0" value="Bachelor of Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Bachelor of Design">
-              </div>
-              <div>
-                <label for="edu-university-0" class="block text-sm font-medium text-gray-700">University</label>
-                <input type="text" id="edu-university-0" name="edu-university-0" value="WARDIERE UNIVERSITY" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., WARDIERE UNIVERSITY">
-              </div>
-              <div>
-                <label for="edu-grade-0" class="block text-sm font-medium text-gray-700">Grade</label>
-                <input type="text" id="edu-grade-0" name="edu-grade-0" value="3.65" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 3.65" title="Enter GPA or equivalent">
+      <div class="form-section" id="education">
+        <h2 class="form-section-title"><i class="fas fa-graduation-cap section-icon"></i>Education</h2>
+        <div id="education-container" class="form-entry-container">
+          <div class="education-entry form-grid">
+            <div>
+              <label for="degree-0" class="form-label">Degree</label>
+              <input type="text" id="degree-0" name="degree-0" value="Bachelor of Arts" class="form-input" placeholder="e.g., Bachelor of Arts">
+            </div>
+            <div>
+              <label for="university-0" class="form-label">University</label>
+              <input type="text" id="university-0" name="university-0" value="Example University" class="form-input" placeholder="e.g., Example University">
+            </div>
+            <div>
+              <label for="years-0" class="form-label">Years</label>
+              <input type="text" id="years-0" name="years-0" value="2015-2019" class="form-input" placeholder="e.g., 2015-2019">
+            </div>
+            <div>
+              <label for="grade-0" class="form-label">Grade</label>
+              <div class="form-input-with-button">
+                <input type="text" id="grade-0" name="grade-0" value="3.8 GPA" class="form-input" placeholder="e.g., 3.8 GPA">
+                <button type="button" class="remove-education form-remove-button" data-index="0" style="visibility: hidden;"><i class="fas fa-trash"></i></button>
               </div>
             </div>
           </div>
-          <div class="education-entry mt-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="edu-years-1" class="block text-sm font-medium text-gray-700">Years</label>
-                <input type="text" id="edu-years-1" name="edu-years-1" value="2014-2019" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2014-2019">
-              </div>
-              <div>
-                <label for="edu-degree-1" class="block text-sm font-medium text-gray-700">Degree</label>
-                <input type="text" id="edu-degree-1" name="edu-degree-1" value="Bachelor of Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Bachelor of Design">
-              </div>
-              <div>
-                <label for="edu-university-1" class="block text-sm font-medium text-gray-700">University</label>
-                <input type="text" id="edu-university-1" name="edu-university-1" value="WARDIERE UNIVERSITY" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., WARDIERE UNIVERSITY">
-              </div>
-              <div>
-                <label for="edu-grade-1" class="block text-sm font-medium text-gray-700">Grade</label>
-                <input type="text" id="edu-grade-1" name="edu-grade-1" value="3.74" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 3.74" title="Enter GPA or equivalent">
+          <div class="education-entry form-grid">
+            <div>
+              <label for="degree-1" class="form-label">Degree</label>
+              <input type="text" id="degree-1" name="degree-1" value="Master of Design" class="form-input" placeholder="e.g., Master of Design">
+            </div>
+            <div>
+              <label for="university-1" class="form-label">University</label>
+              <input type="text" id="university-1" name="university-1" value="Design Institute" class="form-input" placeholder="e.g., Design Institute">
+            </div>
+            <div>
+              <label for="years-1" class="form-label">Years</label>
+              <input type="text" id="years-1" name="years-1" value="2020-2022" class="form-input" placeholder="e.g., 2020-2022">
+            </div>
+            <div>
+              <label for="grade-1" class="form-label">Grade</label>
+              <div class="form-input-with-button">
+                <input type="text" id="grade-1" name="grade-1" value="4.0 GPA" class="form-input" placeholder="e.g., 4.0 GPA">
+                <button type="button" class="remove-education form-remove-button" data-index="1"><i class="fas fa-trash"></i></button>
               </div>
             </div>
           </div>
         </div>
-        <button type="button" id="add-education" class="mt-2 text-blue-600 hover:underline">Add Another Education</button>
+        <button type="button" id="add-education" class="form-add-button">Add Another Education</button>
       </div>
 
       <!-- Experience -->
-      <div>
-        <h2 class="text-lg font-semibold mb-2">Experience</h2>
-        <div id="experience-container" class="space-y-4">
-          <div class="experience-entry">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="exp-years-0" class="block text-sm font-medium text-gray-700">Years</label>
-                <input type="text" id="exp-years-0" name="exp-years-0" value="2020-2023" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2020-2023">
-              </div>
-              <div>
-                <label for="exp-title-0" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="exp-title-0" name="exp-title-0" value="SENIOR GRAPHIC DESIGNER" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Senior Graphic Designer">
-              </div>
-              <div>
-                <label for="exp-company-0" class="block text-sm font-medium text-gray-700">Company</label>
-                <input type="text" id="exp-company-0" name="exp-company-0" value="Fauget Studio" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Fauget Studio">
+      <div class="form-section" id="experience">
+        <h2 class="form-section-title"><i class="fas fa-briefcase section-icon"></i>Experience</h2>
+        <div id="experience-container" class="form-entry-container">
+          <div class="experience-entry form-grid">
+            <div>
+              <label for="exp-title-0" class="form-label">Job Title</label>
+              <input type="text" id="exp-title-0" name="exp-title-0" value="Graphic Designer" class="form-input" placeholder="e.g., Graphic Designer">
+            </div>
+            <div>
+              <label for="company-0" class="form-label">Company</label>
+              <input type="text" id="company-0" name="company-0" value="Creative Agency" class="form-input" placeholder="e.g., Creative Agency">
+            </div>
+            <div>
+              <label for="exp-years-0" class="form-label">Years</label>
+              <input type="text" id="exp-years-0" name="exp-years-0" value="2019-2021" class="form-input" placeholder="e.g., 2019-2021">
+            </div>
+            <div>
+              <label for="responsibility-0-0" class="form-label">Responsibility</label>
+              <div class="form-input-with-button">
+                <input type="text" id="responsibility-0-0" name="responsibility-0-0" value="Designed marketing materials" class="form-input" placeholder="e.g., Designed marketing materials">
+                <button type="button" class="remove-responsibility form-remove-button" data-index="0" data-subindex="0" style="visibility: hidden;"><i class="fas fa-trash"></i></button>
               </div>
             </div>
-            <label for="exp-responsibilities-0" class="block text-sm font-medium text-gray-700 mt-2">Responsibilities (one per line)</label>
-            <textarea id="exp-responsibilities-0" name="exp-responsibilities-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter one responsibility per line, e.g.:
-Created over 100 graphic designs...
-Completed complex projects...">create more than 100 graphic designs for big companies
-complete a lot of complicated work</textarea>
+            <div>
+              <label for="responsibility-0-1" class="form-label">Responsibility</label>
+              <div class="form-input-with-button">
+                <input type="text" id="responsibility-0-1" name="responsibility-0-1" value="Led branding projects" class="form-input" placeholder="e.g., Led branding projects">
+                <button type="button" class="remove-responsibility form-remove-button" data-index="0" data-subindex="1"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="form-grid-button">
+              <button type="button" class="add-responsibility form-add-button" data-index="0">Add Responsibility</button>
+              <button type="button" class="remove-experience form-remove-button" data-index="0" style="visibility: hidden;"><i class="fas fa-trash"></i></button>
+            </div>
           </div>
-          <div class="experience-entry mt-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="exp-years-1" class="block text-sm font-medium text-gray-700">Years</label>
-                <input type="text" id="exp-years-1" name="exp-years-1" value="2017-2019" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2017-2019">
-              </div>
-              <div>
-                <label for="exp-title-1" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="exp-title-1" name="exp-title-1" value="SENIOR GRAPHIC DESIGNER" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Senior Graphic Designer">
-              </div>
-              <div>
-                <label for="exp-company-1" class="block text-sm font-medium text-gray-700">Company</label>
-                <input type="text" id="exp-company-1" name="exp-company-1" value="Larana, Inc." class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Larana, Inc.">
+          <div class="experience-entry form-grid">
+            <div>
+              <label for="exp-title-1" class="form-label">Job Title</label>
+              <input type="text" id="exp-title-1" name="exp-title-1" value="Senior Designer" class="form-input" placeholder="e.g., Senior Designer">
+            </div>
+            <div>
+              <label for="company-1" class="form-label">Company</label>
+              <input type="text" id="company-1" name="company-1" value="Tech Corp" class="form-input" placeholder="e.g., Tech Corp">
+            </div>
+            <div>
+              <label for="years-1" class="form-label">Years</label>
+              <input type="text" id="exp-years-1" name="exp-years-1" value="2021-2023" class="form-input" placeholder="e.g., 2021-2023">
+            </div>
+            <div>
+              <label for="responsibility-1-0" class="form-label">Responsibility</label>
+              <div class="form-input-with-button">
+                <input type="text" id="responsibility-1-0" name="responsibility-1-0" value="Managed design team" class="form-input" placeholder="e.g., Managed design team">
+                <button type="button" class="remove-responsibility form-remove-button" data-index="1" data-subindex="0" style="visibility: hidden;"><i class="fas fa-trash"></i></button>
               </div>
             </div>
-            <label for="exp-responsibilities-1" class="block text-sm font-medium text-gray-700 mt-2">Responsibilities (one per line)</label>
-            <textarea id="exp-responsibilities-1" name="exp-responsibilities-1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter one responsibility per line, e.g.:
-Created over 100 graphic designs...
-Completed complex projects...">create more than 100 graphic designs for big companies
-complete a lot of complicated work</textarea>
+            <div>
+              <label for="responsibility-1-1" class="form-label">Responsibility</label>
+              <div class="form-input-with-button">
+                <input type="text" id="responsibility-1-1" name="responsibility-1-1" value="Developed UI/UX prototypes" class="form-input" placeholder="e.g., Developed UI/UX prototypes">
+                <button type="button" class="remove-responsibility form-remove-button" data-index="1" data-subindex="1"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="form-grid-button">
+              <button type="button" class="add-responsibility form-add-button" data-index="1">Add Responsibility</button>
+              <button type="button" class="remove-experience form-remove-button" data-index="1"><i class="fas fa-trash"></i></button>
+            </div>
           </div>
         </div>
-        <button type="button" id="add-experience" class="mt-2 text-blue-600 hover:underline">Add Another Experience</button>
+        <button type="button" id="add-experience" class="form-add-button">Add Another Experience</button>
       </div>
 
       <!-- Submit Button -->
-      <div class="text-center">
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Submit Portfolio</button>
+      <div class="form-section">
+        <button type="submit" class="form-submit-button">Submit Portfolio</button>
       </div>
     </form>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© <span id="current-year"></span> Portfolio Form. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="form.js"></script>
 </body>
 </html>
