@@ -610,3 +610,15 @@ section:nth-child(2) { animation-delay: 0.2s; }
 section:nth-child(3) { animation-delay: 0.3s; }
 section:nth-child(4) { animation-delay: 0.4s; }
 section:nth-child(5) { animation-delay: 0.5s; }
+
+
+.action-link {
+    color: #FF5733; /* A bright orange/red for visibility */
+    text-decoration: none; /* Removes the underline */
+    font-weight: bold; /* Makes the text bolder */
+}
+
+.action-link:hover {
+    color: #C70039; /* Darker shade on hover for interaction feedback */
+    text-decoration: underline; /* Add underline back on hover */
+}

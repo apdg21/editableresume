@@ -17,27 +17,53 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('add-reference-btn').addEventListener('click', () => addReferenceItem());
     document.getElementById('add-social-link-btn').addEventListener('click', () => addSocialLinkItem());
 
-    // Load existing data
-    loadResumeData();
+    // NEW: File Input and Load Button
+    const fileInput = document.getElementById('fileInput');
+    const loadFileBtn = document.getElementById('load-file-btn');
 
-    // --- Data Loading and Form Population ---
-    function loadResumeData() {
-        fetch('data.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => populateForm(data))
-            .catch(error => {
-                console.error('Error loading resume data:', error);
-                alert('Failed to load data.json. Starting with an empty form.');
-                // Optionally populate with a few empty items to start
-                populateForm({});
-            });
-    }
+    // When the custom "Load Data from File" button is clicked, trigger the hidden file input
+    loadFileBtn.addEventListener('click', () => {
+        fileInput.click();
+    });
 
+    // When a file is selected in the input
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0]; // Get the first selected file
+
+        if (!file) {
+            alert('No file selected.');
+            return;
+        }
+
+        if (file.type !== 'application/json') {
+            alert('Please select a JSON file.');
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                populateForm(data);
+                alert('Resume data loaded successfully!');
+            } catch (error) {
+                console.error('Error parsing JSON file:', error);
+                alert('Failed to parse the selected JSON file. Please ensure it is valid.');
+                populateForm({}); // Clear the form if parsing fails
+            }
+        };
+
+        reader.onerror = (e) => {
+            console.error('Error reading file:', e);
+            alert('Error reading the selected file.');
+        };
+
+        reader.readAsText(file); // Read the file content as text
+    });
+
+
+    // --- Data Loading and Form Population (now triggered by file input) ---
     function populateForm(data) {
         // Basic Info
         document.getElementById('htmlTitle').value = data.htmlTitle || '';
@@ -47,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('contact').value = data.contact || '';
         document.getElementById('footer').value = data.footer || '';
 
-        // Clear existing dynamic lists
+        // Clear existing dynamic lists before populating
         experienceList.innerHTML = '';
         educationList.innerHTML = '';
         skillsList.innerHTML = '';

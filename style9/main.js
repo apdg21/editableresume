@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let fileSelectBtn; // Declare button variable in a higher scope
+    let createLinkContainer; // Declare the container for "Create one first" link
 
     // Only set up file selector for local development
     if (isLocalHost()) {
@@ -52,10 +53,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('header .header-content');
         if (header) {
             const navElement = header.querySelector('nav');
+
+            // --- Add the "Don't have a file? Create one first" link ---
+            createLinkContainer = document.createElement('p');
+            createLinkContainer.style.marginTop = '1rem';
+            createLinkContainer.style.fontSize = '0.9rem';
+            createLinkContainer.textContent = "Don't have a file? ";
+            const createLink = document.createElement('a');
+            createLink.href = 'form.html'; // Link to form.html as requested
+            createLink.textContent = 'Create one first';
+            createLink.classList.add('action-link');
+            createLinkContainer.appendChild(createLink);
+            // --- End of new link addition ---
+
             if (navElement) {
                 header.insertBefore(fileSelectBtn, navElement);
+                header.insertBefore(createLinkContainer, navElement); // Insert the new link here
+                console.log('Load button and "Create one" link added before navigation.');
             } else {
                 header.appendChild(fileSelectBtn);
+                header.appendChild(createLinkContainer); // Append if no nav element
+                console.log('Load button and "Create one" link appended to header.');
             }
         }
 
@@ -70,10 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const data = JSON.parse(e.target.result);
                     updateResumeContent(data);
-                    // Hide the button after a custom file is successfully loaded
+                    // Hide the button and the "Create one first" link after a custom file is successfully loaded
                     if (fileSelectBtn) {
                         fileSelectBtn.style.display = 'none';
                     }
+                    if (createLinkContainer) { // Hide the new link
+                        createLinkContainer.style.display = 'none';
+                    }
+                    console.log('Load button and "Create one" link hidden after custom file loaded.');
                 } catch (error) {
                     console.error('Error parsing JSON file:', error);
                     alert('Invalid JSON file. Please select a valid resume data file.');
@@ -96,20 +118,29 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 updateResumeContent(data);
-                // Hide the button after default data is successfully loaded
-                if (fileSelectBtn) {
-                    fileSelectBtn.style.display = 'none';
+                // Hide the button and the "Create one first" link after default data is successfully loaded
+                if (isLocalHost()) { // Only hide if running locally and button/link exists
+                    if (fileSelectBtn) {
+                        fileSelectBtn.style.display = 'none';
+                    }
+                    if (createLinkContainer) { // Hide the new link
+                        createLinkContainer.style.display = 'none';
+                    }
+                    console.log('Load button and "Create one" link hidden after default data loaded.');
                 }
             })
             .catch(error => {
                 console.error('Error loading resume data:', error);
                 if (isLocalHost()) {
                     alert('Failed to load data.json. You can load a custom file using the button.');
-                    // If default fails, ensure the button is visible for manual load
+                    // If default fails, ensure the button and link are visible for manual load
                     if (fileSelectBtn) {
-                        // Check for 'inline-flex' or 'block' based on your button's default display
-                        fileSelectBtn.style.display = 'inline-flex';
+                        fileSelectBtn.style.display = 'inline-flex'; // Re-show load button
                     }
+                    if (createLinkContainer) { // Re-show the new link
+                        createLinkContainer.style.display = 'block'; // Paragraphs are typically block
+                    }
+                    console.log('Load button and "Create one" link shown due to default data load failure.');
                 }
             });
     }
