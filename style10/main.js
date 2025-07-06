@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let fileSelectBtn; // Declared in a higher scope so it's accessible globally
+    let createLinkContainer; // Declared in a higher scope to manage its visibility
 
     // --- Local Development: File Selector Setup ---
     // This section creates a button to load local JSON files,
@@ -59,13 +60,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('header .header-content');
         if (header) {
             const navElement = header.querySelector('nav');
+
+            // Create the "Create one first" link with specified styles
+            createLinkContainer = document.createElement('p');
+            createLinkContainer.style.marginTop = '1rem';
+            createLinkContainer.style.fontSize = '0.9rem';
+            createLinkContainer.textContent = "Don't have a file? ";
+            const createLink = document.createElement('a');
+            createLink.href = 'form.html';
+            createLink.textContent = 'Create one first';
+            createLinkContainer.appendChild(createLink);
+
             // Insert before nav if nav exists, otherwise append
             if (navElement) {
                 header.insertBefore(fileSelectBtn, navElement);
+                header.insertBefore(createLinkContainer, navElement); // Insert the new link before nav
             } else {
                 header.appendChild(fileSelectBtn);
+                header.appendChild(createLinkContainer); // Append the new link
             }
-            console.log('File selector button added to header.');
+            console.log('File selector button and create file link added to header.');
         } else {
             console.error('Header content not found for adding file selector button.');
         }
@@ -84,7 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     populateResume(data); // Populate the resume display
                     if (fileSelectBtn) {
                         fileSelectBtn.style.display = 'none'; // Hide button after successful load
-                        console.log('File selector button hidden after loading.');
+                        if (createLinkContainer) {
+                            createLinkContainer.style.display = 'none'; // Also hide the "Create one first" link
+                        }
+                        console.log('File selector button and create file link hidden after loading.');
                     }
                     fileInput.value = ''; // Reset file input to allow re-selection of same file
                 } catch (error) {
@@ -117,7 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 populateResume(data); // Populate the resume display with fetched data
                 if (fileSelectBtn) {
                     fileSelectBtn.style.display = 'none'; // Hide the local file button if default loaded
-                    console.log('File selector button hidden after default data load.');
+                    if (createLinkContainer) {
+                        createLinkContainer.style.display = 'none'; // Hide the "Create one first" link
+                    }
+                    console.log('File selector button and create file link hidden after default data load.');
                 }
             })
             .catch(error => {
@@ -126,7 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isLocalHost() && fileSelectBtn) {
                     alert('Failed to load ' + url + '. If running locally, you can load a custom file using the button.');
                     fileSelectBtn.style.display = 'inline-flex'; // Show local file button
-                    console.log('File selector button shown due to fetch error.');
+                    if (createLinkContainer) {
+                        createLinkContainer.style.display = 'block'; // Show the "Create one first" link
+                    }
+                    console.log('File selector button and create file link shown due to fetch error.');
                 }
             });
     }
@@ -395,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 references: [], // Populated dynamically below from display
                 contact: {
                     Email: '', // These are harder to extract from display without explicit elements
-                    Phone: ''  // You might need dedicated display elements for these to save them
+                    Phone: ''  // You might need dedicated display elements for these to save them
                 },
                 footer: document.getElementById('footer-text')?.textContent || ''
             };
