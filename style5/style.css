@@ -173,7 +173,7 @@ main {
 }
 .experience-item .dates,
 .education-item .dates {
-  color: #bfc9d6;
+  color: black;
   font-size: 0.97rem;
   margin-bottom: 0.7em;
 }
@@ -286,7 +286,7 @@ main {
     right: 0;
     background: var(--nav-bg);
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     padding: 1.5rem 0;
     display: none;
     box-shadow: 0 2px 10px rgba(44, 62, 80, 0.08);
@@ -294,6 +294,7 @@ main {
   .nav-links.open {
     display: flex;
     padding: 20px;
+    gap: 10px;
   }
   .nav-toggle {
     display: flex;
@@ -334,4 +335,84 @@ main {
   #footer-socials a:hover {
     color: #2563eb;
   }
+/* Add resume page styles */
+.navbar {
+  background: var(--nav-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  border-bottom: 1px solid #e7ecf2;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: #2d7de4;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* Responsive styles */
+@media (max-width: 700px) {
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    display: none;
+    box-shadow: 0 2px 10px rgba(44, 62, 80, 0.08);
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav-toggle {
+    display: flex;
+  }
+}
