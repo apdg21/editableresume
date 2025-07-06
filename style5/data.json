@@ -10,7 +10,7 @@
   "education": [
     {
       "degree": "BA Sales and Commerce",
-      "institution": "Wardiere University",
+      "institution": "ABC University",
       "start": "2011",
       "end": "2015"
     },
@@ -34,10 +34,10 @@
   ],
   "experience": [
     {
-      "start": "Aug 2018",
-      "end": "present",
       "company": "Timmerman Industries",
       "role": "Consumer Goods Seller",
+      "start": "Aug 2018",
+      "end": "present",
       "details": [
         "Offer consumer goods packages to corporate and clients",
         "Meet with clients every quarter to update or renew services",
@@ -45,20 +45,20 @@
       ]
     },
     {
-      "start": "Jul 2015",
-      "end": "Aug 2018",
       "company": "Timmerman Industries",
       "role": "FMCG Sales Agent",
+      "start": "Jul 2015",
+      "end": "Aug 2018",
       "details": [
         "Visited corporate client offices to offer latest products",
         "Built relationships with clients to maintain sales goals and create new opportunities"
       ]
     },
     {
-      "start": "Aug 2014",
-      "end": "Jul 2015",
       "company": "Timmerman Industries",
       "role": "Sales Agent",
+      "start": "Aug 2014",
+      "end": "Jul 2015",
       "details": [
         "Visited corporate client offices to offer latest products"
       ]
@@ -79,11 +79,23 @@
     }
   ],
   "footer": {
-    "text": "© 2025 Donna Stroupe. All rights reserved.",
+    "text": "© 2025 DONNA STROUPE. All rights reserved.",
     "socials": [
-      { "name": "LinkedIn", "url": "https://linkedin.com/in/donnastroupe", "icon": "linkedin.svg" },
-      { "name": "Twitter", "url": "https://twitter.com/donnastroupe", "icon": "twitter.svg" },
-      { "name": "Facebook", "url": "https://facebook.com/donnastroupe", "icon": "facebook.svg" }
+      {
+        "name": "LinkedIn",
+        "url": "https://linkedin.com/in/donnastroupe",
+        "icon": "linkedin.svg"
+      },
+      {
+        "name": "Twitter",
+        "url": "https://twitter.com/donnastroupe",
+        "icon": "twitter.svg"
+      },
+      {
+        "name": "Facebook",
+        "url": "https://facebook.com/donnastroupe",
+        "icon": "facebook.svg"
+      }
     ]
   }
 }

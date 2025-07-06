@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(fileInput);
     return fileInput;
   };
-
+  
   // Render resume data
   const renderResumeData = (data) => {
     // Validate socials data
@@ -186,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="upload-container">
           <p>Please select your resume data file (data.json):</p>
           <button class="upload-button">Select File</button>
+          <p style="margin-top: 1rem; font-size: 0.9rem;">Don't have a file? <a href="form.html">Create one first</a></p>
         </div>
       `;
       
