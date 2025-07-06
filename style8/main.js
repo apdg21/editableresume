@@ -33,6 +33,7 @@ function showFileUploadOption() {
         <button id="uploadBtn" class="btn-primary">
             <i class="fas fa-upload"></i> Select JSON File
         </button>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Don't have a file? <a href="form.html" style="color:red;">Create one first</a></p>
     `;
     
     container.prepend(uploadContainer);

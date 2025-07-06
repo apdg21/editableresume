@@ -655,3 +655,7 @@ a {
         flex-direction: column;
     }
 }
+    .file-upload-container {
+        margin-top: 100px !important;
+   }
+  
