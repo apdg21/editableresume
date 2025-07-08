@@ -131,37 +131,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        // Check if running locally (file:// protocol)
-        if (window.location.protocol === 'file:') {
-            // Create a visible button for file selection
-            const fileSelectContainer = document.createElement('div');
-            fileSelectContainer.style.position = 'fixed';
-            fileSelectContainer.style.top = '20px';
-            fileSelectContainer.style.left = '20px';
-            fileSelectContainer.style.zIndex = '1000';
-            fileSelectContainer.style.backgroundColor = '#fff';
-            fileSelectContainer.style.padding = '10px';
-            fileSelectContainer.style.border = '1px solid #ccc';
-            fileSelectContainer.style.borderRadius = '5px';
-            fileSelectContainer.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+    // Check if running locally (file:// protocol)
+    if (window.location.protocol === 'file:') {
+        // Create a visible button for file selection
+        const fileSelectContainer = document.createElement('div');
+        fileSelectContainer.style.position = 'fixed';
+        fileSelectContainer.style.top = '20px';
+        fileSelectContainer.style.left = '400px';
+        fileSelectContainer.style.zIndex = '1000';
+        fileSelectContainer.style.backgroundColor = '#fff';
+        fileSelectContainer.style.padding = '10px';
+        fileSelectContainer.style.border = '1px solid #ccc'; // Fixed typo: 'brder' to 'border'
+        fileSelectContainer.style.borderRadius = '5px';
+        fileSelectContainer.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
 
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = '.json';
-            fileInput.style.display = 'none';
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.json';
+        fileInput.style.display = 'none';
 
-            const selectButton = document.createElement('button');
-            selectButton.textContent = 'Select data.json';
-            selectButton.style.padding = '8px 16px';
-            selectButton.style.backgroundColor = '#007bff';
-            selectButton.style.color = '#fff';
-            selectButton.style.border = 'none';
-            selectButton.style.borderRadius = '3px';
-            selectButton.style.cursor = 'pointer';
+        const selectButton = document.createElement('button');
+        selectButton.textContent = 'Select data.json';
+        selectButton.style.padding = '8px 16px';
+        selectButton.style.backgroundColor = '#007bff';
+        selectButton.style.color = '#fff';
+        selectButton.style.border = 'none';
+        selectButton.style.borderRadius = '3px';
+        selectButton.style.cursor = 'pointer';
 
-            fileSelectContainer.appendChild(selectButton);
-            fileSelectContainer.appendChild(fileInput);
-            document.body.appendChild(fileSelectContainer);
+        // Create paragraph with link
+        const helpText = document.createElement('p');
+        helpText.style.marginTop = '1rem';
+        helpText.style.fontSize = '0.9rem';
+        helpText.innerHTML = 'Don\'t have a file? <a href="form.html">Create one first</a>';
+
+        fileSelectContainer.appendChild(selectButton);
+        fileSelectContainer.appendChild(fileInput);
+        fileSelectContainer.appendChild(helpText);
+        document.body.appendChild(fileSelectContainer);
 
             // Handle button click to trigger file input
             selectButton.addEventListener('click', () => {

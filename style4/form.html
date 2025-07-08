@@ -65,14 +65,45 @@
       font-size: 1.5rem;
       color: #4B5563;
     }
+    nav {
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      z-index: 1000;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    nav a {
+      margin-right: 1rem;
+      text-decoration: none;
+      color: #1f2937;
+      font-weight: 500;
+    }
+    nav a:hover {
+      color: #2563eb;
+    }
   </style>
 </head>
 <body class="bg-gray-100 flex flex-col items-center min-h-screen">
+  <nav class="w-full max-w-3xl">
+    <a href="#profile">Profile</a>
+    <a href="#hero">Hero</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#awards">Awards</a>
+    <a href="#contact">Contact</a>
+  </nav>
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl overflow-y-auto">
     <h1 class="text-2xl font-bold mb-6 text-center">Portfolio Submission Form</h1>
+    <div class="mb-6">
+      <input type="file" id="load-data" accept=".json" class="hidden">
+      <button type="button" id="load-data-button" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Load Existing data.json</button>
+    </div>
     <form id="portfolioForm" class="space-y-6">
       <!-- Profile -->
-      <div>
+      <div id="profile">
         <h2 class="text-lg font-semibold mb-2">Profile</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -81,12 +112,12 @@
           </div>
           <div>
             <label for="profile-image" class="block text-sm font-medium text-gray-700">Profile Image</label>
-            <input type="file" id="profile-image" name="profile-image" accept="image/*" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Choose profile.jpg">
-            <span class="text-sm text-gray-500">Sample: assets/profile.jpg</span>
+            <input type="text" id="profile-image" name="profile-image" value="assets/profile.jpg" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" readonly>
+            <span class="text-sm text-gray-500">Place image in assets folder (e.g., assets/profile.jpg)</span>
           </div>
         </div>
         <div id="social-links-container" class="space-y-4 mt-4">
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
             <div class="relative">
               <label for="social-platform-0" class="block text-sm font-medium text-gray-700">Social Platform</label>
               <select id="social-platform-0" name="social-platform-0" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
@@ -94,15 +125,19 @@
                 <option value="linkedin" selected>LinkedIn</option>
                 <option value="twitter">Twitter</option>
                 <option value="facebook">Facebook</option>
+                <option value="behance">Behance</option>
+                <option value="dribbble">Dribbble</option>
+                <option value="instagram">Instagram</option>
               </select>
               <i class="icon-preview fas fa-linkedin" data-index="0"></i>
             </div>
             <div>
               <label for="social-url-0" class="block text-sm font-medium text-gray-700">URL</label>
               <input type="url" id="social-url-0" name="social-url-0" value="https://linkedin.com/in/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://linkedin.com/in/yourprofile">
+              <button type="button" class="remove-social mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
             </div>
           </div>
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
             <div class="relative">
               <label for="social-platform-1" class="block text-sm font-medium text-gray-700">Social Platform</label>
               <select id="social-platform-1" name="social-platform-1" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
@@ -110,28 +145,36 @@
                 <option value="linkedin">LinkedIn</option>
                 <option value="twitter" selected>Twitter</option>
                 <option value="facebook">Facebook</option>
+                <option value="behance">Behance</option>
+                <option value="dribbble">Dribbble</option>
+                <option value="instagram">Instagram</option>
               </select>
               <i class="icon-preview fas fa-x-twitter" data-index="1"></i>
             </div>
             <div>
               <label for="social-url-1" class="block text-sm font-medium text-gray-700">URL</label>
               <input type="url" id="social-url-1" name="social-url-1" value="https://twitter.com/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://twitter.com/yourprofile">
+              <button type="button" class="remove-social mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
             </div>
           </div>
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
             <div class="relative">
               <label for="social-platform-2" class="block text-sm font-medium text-gray-700">Social Platform</label>
               <select id="social-platform-2" name="social-platform-2" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
                 <option value="" disabled>Select a platform</option>
                 <option value="linkedin">LinkedIn</option>
                 <option value="twitter">Twitter</option>
-                <option value="facebook" selected>Facebook</option>
+                <option value="facebook">Facebook</option>
+                <option value="behance" selected>Behance</option>
+                <option value="dribbble">Dribbble</option>
+                <option value="instagram">Instagram</option>
               </select>
-              <i class="icon-preview fas fa-facebook" data-index="2"></i>
+              <i class="icon-preview fab fa-behance" data-index="2"></i>
             </div>
             <div>
               <label for="social-url-2" class="block text-sm font-medium text-gray-700">URL</label>
-              <input type="url" id="social-url-2" name="social-url-2" value="https://facebook.com/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://facebook.com/yourprofile">
+              <input type="url" id="social-url-2" name="social-url-2" value="https://behance.net/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://behance.net/yourprofile">
+              <button type="button" class="remove-social mt-2 text-red-600 hover:underline" data-index="2">Remove</button>
             </div>
           </div>
         </div>
@@ -139,7 +182,7 @@
       </div>
 
       <!-- Hero -->
-      <div>
+      <div id="hero">
         <h2 class="text-lg font-semibold mb-2">Hero</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -148,8 +191,8 @@
           </div>
           <div>
             <label for="hero-image" class="block text-sm font-medium text-gray-700">Hero Image</label>
-            <input type="file" id="hero-image" name="hero-image" accept="image/*" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Choose designer-work.jpg">
-            <span class="text-sm text-gray-500">Sample: assets/designer-work.jpg</span>
+            <input type="text" id="hero-image" name="hero-image" value="assets/designer-work.jpg" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" readonly>
+            <span class="text-sm text-gray-500">Place image in assets folder (e.g., assets/designer-work.jpg)</span>
           </div>
         </div>
         <div>
@@ -159,7 +202,7 @@
       </div>
 
       <!-- About -->
-      <div>
+      <div id="about">
         <h2 class="text-lg font-semibold mb-2">About</h2>
         <div>
           <label for="about-description" class="block text-sm font-medium text-gray-700">Description</label>
@@ -180,7 +223,7 @@
           </div>
         </div>
         <div id="stats-container" class="space-y-4 mt-4">
-          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
             <div>
               <label for="stats-value-0" class="block text-sm font-medium text-gray-700">Value</label>
               <input type="text" id="stats-value-0" name="stats-value-0" value="4+" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 4+">
@@ -188,9 +231,10 @@
             <div>
               <label for="stats-label-0" class="block text-sm font-medium text-gray-700">Label</label>
               <input type="text" id="stats-label-0" name="stats-label-0" value="Years Experience" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Years Experience">
+              <button type="button" class="remove-stats mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
             </div>
           </div>
-          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
             <div>
               <label for="stats-value-1" class="block text-sm font-medium text-gray-700">Value</label>
               <input type="text" id="stats-value-1" name="stats-value-1" value="120+" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 120+">
@@ -198,9 +242,10 @@
             <div>
               <label for="stats-label-1" class="block text-sm font-medium text-gray-700">Label</label>
               <input type="text" id="stats-label-1" name="stats-label-1" value="Projects Completed" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Projects Completed">
+              <button type="button" class="remove-stats mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
             </div>
           </div>
-          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
             <div>
               <label for="stats-value-2" class="block text-sm font-medium text-gray-700">Value</label>
               <input type="text" id="stats-value-2" name="stats-value-2" value="98%" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 98%">
@@ -208,6 +253,7 @@
             <div>
               <label for="stats-label-2" class="block text-sm font-medium text-gray-700">Label</label>
               <input type="text" id="stats-label-2" name="stats-label-2" value="Client Satisfaction" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Client Satisfaction">
+              <button type="button" class="remove-stats mt-2 text-red-600 hover:underline" data-index="2">Remove</button>
             </div>
           </div>
         </div>
@@ -215,10 +261,10 @@
       </div>
 
       <!-- Experience -->
-      <div>
+      <div id="experience">
         <h2 class="text-lg font-semibold mb-2">Experience</h2>
         <div id="experience-container" class="space-y-4">
-          <div class="experience-entry">
+          <div class="experience-entry" data-index="0">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="exp-date-0" class="block text-sm font-medium text-gray-700">Date</label>
@@ -240,8 +286,9 @@ Collaborated with teams...">Designed branding materials, marketing collateral, a
 Collaborated with marketing and product teams to develop visually appealing and effective campaigns.
 Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines.
 Mentored junior designers and conducted design workshops for cross-functional teams.</textarea>
+            <button type="button" class="remove-experience mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
           </div>
-          <div class="experience-entry mt-4">
+          <div class="experience-entry mt-4" data-index="1">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="exp-date-1" class="block text-sm font-medium text-gray-700">Date</label>
@@ -263,20 +310,24 @@ Led the redesign...">Created website and mobile app designs that enhanced user e
 Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback.
 Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations.
 Developed brand guidelines and design systems for consistent visual identity across all platforms.</textarea>
+            <button type="button" class="remove-experience mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
           </div>
         </div>
         <button type="button" id="add-experience" class="mt-2 text-blue-600 hover:underline">Add Another Experience</button>
       </div>
 
       <!-- Skills -->
-      <div>
+      <div id="skills">
         <h2 class="text-lg font-semibold mb-2">Skills</h2>
         <div id="skills-container" class="space-y-4">
-          <div class="skills-entry">
+          <div class="skills-entry" data-index="0">
             <label for="skill-category-0" class="block text-sm font-medium text-gray-700">Category</label>
-            <input type="text" id="skill-category-0" name="skill-category-0" value="Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Design">
+            <div class="flex items-center gap-2">
+              <input type="text" id="skill-category-0" name="skill-category-0" value="Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Design">
+              <button type="button" class="remove-skill-category mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
+            </div>
             <div id="skill-items-0" class="space-y-2 mt-2">
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
                 <div>
                   <label for="skill-name-0-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-0-0" name="skill-name-0-0" value="Graphic Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Graphic Design">
@@ -284,9 +335,10 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-0-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-0-0" name="skill-progress-0-0" value="90" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 90" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="0" data-index="0">Remove</button>
                 </div>
               </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
                 <div>
                   <label for="skill-name-0-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-0-1" name="skill-name-0-1" value="Typography" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Typography">
@@ -294,9 +346,10 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-0-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-0-1" name="skill-progress-0-1" value="87" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 87" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="0" data-index="1">Remove</button>
                 </div>
               </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
                 <div>
                   <label for="skill-name-0-2" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-0-2" name="skill-name-0-2" value="Branding & Identity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Branding & Identity">
@@ -304,16 +357,20 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-0-2" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-0-2" name="skill-progress-0-2" value="95" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 95" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="0" data-index="2">Remove</button>
                 </div>
               </div>
             </div>
             <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="0">Add Another Skill Item</button>
           </div>
-          <div class="skills-entry mt-4">
+          <div class="skills-entry mt-4" data-index="1">
             <label for="skill-category-1" class="block text-sm font-medium text-gray-700">Category</label>
-            <input type="text" id="skill-category-1" name="skill-category-1" value="Technical" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Technical">
+            <div class="flex items-center gap-2">
+              <input type="text" id="skill-category-1" name="skill-category-1" value="Technical" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Technical">
+              <button type="button" class="remove-skill-category mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
+            </div>
             <div id="skill-items-1" class="space-y-2 mt-2">
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
                 <div>
                   <label for="skill-name-1-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-1-0" name="skill-name-1-0" value="Print & Digital Media" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Print & Digital Media">
@@ -321,9 +378,10 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-1-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-1-0" name="skill-progress-1-0" value="84" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 84" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="1" data-index="0">Remove</button>
                 </div>
               </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
                 <div>
                   <label for="skill-name-1-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-1-1" name="skill-name-1-1" value="Project Management" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Project Management">
@@ -331,16 +389,20 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-1-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-1-1" name="skill-progress-1-1" value="92" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 92" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="1" data-index="1">Remove</button>
                 </div>
               </div>
             </div>
             <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="1">Add Another Skill Item</button>
           </div>
-          <div class="skills-entry mt-4">
+          <div class="skills-entry mt-4" data-index="2">
             <label for="skill-category-2" class="block text-sm font-medium text-gray-700">Category</label>
-            <input type="text" id="skill-category-2" name="skill-category-2" value="Languages" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Languages">
+            <div class="flex items-center gap-2">
+              <input type="text" id="skill-category-2" name="skill-category-2" value="Languages" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Languages">
+              <button type="button" class="remove-skill-category mt-2 text-red-600 hover:underline" data-index="2">Remove</button>
+            </div>
             <div id="skill-items-2" class="space-y-2 mt-2">
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
                 <div>
                   <label for="skill-name-2-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-2-0" name="skill-name-2-0" value="Russian" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Russian">
@@ -348,9 +410,10 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-2-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-2-0" name="skill-progress-2-0" value="94" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 94" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="2" data-index="0">Remove</button>
                 </div>
               </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
                 <div>
                   <label for="skill-name-2-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-2-1" name="skill-name-2-1" value="Chinese" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Chinese">
@@ -358,9 +421,10 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-2-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-2-1" name="skill-progress-2-1" value="86" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 86" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="2" data-index="1">Remove</button>
                 </div>
               </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
                 <div>
                   <label for="skill-name-2-2" class="block text-sm font-medium text-gray-700">Skill Name</label>
                   <input type="text" id="skill-name-2-2" name="skill-name-2-2" value="Korean" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Korean">
@@ -368,6 +432,7 @@ Developed brand guidelines and design systems for consistent visual identity acr
                 <div>
                   <label for="skill-progress-2-2" class="block text-sm font-medium text-gray-700">Progress (%)</label>
                   <input type="number" id="skill-progress-2-2" name="skill-progress-2-2" value="84" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 84" title="Enter a number between 0 and 100">
+                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="2" data-index="2">Remove</button>
                 </div>
               </div>
             </div>
@@ -378,10 +443,10 @@ Developed brand guidelines and design systems for consistent visual identity acr
       </div>
 
       <!-- Education -->
-      <div>
+      <div id="education">
         <h2 class="text-lg font-semibold mb-2">Education</h2>
         <div id="education-container" class="space-y-4">
-          <div class="education-entry">
+          <div class="education-entry" data-index="0">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="edu-date-0" class="block text-sm font-medium text-gray-700">Date</label>
@@ -398,16 +463,17 @@ Developed brand guidelines and design systems for consistent visual identity acr
             </div>
             <label for="edu-description-0" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
             <textarea id="edu-description-0" name="edu-description-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City">Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City</textarea>
+            <button type="button" class="remove-education mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
           </div>
         </div>
         <button type="button" id="add-education" class="mt-2 text-blue-600 hover:underline">Add Another Education</button>
       </div>
 
       <!-- Awards -->
-      <div>
+      <div id="awards">
         <h2 class="text-lg font-semibold mb-2">Awards</h2>
         <div id="awards-container" class="space-y-4">
-          <div class="awards-entry">
+          <div class="awards-entry" data-index="0">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="award-date-0" class="block text-sm font-medium text-gray-700">Date</label>
@@ -424,8 +490,9 @@ Developed brand guidelines and design systems for consistent visual identity acr
             </div>
             <label for="award-description-0" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
             <textarea id="award-description-0" name="award-description-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Received for outstanding contributions to graphic design">Received for outstanding contributions to graphic design</textarea>
+            <button type="button" class="remove-award mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
           </div>
-          <div class="awards-entry mt-4">
+          <div class="awards-entry mt-4" data-index="1">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="award-date-1" class="block text-sm font-medium text-gray-700">Date</label>
@@ -442,13 +509,14 @@ Developed brand guidelines and design systems for consistent visual identity acr
             </div>
             <label for="award-description-1" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
             <textarea id="award-description-1" name="award-description-1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Awarded for exceptional brand identity design">Awarded for exceptional brand identity design</textarea>
+            <button type="button" class="remove-award mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
           </div>
         </div>
         <button type="button" id="add-award" class="mt-2 text-blue-600 hover:underline">Add Another Award</button>
       </div>
 
       <!-- Contact -->
-      <div>
+      <div id="contact">
         <h2 class="text-lg font-semibold mb-2">Contact</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
