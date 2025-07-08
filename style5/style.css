@@ -416,3 +416,54 @@ main {
     display: flex;
   }
 }
+/* Hamburger Icon Styles */
+.nav-toggle .bar {
+  width: 24px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: 0.4s ease-in-out;
+}
+
+.nav-toggle.open .bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.nav-toggle.open .bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.open .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile Nav */
+@media (max-width: 700px) {
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    display: none;
+    box-shadow: 0 2px 10px rgba(44, 62, 80, 0.08);
+    z-index: 99;
+    animation: slideDown 0.3s ease-in-out;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

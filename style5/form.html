@@ -114,6 +114,30 @@
       font-size: 1.5rem;
       color: #4B5563;
     }
+
+    .remove-btn {
+      position: absolute;
+      right: -10px;
+      top: -10px;
+      background: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .remove-btn:hover {
+      color: #ef4444;
+    }
+
+    .input-with-remove {
+      position: relative;
+    }
   </style>
 </head>
 <body class="bg-gray-100 flex flex-col items-center min-h-screen">
@@ -181,10 +205,10 @@
       </div>
 
       <!-- About Section -->
-<div id="about-section"> <!-- Unique ID for container -->
-  <h2 class="text-lg font-semibold mb-2">About</h2>
-  <textarea id="about" name="about" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4"></textarea>
-</div>
+      <div id="about-section">
+        <h2 class="text-lg font-semibold mb-2">About</h2>
+        <textarea id="about" name="about" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4"></textarea>
+      </div>
 
       <!-- Education -->
       <div id="education">

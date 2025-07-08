@@ -32,8 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-education').addEventListener('click', () => {
     const container = document.getElementById('education-container');
     const entry = document.createElement('div');
-    entry.className = 'education-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4';
+    entry.className = 'education-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 relative';
     entry.innerHTML = `
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+        <i class="fas fa-times text-red-500"></i>
+      </button>
       <div>
         <label for="degree-${educationCount}" class="block text-sm font-medium text-gray-700">Degree</label>
         <input type="text" id="degree-${educationCount}" name="degree-${educationCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
@@ -58,24 +61,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add Skill Entry
   document.getElementById('add-skill').addEventListener('click', () => {
     const container = document.getElementById('skills-container');
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.id = `skill-${skillCount}`;
-    input.name = `skill-${skillCount}`;
-    input.className = 'mt-1 block w-full p-2 border border-gray-300 rounded-md';
-    container.appendChild(input);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'input-with-remove';
+    wrapper.innerHTML = `
+      <input type="text" id="skill-${skillCount}" name="skill-${skillCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+        <i class="fas fa-times text-red-500"></i>
+      </button>
+    `;
+    container.appendChild(wrapper);
     skillCount++;
   });
 
   // Add Language Entry
   document.getElementById('add-language').addEventListener('click', () => {
     const container = document.getElementById('languages-container');
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.id = `language-${languageCount}`;
-    input.name = `language-${languageCount}`;
-    input.className = 'mt-1 block w-full p-2 border border-gray-300 rounded-md';
-    container.appendChild(input);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'input-with-remove';
+    wrapper.innerHTML = `
+      <input type="text" id="language-${languageCount}" name="language-${languageCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+        <i class="fas fa-times text-red-500"></i>
+      </button>
+    `;
+    container.appendChild(wrapper);
     languageCount++;
   });
 
@@ -83,8 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-experience').addEventListener('click', () => {
     const container = document.getElementById('experience-container');
     const entry = document.createElement('div');
-    entry.className = 'experience-entry mt-4';
+    entry.className = 'experience-entry mt-4 relative';
     entry.innerHTML = `
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+        <i class="fas fa-times text-red-500"></i>
+      </button>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="company-${experienceCount}" class="block text-sm font-medium text-gray-700">Company</label>
@@ -114,8 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-reference').addEventListener('click', () => {
     const container = document.getElementById('references-container');
     const entry = document.createElement('div');
-    entry.className = 'reference-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4';
+    entry.className = 'reference-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 relative';
     entry.innerHTML = `
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+        <i class="fas fa-times text-red-500"></i>
+      </button>
       <div>
         <label for="ref-name-${referenceCount}" class="block text-sm font-medium text-gray-700">Name</label>
         <input type="text" id="ref-name-${referenceCount}" name="ref-name-${referenceCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
@@ -141,8 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-social').addEventListener('click', () => {
     const container = document.getElementById('socials-container');
     const entry = document.createElement('div');
-    entry.className = 'social-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4';
+    entry.className = 'social-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 relative';
     entry.innerHTML = `
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+        <i class="fas fa-times text-red-500"></i>
+      </button>
       <div class="relative">
         <label for="social-name-${socialCount}" class="block text-sm font-medium text-gray-700">Platform</label>
         <select id="social-name-${socialCount}" name="social-name-${socialCount}" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
@@ -194,6 +212,14 @@ document.addEventListener('DOMContentLoaded', () => {
     referenceCount = 0;
     socialCount = 0;
 
+    // Clear all containers
+    document.getElementById('education-container').innerHTML = '';
+    document.getElementById('skills-container').innerHTML = '';
+    document.getElementById('languages-container').innerHTML = '';
+    document.getElementById('experience-container').innerHTML = '';
+    document.getElementById('references-container').innerHTML = '';
+    document.getElementById('socials-container').innerHTML = '';
+
     // Personal Info
     document.getElementById('name').value = data.name || '';
     document.getElementById('title').value = data.title || '';
@@ -213,8 +239,11 @@ document.addEventListener('DOMContentLoaded', () => {
       data.education.forEach(edu => {
         const container = document.getElementById('education-container');
         const entry = document.createElement('div');
-        entry.className = 'education-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4';
+        entry.className = 'education-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 relative';
         entry.innerHTML = `
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+            <i class="fas fa-times text-red-500"></i>
+          </button>
           <div>
             <label for="degree-${educationCount}" class="block text-sm font-medium text-gray-700">Degree</label>
             <input value="${edu.degree || ''}" type="text" id="degree-${educationCount}" name="degree-${educationCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
@@ -241,13 +270,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data.skills && data.skills.length > 0) {
       data.skills.forEach(skill => {
         const container = document.getElementById('skills-container');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.id = `skill-${skillCount}`;
-        input.name = `skill-${skillCount}`;
-        input.className = 'mt-1 block w-full p-2 border border-gray-300 rounded-md';
-        input.value = skill || '';
-        container.appendChild(input);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-with-remove';
+        wrapper.innerHTML = `
+          <input type="text" id="skill-${skillCount}" name="skill-${skillCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="${skill || ''}">
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+            <i class="fas fa-times text-red-500"></i>
+          </button>
+        `;
+        container.appendChild(wrapper);
         skillCount++;
       });
     }
@@ -256,13 +287,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data.languages && data.languages.length > 0) {
       data.languages.forEach(lang => {
         const container = document.getElementById('languages-container');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.id = `language-${languageCount}`;
-        input.name = `language-${languageCount}`;
-        input.className = 'mt-1 block w-full p-2 border border-gray-300 rounded-md';
-        input.value = lang || '';
-        container.appendChild(input);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-with-remove';
+        wrapper.innerHTML = `
+          <input type="text" id="language-${languageCount}" name="language-${languageCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="${lang || ''}">
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+            <i class="fas fa-times text-red-500"></i>
+          </button>
+        `;
+        container.appendChild(wrapper);
         languageCount++;
       });
     }
@@ -272,8 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
       data.experience.forEach(exp => {
         const container = document.getElementById('experience-container');
         const entry = document.createElement('div');
-        entry.className = 'experience-entry mt-4';
+        entry.className = 'experience-entry mt-4 relative';
         entry.innerHTML = `
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+            <i class="fas fa-times text-red-500"></i>
+          </button>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="company-${experienceCount}" class="block text-sm font-medium text-gray-700">Company</label>
@@ -305,8 +341,11 @@ document.addEventListener('DOMContentLoaded', () => {
       data.references.forEach(ref => {
         const container = document.getElementById('references-container');
         const entry = document.createElement('div');
-        entry.className = 'reference-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4';
+        entry.className = 'reference-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 relative';
         entry.innerHTML = `
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+            <i class="fas fa-times text-red-500"></i>
+          </button>
           <div>
             <label for="ref-name-${referenceCount}" class="block text-sm font-medium text-gray-700">Name</label>
             <input value="${ref.name || ''}" type="text" id="ref-name-${referenceCount}" name="ref-name-${referenceCount}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
@@ -334,8 +373,11 @@ document.addEventListener('DOMContentLoaded', () => {
       data.footer.socials.forEach(social => {
         const container = document.getElementById('socials-container');
         const entry = document.createElement('div');
-        entry.className = 'social-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4';
+        entry.className = 'social-entry grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 relative';
         entry.innerHTML = `
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+            <i class="fas fa-times text-red-500"></i>
+          </button>
           <div class="relative">
             <label for="social-name-${socialCount}" class="block text-sm font-medium text-gray-700">Platform</label>
             <select id="social-name-${socialCount}" name="social-name-${socialCount}" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
@@ -460,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'data.json';
+    link.download = 'resume.json';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
