@@ -180,6 +180,8 @@ footer a:hover {
     }
     .nav-links.active {
         display: flex;
+        gap: 0;
+        padding: 20px;
     }
     .nav-links li {
         margin: 0.5rem 0;
@@ -237,7 +239,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center; /* This ensures vertical centering */
-    gap: 0px;
+    gap: 0;
     margin-top: 1.5rem;
 }
 
@@ -275,6 +277,128 @@ footer {
 #experience-list li {
    margin-bottom: 30px;
    gap: 20px;
+}
+.upload-container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
+    .upload-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+/* style.css */
+
+/* --- Education Section Styling --- */
+.education-item {
+    display: flex; /* Enables Flexbox for side-by-side columns */
+    margin-bottom: 15px; /* Adds space between each education entry */
+    align-items: flex-start; /* Aligns content to the top of each row */
+    padding-bottom: 15px; /* Space below each item */
+    border-bottom: 1px solid #eee; /* Light line to separate entries */
+}
+
+.education-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.education-column {
+    padding: 0 10px; /* Add some padding around the content in columns */
+}
+
+.date-column {
+    flex: 0 0 120px; /* Fixed width for the date column */
+    font-weight: bold;
+    color: #555; /* Slightly darker color for dates */
+    text-align: right; /* Align date to the right of its column */
+    padding-right: 20px; /* More space between date and details */
+}
+
+.details-column {
+    flex: 1; /* Allows the details column to take up the remaining space */
+}
+
+.details-column strong {
+    display: block; /* Ensures degree is on its own line */
+    font-size: 1.1em;
+    margin-bottom: 5px; /* Space below the degree */
+}
+
+.details-column {
+    line-height: 1.5; /* Improves readability of multiple lines */
+}
+
+/* Optional: Adjust for smaller screens */
+@media (max-width: 768px) {
+    .education-item {
+        flex-direction: column; /* Stack columns vertically on small screens */
+        align-items: flex-start;
+    }
+    .date-column {
+        text-align: left; /* Align date to left when stacked */
+        padding-right: 10px; /* Adjust padding */
+        margin-bottom: 5px; /* Space between date and details when stacked */
+        flex: 0 0 0;
+    }
+}
+
+/* --- Professional Experience Section Styling --- */
+.experience-item {
+    display: flex; /* Enables Flexbox for side-by-side columns */
+    margin-bottom: 15px; /* Adds space between each experience entry */
+    align-items: flex-start; /* Aligns content to the top of each row */
+    padding-bottom: 15px; /* Space below each item */
+    border-bottom: 1px solid #eee; /* Light line to separate entries */
+}
+
+.experience-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.experience-column {
+    padding: 0 10px; /* Add some padding around the content in columns */
+}
+
+.period-column {
+    /* Same width as .date-column in education */
+    flex: 0 0 120px;
+    font-weight: bold;
+    color: #555;
+    text-align: right;
+    padding-right: 20px; /* More space between period and details */
+}
+
+.details-column {
+    flex: 1; /* Allows the details column to take up the remaining space */
+}
+
+.details-column strong {
+    display: block; /* Ensures title is on its own line */
+    font-size: 1.1em;
+    margin-bottom: 5px; /* Space below the title */
+}
+
+.details-column {
+    line-height: 1.5; /* Improves readability of multiple lines */
+}
+
+/* Optional: Adjust for smaller screens (mobile view) */
+@media (max-width: 768px) {
+    .experience-item {
+        flex-direction: column; /* Stack columns vertically on small screens */
+        align-items: flex-start;
+    }
+    .period-column {
+        text-align: left; /* Align period to left when stacked */
+        padding-right: 10px; /* Adjust padding */
+        margin-bottom: 5px; /* Space between period and details when stacked */
+        flex: 0 0 0;
+    }
+}
 /* Add some Font Awesome icons for social media */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');

@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -76,7 +37,7 @@
         </section>
         <section id="education" class="section">
             <h2>Education</h2>
-            <p id="education-text"></p>
+            <ul id="education-list"></ul>
         </section>
         <section id="experience" class="section">
             <h2>Professional Experience</h2>
@@ -87,14 +48,19 @@
             <ul id="languages-list"></ul>
         </section>
         <footer id="contact" class="section">
-    	   <h2>Contact</h2>
-           <div id="contact-text" class="contact-info"></div>
-           <div id="social-links" class="social-links"></div>
-           <div class="copyright" id="copyright"></div>
+            <h2>Contact</h2>
+            <div id="contact-text" class="contact-info"></div>
+            <div id="social-links" class="social-links"></div>
+            <div class="copyright" id="copyright"></div>
         </footer>
     </div>
     <script src="main.js"></script>
     <script>
+        // This script block is a duplicate of code in main.js.
+        // It's better to keep all JavaScript related to page functionality
+        // in main.js to avoid redundancy and make maintenance easier.
+        // I'll keep it here for now as it was in your original code,
+        // but typically you'd remove this once it's in main.js.
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         menuToggle.addEventListener('click', () => {

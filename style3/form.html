@@ -97,6 +97,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            z-index: 10; /* Ensure button is clickable */
         }
         
         .add-btn {
@@ -109,6 +110,27 @@
             justify-content: space-between;
             margin-top: 2rem;
         }
+        /* Style for the file input */
+        input[type="file"] {
+            display: none; /* Hide the default file input */
+        }
+
+        .custom-file-upload {
+            background-color: #6c757d; /* A neutral color */
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: inline-block; /* Make it behave like a button */
+            margin-right: 10px; /* Space it out from other buttons */
+        }
+
+        .custom-file-upload:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -116,7 +138,6 @@
         <h1>Edit Portfolio Data</h1>
         
         <form id="portfolio-form">
-            <!-- Basic Info Section -->
             <div class="form-section">
                 <h2>Basic Information</h2>
                 <div class="form-group">
@@ -133,55 +154,34 @@
                 </div>
             </div>
             
-            <!-- Skills Section -->
             <div class="form-section">
                 <h2>Skills</h2>
                 <div id="skills-container">
-                    <!-- Skills will be added here dynamically -->
-                </div>
+                    </div>
                 <button type="button" class="add-btn" id="add-skill">Add Skill</button>
             </div>
             
-            <!-- Education Section -->
             <div class="form-section">
                 <h2>Education</h2>
-                <div class="form-group">
-                    <label for="education-degree">Degree</label>
-                    <input type="text" id="education-degree" required>
-                </div>
-                <div class="form-group">
-                    <label for="education-university">University</label>
-                    <input type="text" id="education-university" required>
-                </div>
-                <div class="form-group">
-                    <label for="education-address">Address</label>
-                    <input type="text" id="education-address" required>
-                </div>
-                <div class="form-group">
-                    <label for="education-years">Years</label>
-                    <input type="text" id="education-years" required>
-                </div>
+                <div id="education-container">
+                    </div>
+                <button type="button" class="add-btn" id="add-education">Add Education</button>
             </div>
             
-            <!-- Languages Section -->
             <div class="form-section">
                 <h2>Languages</h2>
                 <div id="languages-container">
-                    <!-- Languages will be added here dynamically -->
-                </div>
+                    </div>
                 <button type="button" class="add-btn" id="add-language">Add Language</button>
             </div>
             
-            <!-- Experience Section -->
             <div class="form-section">
                 <h2>Professional Experience</h2>
                 <div id="experience-container">
-                    <!-- Experience items will be added here dynamically -->
-                </div>
+                    </div>
                 <button type="button" class="add-btn" id="add-experience">Add Experience</button>
             </div>
             
-            <!-- Contact Section -->
             <div class="form-section">
                 <h2>Contact Information</h2>
                 <div class="form-group">
@@ -203,13 +203,18 @@
                 
                 <h3>Social Media</h3>
                 <div id="social-container">
-                    <!-- Social media items will be added here dynamically -->
-                </div>
+                    </div>
                 <button type="button" class="add-btn" id="add-social">Add Social Media</button>
             </div>
             
             <div class="form-actions">
-                <button type="button" id="reset-btn">Reset Form</button>
+                <div>
+                    <label for="file-upload" class="custom-file-upload">
+                        Load data.json
+                    </label>
+                    <input type="file" id="file-upload" accept=".json">
+                    <button type="button" id="reset-btn">Reset Form</button>
+                </div>
                 <button type="submit" id="save-btn">Save Data</button>
             </div>
         </form>
