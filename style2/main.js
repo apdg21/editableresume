@@ -173,7 +173,9 @@ fetch('data.json')
         <button style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
           Select File
         </button>
+          <p style="margin-top: 1rem; font-size: 0.9rem;">Don't have a file? <a href="form.html">Create one first</a></p>
       </div>
+     
     `;
     
     uploadLabel.querySelector('button').addEventListener('click', () => fileInput.click());

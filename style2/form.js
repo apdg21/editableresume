@@ -1,4 +1,3 @@
-// Initialize with one empty field per section
 document.addEventListener('DOMContentLoaded', function() {
   addExperienceField();
   addEducationField();
@@ -7,6 +6,67 @@ document.addEventListener('DOMContentLoaded', function() {
   addReferenceField();
   addSocialField();
 });
+
+// === File Input for Loading JSON ===
+function addFileInput() {
+  const generateButton = document.querySelector('button[onclick="generateJSON()"]');
+  const fileInputDiv = document.createElement('div');
+  fileInputDiv.style.marginTop = '20px';
+  fileInputDiv.innerHTML = `
+    <input type="file" id="load-json" accept=".json" style="margin-right: 10px;">
+    <button onclick="loadJSON()">Load Resume Data</button>
+  `;
+  generateButton.parentNode.insertBefore(fileInputDiv, generateButton);
+}
+
+// Call addFileInput when DOM is loaded
+document.addEventListener('DOMContentLoaded', addFileInput);
+
+function loadJSON() {
+  const fileInput = document.getElementById('load-json');
+  const file = fileInput.files[0];
+  if (!file) {
+    alert('Please select a JSON file to load.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    try {
+      const resumeData = JSON.parse(event.target.result);
+
+      // Clear existing dynamic fields
+      document.getElementById('experience-fields').innerHTML = '';
+      document.getElementById('education-fields').innerHTML = '';
+      document.getElementById('skills-fields').innerHTML = '';
+      document.getElementById('languages-fields').innerHTML = '';
+      document.getElementById('references-fields').innerHTML = '';
+      document.getElementById('socials-fields').innerHTML = '';
+
+      // Populate static fields
+      document.getElementById('name').value = resumeData.name || '';
+      document.getElementById('title').value = resumeData.title || '';
+      document.getElementById('about').value = resumeData.about || '';
+      document.getElementById('phone').value = resumeData.contact?.phone || '';
+      document.getElementById('email').value = resumeData.contact?.email || '';
+      document.getElementById('address').value = resumeData.contact?.address || '';
+      document.getElementById('footer-text').value = resumeData.footer?.text || '';
+
+      // Populate dynamic fields
+      (resumeData.experience || []).forEach(exp => addExperienceField(exp));
+      (resumeData.education || []).forEach(edu => addEducationField(edu));
+      (resumeData.skills || []).forEach(skill => addSkillField(skill));
+      (resumeData.languages || []).forEach(lang => addLanguageField(lang));
+      (resumeData.references || []).forEach(ref => addReferenceField(ref));
+      (resumeData.footer?.socials || []).forEach(social => addSocialField(social));
+
+      alert('Resume data loaded successfully!');
+    } catch (error) {
+      alert('Error loading JSON file: ' + error.message);
+    }
+  };
+  reader.readAsText(file);
+}
 
 // === Field Generators ===
 function addExperienceField(data = {}) {
