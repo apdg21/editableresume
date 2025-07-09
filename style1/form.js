@@ -1,4 +1,3 @@
-// Initialize with empty fields when page loads
 document.addEventListener('DOMContentLoaded', function() {
   addSkillField();
   addExperienceField();
@@ -7,6 +6,75 @@ document.addEventListener('DOMContentLoaded', function() {
   addProjectField();
   addSocialField();
 });
+
+// ===== LOAD RESUME DATA =====
+function loadResumeFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (!file.name.endsWith('.json')) {
+    alert('Please select a valid JSON file');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const resumeData = JSON.parse(e.target.result);
+
+      // Clear existing dynamic fields
+      ['skills', 'experience', 'education', 'languages', 'projects', 'social'].forEach(section => {
+        const container = document.getElementById(`${section}-container`);
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
+      });
+
+      // Populate personal information
+      document.getElementById('firstName').value = resumeData.personalInfo?.firstName || '';
+      document.getElementById('lastName').value = resumeData.personalInfo?.lastName || '';
+      document.getElementById('jobTitle').value = resumeData.personalInfo?.jobTitle || '';
+      document.getElementById('email').value = resumeData.personalInfo?.email || '';
+      document.getElementById('phone').value = resumeData.personalInfo?.phone || '';
+      document.getElementById('location').value = resumeData.personalInfo?.location || '';
+      document.getElementById('about').value = resumeData.about || '';
+
+      // Populate skills
+      resumeData.skills?.forEach(skill => addSkillField(skill));
+
+      // Populate experience
+      resumeData.experience?.forEach(exp => addExperienceField(exp));
+
+      // Populate education
+      resumeData.education?.forEach(edu => addEducationField(edu));
+
+      // Populate languages
+      resumeData.languages?.forEach(lang => addLanguageField(lang));
+
+      // Populate projects
+      resumeData.projects?.forEach(project => addProjectField(project));
+
+      // Populate social links
+      resumeData.socialLinks?.forEach(social => addSocialField(social));
+
+      alert('Resume data loaded successfully!');
+    } catch (error) {
+      alert('Error loading resume data: Invalid JSON format');
+      console.error('Error parsing JSON:', error);
+      // Reinitialize with empty fields if loading fails
+      addSkillField();
+      addExperienceField();
+      addEducationField();
+      addLanguageField();
+      addProjectField();
+      addSocialField();
+    }
+  };
+  reader.onerror = function() {
+    alert('Error reading the file');
+  };
+  reader.readAsText(file);
+}
 
 // ===== SKILLS =====
 function addSkillField(skill = { name: '', level: 50 }) {
@@ -215,9 +283,9 @@ function addSocialField(social = { name: '', url: '' }) {
           <select class="social-name">
             <option value="GitHub" ${social.name === 'GitHub' ? 'selected' : ''}>GitHub</option>
             <option value="LinkedIn" ${social.name === 'LinkedIn' ? 'selected' : ''}>LinkedIn</option>
+            <option value="Facebook" ${social.name === 'Facebook' ? 'selected' : ''}>Facebook</option>
             <option value="Twitter" ${social.name === 'Twitter' ? 'selected' : ''}>Twitter</option>
-            <option value="Portfolio" ${social.name === 'Portfolio' ? 'selected' : ''}>Portfolio</option>
-            <option value="Other" ${!['GitHub','LinkedIn','Twitter','Portfolio'].includes(social.name) ? 'selected' : ''}>Other</option>
+            <option value="Instagram" ${social.name === 'Instagram' ? 'selected' : ''}>Instagram</option>
           </select>
         </div>
         <div>

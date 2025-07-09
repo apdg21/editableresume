@@ -1,4 +1,43 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,73 +50,93 @@
       --secondary-color: #2c3e50;
       --light-gray: #f5f5f5;
       --dark-gray: #333;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.6;
       color: var(--dark-gray);
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 40px 20px;
       background-color: #f9f9f9;
     }
     
-    h1, h2 {
-      color: var(--secondary-color);
-    }
-    
     h1 {
-      border-bottom: 2px solid var(--primary-color);
-      padding-bottom: 10px;
+      color: var(--secondary-color);
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--primary-color);
+      font-size: 2.2em;
     }
     
     h2 {
-      margin-top: 30px;
+      color: var(--secondary-color);
+      margin: 40px 0 20px;
+      font-size: 1.5em;
       border-left: 4px solid var(--primary-color);
-      padding-left: 10px;
+      padding-left: 15px;
     }
     
     .form-section {
       background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 25px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: var(--box-shadow);
+      transition: transform 0.2s ease;
+    }
+    
+    .form-section:hover {
+      transform: translateY(-2px);
     }
     
     label {
       display: block;
-      margin: 15px 0 5px;
+      margin: 20px 0 8px;
       font-weight: 600;
+      color: var(--secondary-color);
     }
     
     input, textarea, select {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
       border-radius: 4px;
       font-family: inherit;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
     }
     
     textarea {
-      min-height: 80px;
+      min-height: 100px;
+      resize: vertical;
     }
     
     button {
       background-color: var(--primary-color);
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 24px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 16px;
-      margin: 10px 5px 10px 0;
-      transition: background-color 0.3s;
+      font-size: 1em;
+      margin: 15px 10px 0 0;
+      transition: background-color 0.3s, transform 0.2s;
     }
     
     button:hover {
       background-color: #2980b9;
+      transform: translateY(-1px);
     }
     
     .remove-btn {
@@ -90,34 +149,38 @@
     
     .dynamic-section {
       background-color: var(--light-gray);
-      padding: 15px;
+      padding: 20px;
       border-radius: 6px;
-      margin: 15px 0;
+      margin: 20px 0;
       position: relative;
+      border-left: 2px solid var(--primary-color);
     }
     
     .dynamic-section h3 {
-      margin-top: 0;
+      margin: 0 0 15px;
       color: var(--primary-color);
+      font-size: 1.2em;
     }
     
     .two-column {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
+      gap: 30px;
+      margin: 20px 0;
     }
     
     .skill-level {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
+      margin: 15px 0;
     }
     
     .skill-level input[type="range"] {
       flex: 1;
       -webkit-appearance: none;
-      height: 8px;
-      background: #ddd;
+      height: 10px;
+      background: #e0e0e0;
       border-radius: 5px;
       outline: none;
     }
@@ -125,22 +188,58 @@
     .skill-level input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       background: var(--primary-color);
       border-radius: 50%;
       cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .skill-level span {
-      font-weight: bold;
-      min-width: 40px;
+      font-weight: 600;
+      min-width: 50px;
       text-align: center;
+      color: var(--secondary-color);
     }
     
-    @media (max-width: 768px) {
+    .action-buttons {
+      text-align: center;
+      margin: 40px 0;
+      padding: 20px;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    @media (max-width: 900px) {
       .two-column {
         grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      body {
+        padding: 20px 15px;
+      }
+      
+      .form-section {
+        padding: 20px;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      
+      h2 {
+        font-size: 1.3em;
+      }
+      
+      button {
+        width: 100%;
+        margin: 10px 0;
       }
     }
   </style>
@@ -230,9 +329,13 @@
   </div>
 
   <!-- Generate Button -->
-  <div style="text-align: center; margin: 30px 0;">
-    <button type="button" onclick="generateResume()" style="padding: 12px 30px; font-size: 18px;">
+  <div class="action-buttons">
+    <button type="button" onclick="generateResume()">
       <i class="fas fa-file-download"></i> Generate Resume
+    </button>
+    <input type="file" id="loadFileInput" accept=".json" style="display: none;" onchange="loadResumeFile(event)">
+    <button type="button" onclick="document.getElementById('loadFileInput').click()">
+      <i class="fas fa-upload"></i> Load Existing Data
     </button>
   </div>
 
