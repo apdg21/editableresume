@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Builder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --g1: #0f0c29;
+      --g2: #302b63;
+      --ac: #a78bfa;
+      --ac-dim: rgba(167,139,250,0.15);
+      --ac-glow: rgba(167,139,250,0.35);
+      --text: rgba(255,255,255,0.90);
+      --muted: rgba(255,255,255,0.52);
+      --dim: rgba(255,255,255,0.22);
+      --card: rgba(255,255,255,0.05);
+      --card-border: rgba(255,255,255,0.09);
+      --input-bg: rgba(0,0,0,0.28);
+      --input-border: rgba(255,255,255,0.11);
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'Outfit', sans-serif;
+      --nav-h: 60px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: linear-gradient(160deg, var(--g1) 0%, var(--g2) 100%);
+      background-attachment: fixed;
+      color: var(--text); min-height: 100vh; line-height: 1.7;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(2px 2px at 90% 75%, rgba(167,139,250,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.18) 0%, transparent 100%);
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
+      background: rgba(10,8,35,0.78);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(167,139,250,0.12);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+    }
+    .nav-logo {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.1rem; color: var(--ac);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ac); }
+    .nav-badge {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ac-dim); color: var(--ac);
+      border: 1px solid var(--ac-glow);
+      padding: 0.28rem 0.8rem; border-radius: 3px;
+    }
+    .menu-toggle {
+      display: none; background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 5px; padding: 5px;
+    }
+    .menu-toggle .bar {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px; transition: all 0.3s;
+    }
+    .menu-toggle.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0; z-index: 199;
+      background: rgba(10,8,35,0.97); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(167,139,250,0.12);
+      flex-direction: column;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: color 0.2s, background 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--ac); background: rgba(167,139,250,0.05); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: calc(var(--nav-h) + 3.5rem) 2rem 2rem;
+      max-width: 800px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .page-eyebrow {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--ac); margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .page-eyebrow::before { content: ''; width: 1.5rem; height: 1px; background: var(--ac); display: block; }
+    .page-title {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(2rem, 4.5vw, 2.9rem); font-weight: 400;
+      color: #fff; margin-bottom: 0.35rem;
+    }
+    .page-sub { font-size: 0.84rem; color: var(--muted); font-weight: 300; }
+
+    /* ── FORM WRAPPER ── */
+    .form-wrap {
+      max-width: 800px; margin: 0 auto;
+      padding: 1.5rem 2rem 7rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ── CARDS ── */
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      backdrop-filter: blur(14px);
+      padding: 2rem 2.2rem;
+      margin-bottom: 1.4rem;
+    }
+    .card-head {
+      display: flex; align-items: center; gap: 0.9rem;
+      margin-bottom: 1.7rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(167,139,250,0.1);
+    }
+    .card-icon {
+      width: 30px; height: 30px; border-radius: 6px;
+      border: 1px solid var(--ac-glow);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ac); font-size: 0.74rem; flex-shrink: 0;
+    }
+    .card-title {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.22rem; color: #fff;
+    }
+
+    /* ── LAYOUT ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+
+    /* ── FIELDS ── */
+    .field { margin-bottom: 1.1rem; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      display: block;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 0.42rem;
+    }
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="url"], input[type="number"], textarea, select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 7px; padding: 0.68rem 0.95rem;
+      font-family: var(--sans); font-size: 0.85rem;
+      color: var(--text); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--ac);
+      box-shadow: 0 0 0 3px rgba(167,139,250,0.1);
+    }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.16); }
+    textarea { min-height: 88px; resize: vertical; }
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a78bfa' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
+    }
+    select option { background: #1a1640; }
+
+    /* ── THEME ── */
+    .presets-row { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-bottom: 1.5rem; }
+    .preset-swatch {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .preset-swatch:hover { transform: scale(1.12); }
+    .preset-swatch.active { border-color: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.45); }
+    .preset-swatch .dot {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .color-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.1rem; }
+    .color-wrap { display: flex; align-items: center; gap: 0.55rem; }
+    input[type="color"] {
+      width: 36px; height: 36px; border-radius: 6px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg); cursor: pointer; padding: 2px; flex-shrink: 0;
+    }
+    .hex-input {
+      flex: 1; background: var(--input-bg); border: 1px solid var(--input-border);
+      border-radius: 6px; padding: 0.5rem 0.75rem;
+      font-family: monospace; font-size: 0.8rem; color: var(--text); outline: none;
+      transition: border-color 0.2s;
+    }
+    .hex-input:focus { border-color: var(--ac); }
+
+    .preview-bar {
+      height: 6px; border-radius: 3px; margin-top: 1.2rem;
+      transition: background 0.35s;
+    }
+
+    /* ── DYNAMIC CARDS ── */
+    .dyn-item {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-left: 2px solid var(--ac);
+      border-radius: 9px; padding: 1.4rem 1.5rem;
+      margin-bottom: 0.9rem;
+    }
+    .dyn-label {
+      font-size: 0.56rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ac); margin-bottom: 1rem;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      font-family: var(--sans);
+      font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      border: none; cursor: pointer; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.52rem 1.05rem; transition: all 0.18s;
+    }
+    .btn-ac { background: var(--ac); color: var(--g1); }
+    .btn-ac:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-ghost {
+      background: var(--ac-dim); color: var(--ac);
+      border: 1px solid var(--ac-glow);
+    }
+    .btn-ghost:hover { background: rgba(167,139,250,0.25); }
+    .btn-danger {
+      background: rgba(220,60,60,0.1); color: rgba(255,100,100,0.72);
+      border: 1px solid rgba(220,60,60,0.18);
+    }
+    .btn-danger:hover { background: rgba(220,60,60,0.2); color: #ff7070; }
+    .btn-add {
+      width: 100%; justify-content: center; padding: 0.68rem;
+      background: rgba(167,139,250,0.06); color: var(--ac);
+      border: 1px dashed rgba(167,139,250,0.28);
+    }
+    .btn-add:hover { background: rgba(167,139,250,0.13); }
+
+    /* ── ACTION BAR ── */
+    .action-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(8,6,30,0.96); backdrop-filter: blur(18px);
+      border-top: 1px solid rgba(167,139,250,0.12);
+      padding: 0.9rem 2rem;
+      display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 78px; right: 1.5rem; z-index: 300;
+      background: rgba(18,14,55,0.97);
+      border: 1px solid rgba(167,139,250,0.3); border-left: 3px solid var(--ac);
+      border-radius: 7px; padding: 0.8rem 1.3rem;
+      font-size: 0.8rem; color: var(--text);
+      transform: translateY(14px); opacity: 0;
+      transition: all 0.25s; pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      .navbar { padding: 0 1.2rem; }
+      .nav-links { display: none; }
+      .menu-toggle { display: flex; }
+      .form-wrap, .page-header { padding-left: 1rem; padding-right: 1rem; }
+      .two-col, .color-row { grid-template-columns: 1fr; }
+      .action-bar { padding: 0.9rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a class="nav-logo" href="index.html">Portfolio</a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html"><i class="fas fa-eye"></i> View</a></li>
+    <li><a href="#personal">Personal</a></li>
+    <li><a href="#theme-section">Theme</a></li>
+    <li><a href="#exp-section">Experience</a></li>
+  </ul>
+  <span class="nav-badge"><i class="fas fa-pen-nib"></i> Builder</span>
+  <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html"><i class="fas fa-eye"></i> View Portfolio</a>
+  <a href="#personal">Personal</a>
+  <a href="#theme-section">Theme / Background</a>
+  <a href="#skills-section">Skills</a>
+  <a href="#exp-section">Experience</a>
+  <a href="#edu-section">Education</a>
+  <a href="#lang-section">Languages</a>
+  <a href="#contact-section">Contact</a>
+</div>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="page-eyebrow">Portfolio Builder</div>
+  <h1 class="page-title">Build Your Portfolio</h1>
+  <p class="page-sub">Fill in your details, pick a background theme, then generate your data file.</p>
+</header>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+  <!-- PERSONAL -->
+  <div class="form-card" id="personal">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-user-astronaut"></i></div>
+      <h2 class="card-title">Personal Information</h2>
+    </div>
+    <div class="two-col">
+      <div class="field"><label>Full Name</label><input type="text" id="name" placeholder="Andrei Villanueva"></div>
+      <div class="field"><label>Job Title</label><input type="text" id="title" placeholder="Aerospace Engineer"></div>
+    </div>
+    <div class="field"><label>About / Summary</label><textarea id="about" placeholder="A compelling summary of your expertise…"></textarea></div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="form-card" id="contact-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-satellite-dish"></i></div>
+      <h2 class="card-title">Contact</h2>
+    </div>
+    <div class="two-col">
+      <div class="field"><label>Phone</label><input type="tel" id="contact-phone" placeholder="+31 6 0000 0000"></div>
+      <div class="field"><label>Email</label><input type="email" id="contact-email" placeholder="you@example.com"></div>
+    </div>
+    <div class="two-col">
+      <div class="field"><label>Website</label><input type="text" id="contact-website" placeholder="yoursite.com"></div>
+      <div class="field"><label>Address / Location</label><input type="text" id="contact-address" placeholder="Delft, Netherlands"></div>
+    </div>
+  </div>
+
+  <!-- THEME -->
+  <div class="form-card" id="theme-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-palette"></i></div>
+      <h2 class="card-title">Background Theme</h2>
+    </div>
+    <label style="margin-bottom:0.75rem;display:block">Quick Presets</label>
+    <div class="presets-row" id="presets-row"></div>
+    <div class="color-row">
+      <div class="field">
+        <label>Gradient Start</label>
+        <div class="color-wrap">
+          <input type="color" id="color-g1" value="#0f0c29">
+          <input type="text" class="hex-input" id="hex-g1" value="#0f0c29" maxlength="7">
+        </div>
+      </div>
+      <div class="field">
+        <label>Gradient End</label>
+        <div class="color-wrap">
+          <input type="color" id="color-g2" value="#302b63">
+          <input type="text" class="hex-input" id="hex-g2" value="#302b63" maxlength="7">
+        </div>
+      </div>
+      <div class="field">
+        <label>Accent Color</label>
+        <div class="color-wrap">
+          <input type="color" id="color-ac" value="#a78bfa">
+          <input type="text" class="hex-input" id="hex-ac" value="#a78bfa" maxlength="7">
+        </div>
+      </div>
+    </div>
+    <div class="preview-bar" id="preview-bar"></div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="form-card" id="skills-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-microchip"></i></div>
+      <h2 class="card-title">Skills</h2>
+    </div>
+    <div id="skills-container"></div>
+    <button class="btn btn-add" onclick="addSkill()"><i class="fas fa-plus"></i> Add Skill</button>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="form-card" id="edu-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+      <h2 class="card-title">Education</h2>
+    </div>
+    <div id="education-container"></div>
+    <button class="btn btn-add" onclick="addEducation()"><i class="fas fa-plus"></i> Add Education</button>
+  </div>
+
+  <!-- LANGUAGES -->
+  <div class="form-card" id="lang-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-globe"></i></div>
+      <h2 class="card-title">Languages</h2>
+    </div>
+    <div id="languages-container"></div>
+    <button class="btn btn-add" onclick="addLanguage()"><i class="fas fa-plus"></i> Add Language</button>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="form-card" id="exp-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-rocket"></i></div>
+      <h2 class="card-title">Professional Experience</h2>
+    </div>
+    <div id="experience-container"></div>
+    <button class="btn btn-add" onclick="addExperience()"><i class="fas fa-plus"></i> Add Experience</button>
+  </div>
+
+  <!-- SOCIAL -->
+  <div class="form-card" id="social-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-share-alt"></i></div>
+      <h2 class="card-title">Social Links</h2>
+    </div>
+    <div id="social-container"></div>
+    <button class="btn btn-add" onclick="addSocial()"><i class="fas fa-plus"></i> Add Social Link</button>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<!-- ACTION BAR -->
+<div class="action-bar">
+  <input type="file" id="load-json-input" accept=".json" style="display:none" onchange="loadJSON(event)">
+  <button class="btn btn-ghost" onclick="document.getElementById('load-json-input').click()">
+    <i class="fas fa-upload"></i> Load JSON
+  </button>
+  <button class="btn btn-ac" onclick="generateJSON()">
+    <i class="fas fa-download"></i> Generate & Download
+  </button>
+  <button class="btn btn-ghost" onclick="previewPortfolio()">
+    <i class="fas fa-eye"></i> Preview
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── PRESETS ── */
+const PRESETS = [
+  { label:'Cosmic',   g1:'#0f0c29', g2:'#302b63', ac:'#a78bfa' },
+  { label:'Forest',   g1:'#1a3a2a', g2:'#0d2233', ac:'#4caf82' },
+  { label:'Ember',    g1:'#2c1810', g2:'#1a0a00', ac:'#f97316' },
+  { label:'Ocean',    g1:'#0c2340', g2:'#051525', ac:'#38bdf8' },
+  { label:'Rose',     g1:'#2d1b2e', g2:'#1a0f1a', ac:'#f472b6' },
+  { label:'Slate',    g1:'#1e293b', g2:'#0f172a', ac:'#94a3b8' },
+  { label:'Gold',     g1:'#1c1404', g2:'#0d0a00', ac:'#f59e0b' },
+  { label:'Crimson',  g1:'#1f0a0a', g2:'#0d0505', ac:'#f87171' },
+];
+
+function buildPresets() {
+  const wrap = document.getElementById('presets-row');
+  PRESETS.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'preset-swatch' + (i === 0 ? ' active' : '');
+    btn.title = p.label;
+    btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+    btn.innerHTML = `<span class="dot" style="background:${p.ac}"></span>`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      applyTheme(p.g1, p.g2, p.ac, true);
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function applyTheme(g1, g2, ac, updateInputs = false) {
+  document.body.style.background = `linear-gradient(160deg, ${g1} 0%, ${g2} 100%)`;
+  document.body.style.backgroundAttachment = 'fixed';
+  const root = document.documentElement;
+  root.style.setProperty('--g1', g1);
+  root.style.setProperty('--g2', g2);
+  root.style.setProperty('--ac', ac);
+  root.style.setProperty('--ac-dim', hexAlpha(ac, 0.15));
+  root.style.setProperty('--ac-glow', hexAlpha(ac, 0.35));
+  document.getElementById('preview-bar').style.background =
+    `linear-gradient(90deg, ${g1}, ${ac}, ${g2})`;
+  if (updateInputs) {
+    document.getElementById('color-g1').value = g1;
+    document.getElementById('color-g2').value = g2;
+    document.getElementById('color-ac').value = ac;
+    document.getElementById('hex-g1').value = g1;
+    document.getElementById('hex-g2').value = g2;
+    document.getElementById('hex-ac').value = ac;
+  }
+}
+
+function bindPicker(pickerId, hexId) {
+  const picker = document.getElementById(pickerId);
+  const hex = document.getElementById(hexId);
+  picker.addEventListener('input', () => {
+    hex.value = picker.value;
+    deactivatePresets();
+    refreshTheme();
+  });
+  hex.addEventListener('input', () => {
+    if (/^#[0-9a-f]{6}$/i.test(hex.value)) {
+      picker.value = hex.value;
+      deactivatePresets();
+      refreshTheme();
+    }
+  });
+}
+
+function deactivatePresets() {
+  document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+}
+
+function refreshTheme() {
+  applyTheme(
+    document.getElementById('color-g1').value,
+    document.getElementById('color-g2').value,
+    document.getElementById('color-ac').value
+  );
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  buildPresets();
+  applyTheme('#0f0c29', '#302b63', '#a78bfa');
+  bindPicker('color-g1', 'hex-g1');
+  bindPicker('color-g2', 'hex-g2');
+  bindPicker('color-ac', 'hex-ac');
+
+  addSkill(); addEducation(); addLanguage(); addExperience(); addSocial();
+
+  // hamburger
+  const toggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  let open = false;
+  toggle.addEventListener('click', e => {
+    e.stopPropagation();
+    open = !open;
+    toggle.classList.toggle('active', open);
+    mobileNav.classList.toggle('open', open);
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    open = false; toggle.classList.remove('active'); mobileNav.classList.remove('open');
+  }));
+  document.addEventListener('click', e => {
+    if (open && !toggle.contains(e.target) && !mobileNav.contains(e.target)) {
+      open = false; toggle.classList.remove('active'); mobileNav.classList.remove('open');
+    }
+  });
+});
+
+/* ── TOAST ── */
+function showToast(msg, dur = 3200) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+/* ── ESC ── */
+function esc(s) {
+  return String(s || '')
+    .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── FIELD GENERATORS ── */
+function addSkill(data = {}) {
+  const id = 'skill-' + Date.now();
+  document.getElementById('skills-container').insertAdjacentHTML('beforeend', `
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Skill</div>
+      <div class="two-col">
+        <div class="field"><label>Name</label><input type="text" class="skill-name" value="${esc(data.name)}" placeholder="e.g. CFD Analysis"></div>
+        <div class="field">
+          <label>Level (0–100)</label>
+          <input type="number" class="skill-level" min="0" max="100" value="${data.level || 80}">
+        </div>
+      </div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>
+  `);
+}
+
+function addEducation(data = {}) {
+  const id = 'edu-' + Date.now();
+  document.getElementById('education-container').insertAdjacentHTML('beforeend', `
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Education</div>
+      <div class="field"><label>Degree</label><input type="text" class="education-degree" value="${esc(data.degree)}" placeholder="M.Sc. Aerospace Engineering"></div>
+      <div class="field"><label>University</label><input type="text" class="education-university" value="${esc(data.university)}" placeholder="Delft University of Technology"></div>
+      <div class="two-col">
+        <div class="field"><label>Address</label><input type="text" class="education-address" value="${esc(data.address)}" placeholder="Delft, Netherlands"></div>
+        <div class="field"><label>Years</label><input type="text" class="education-years" value="${esc(data.years)}" placeholder="2018 – 2020"></div>
+      </div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>
+  `);
+}
+
+function addLanguage(data = {}) {
+  const id = 'lang-' + Date.now();
+  document.getElementById('languages-container').insertAdjacentHTML('beforeend', `
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Language</div>
+      <div class="two-col">
+        <div class="field"><label>Language</label><input type="text" class="language-name" value="${esc(data.name)}" placeholder="English"></div>
+        <div class="field"><label>Level (0–100)</label><input type="number" class="language-level" min="0" max="100" value="${data.level || 80}"></div>
+      </div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>
+  `);
+}
+
+function addExperience(data = {}) {
+  const id = 'exp-' + Date.now();
+  document.getElementById('experience-container').insertAdjacentHTML('beforeend', `
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Experience</div>
+      <div class="two-col">
+        <div class="field"><label>Job Title</label><input type="text" class="exp-title" value="${esc(data.title)}" placeholder="Senior Engineer"></div>
+        <div class="field"><label>Period</label><input type="text" class="exp-period" value="${esc(data.period)}" placeholder="Mar 2022 – Present"></div>
+      </div>
+      <div class="field"><label>Company</label><input type="text" class="exp-company" value="${esc(data.company)}" placeholder="Company Name"></div>
+      <div class="field"><label>Description</label><textarea class="exp-description" placeholder="What you accomplished…">${esc(data.description)}</textarea></div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>
+  `);
+}
+
+function addSocial(data = {}) {
+  const id = 'social-' + Date.now();
+  const icons = ['linkedin','github','twitter','dribbble','behance','instagram','youtube'];
+  const opts = icons.map(ic =>
+    `<option value="${ic}" ${data.icon===ic?'selected':''}>${ic.charAt(0).toUpperCase()+ic.slice(1)}</option>`
+  ).join('');
+  document.getElementById('social-container').insertAdjacentHTML('beforeend', `
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Social Link</div>
+      <div class="two-col">
+        <div class="field"><label>Platform</label>
+          <select class="social-icon">${opts}</select>
+        </div>
+        <div class="field"><label>Profile URL</label><input type="url" class="social-url" value="${esc(data.url)}" placeholder="https://linkedin.com/in/…"></div>
+      </div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>
+  `);
+}
+
+/* ── COLLECT ── */
+function collectData() {
+  const data = {
+    name:  document.getElementById('name').value.trim(),
+    title: document.getElementById('title').value.trim(),
+    about: document.getElementById('about').value.trim(),
+    theme: {
+      gradientStart: document.getElementById('color-g1').value,
+      gradientEnd:   document.getElementById('color-g2').value,
+      accentColor:   document.getElementById('color-ac').value,
+    },
+    skills: [], education: [], languages: [], experience: [],
+    contact: {
+      phone:   document.getElementById('contact-phone').value.trim(),
+      email:   document.getElementById('contact-email').value.trim(),
+      website: document.getElementById('contact-website').value.trim(),
+      address: document.getElementById('contact-address').value.trim(),
+      social: []
+    }
+  };
+
+  document.querySelectorAll('#skills-container [id^="skill-"]').forEach(el => {
+    const name = el.querySelector('.skill-name')?.value.trim();
+    const level = parseInt(el.querySelector('.skill-level')?.value);
+    if (name) data.skills.push({ name, level: isNaN(level) ? 80 : level });
+  });
+
+  document.querySelectorAll('#education-container [id^="edu-"]').forEach(el => {
+    const degree = el.querySelector('.education-degree')?.value.trim();
+    if (degree) data.education.push({
+      degree,
+      university: el.querySelector('.education-university').value.trim(),
+      address:    el.querySelector('.education-address').value.trim(),
+      years:      el.querySelector('.education-years').value.trim()
+    });
+  });
+
+  document.querySelectorAll('#languages-container [id^="lang-"]').forEach(el => {
+    const name = el.querySelector('.language-name')?.value.trim();
+    const level = parseInt(el.querySelector('.language-level')?.value);
+    if (name) data.languages.push({ name, level: isNaN(level) ? 80 : level });
+  });
+
+  document.querySelectorAll('#experience-container [id^="exp-"]').forEach(el => {
+    const title = el.querySelector('.exp-title')?.value.trim();
+    if (title) data.experience.push({
+      title,
+      period:      el.querySelector('.exp-period').value.trim(),
+      company:     el.querySelector('.exp-company').value.trim(),
+      description: el.querySelector('.exp-description').value.trim()
+    });
+  });
+
+  document.querySelectorAll('#social-container [id^="social-"]').forEach(el => {
+    const url = el.querySelector('.social-url')?.value.trim();
+    if (url) {
+      const icon = el.querySelector('.social-icon').value;
+      data.contact.social.push({
+        name: icon.charAt(0).toUpperCase() + icon.slice(1),
+        url, icon
+      });
+    }
+  });
+
+  return data;
+}
+
+/* ── LOAD ── */
+function loadJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      ['skills-container','education-container','languages-container',
+       'experience-container','social-container'].forEach(id => {
+        document.getElementById(id).innerHTML = '';
+      });
+      document.getElementById('name').value = d.name || '';
+      document.getElementById('title').value = d.title || '';
+      document.getElementById('about').value = d.about || '';
+      document.getElementById('contact-phone').value   = d.contact?.phone   || '';
+      document.getElementById('contact-email').value   = d.contact?.email   || '';
+      document.getElementById('contact-website').value = d.contact?.website || '';
+      document.getElementById('contact-address').value = d.contact?.address || '';
+      if (d.theme) applyTheme(
+        d.theme.gradientStart || '#0f0c29',
+        d.theme.gradientEnd   || '#302b63',
+        d.theme.accentColor   || '#a78bfa',
+        true
+      );
+      (d.skills     || []).forEach(x => addSkill(x));
+      (d.education  || (d.education ? [d.education] : [])).forEach(x => addEducation(x));
+      (d.languages  || []).forEach(x => addLanguage(x));
+      (d.experience || []).forEach(x => addExperience(x));
+      (d.contact?.social || []).forEach(x => addSocial(x));
+      showToast('✓ Data loaded successfully!');
+    } catch { showToast('Error: invalid JSON file'); }
+  };
+  reader.readAsText(file);
+}
+
+/* ── GENERATE ── */
+function generateJSON() {
+  const data = collectData();
+  if (!data.name) { showToast('Please enter your name first.'); return; }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'data.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  showToast('✓ data.json downloaded! Place it alongside index.html to view.');
+}
+
+function previewPortfolio() {
+  const data = collectData();
+  window.open('index.html#data=' + encodeURIComponent(JSON.stringify(data)), '_blank');
+}
+
+/* ── HELPERS ── */
+function hexAlpha(hex, a) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+</script>
+</body>
+</html>
