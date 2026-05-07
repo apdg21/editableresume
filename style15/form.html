@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --g1: #fdf8f3;
+      --g2: #f5ede3;
+      --ac: #c0622f;
+      --ac-light: #f0c4a8;
+      --ac-dark: #8b3d18;
+      --ac-dim: rgba(192,98,47,0.10);
+      --ac-glow: rgba(192,98,47,0.25);
+      --ink: #1e1812;
+      --muted: #6b5c4e;
+      --dim: #a8978a;
+      --surface: rgba(255,255,255,0.80);
+      --border: rgba(192,98,47,0.14);
+      --input-bg: rgba(255,255,255,0.90);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Inter', sans-serif;
+      --nav-h: 60px;
+      --shadow: 0 2px 16px rgba(100,60,30,0.07);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: linear-gradient(150deg, var(--g1) 0%, var(--g2) 100%);
+      background-attachment: fixed;
+      color: var(--ink); min-height: 100vh; line-height: 1.7;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
+      background: rgba(253,248,243,0.94);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+    }
+    .nav-logo {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.1rem; color: var(--ac); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ac); }
+    .nav-badge {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ac-dim); color: var(--ac);
+      border: 1px solid var(--ac-glow);
+      padding: 0.28rem 0.8rem; border-radius: 100px;
+    }
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 5px; padding: 5px;
+    }
+    .hamburger .bar {
+      display: block; width: 22px; height: 2px;
+      background: var(--ink); border-radius: 2px; transition: all 0.3s;
+    }
+    .hamburger.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active .bar:nth-child(2) { opacity: 0; }
+    .hamburger.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0; z-index: 199;
+      background: rgba(253,248,243,0.98); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border); flex-direction: column;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; padding: 0.88rem 2rem;
+      border-bottom: 1px solid rgba(192,98,47,0.06); transition: color 0.2s, background 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--ac); background: var(--ac-dim); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: calc(var(--nav-h) + 3rem) 2rem 2rem;
+      max-width: 760px; margin: 0 auto; position: relative; z-index: 1;
+    }
+    .page-eyebrow {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--ac); margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .page-eyebrow::before { content:''; width:1.5rem; height:1px; background:var(--ac); display:block; }
+    .page-title {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(2rem,4vw,2.8rem); font-weight: 700;
+      color: var(--ink); margin-bottom: 0.3rem;
+    }
+    .page-sub { font-size: 0.84rem; color: var(--muted); font-weight: 300; }
+
+    /* ── FORM WRAP ── */
+    .form-wrap {
+      max-width: 760px; margin: 0 auto;
+      padding: 1rem 2rem 7rem; position: relative; z-index: 1;
+    }
+
+    /* ── CARDS ── */
+    .form-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; backdrop-filter: blur(12px);
+      padding: 1.9rem 2.1rem; margin-bottom: 1.3rem;
+      box-shadow: var(--shadow);
+    }
+    .card-head {
+      display: flex; align-items: center; gap: 0.85rem;
+      margin-bottom: 1.5rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-icon {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: var(--ac-dim); border: 1px solid var(--ac-glow);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ac); font-size: 0.74rem; flex-shrink: 0;
+    }
+    .card-title {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.2rem; font-weight: 700; color: var(--ink);
+    }
+
+    /* ── GRID ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+
+    /* ── FIELDS ── */
+    .field { margin-bottom: 1.05rem; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      display: block; font-size: 0.58rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 0.4rem;
+    }
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="url"], textarea, select {
+      width: 100%; background: var(--input-bg); border: 1px solid var(--border);
+      border-radius: 7px; padding: 0.66rem 0.92rem;
+      font-family: var(--sans); font-size: 0.85rem;
+      color: var(--ink); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--ac); box-shadow: 0 0 0 3px var(--ac-dim);
+    }
+    input::placeholder, textarea::placeholder { color: var(--dim); }
+    textarea { min-height: 85px; resize: vertical; }
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c0622f' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
+    }
+    select option { background: #fff; color: var(--ink); }
+
+    /* ── THEME ── */
+    .presets-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+    .preset-swatch {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer; position: relative; overflow: hidden;
+      transition: transform 0.15s, border-color 0.15s; box-shadow: var(--shadow);
+    }
+    .preset-swatch:hover { transform: scale(1.12); }
+    .preset-swatch.active { border-color: var(--ac); box-shadow: 0 0 0 2px var(--ac-glow); }
+    .preset-swatch .dot {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.6);
+    }
+    .color-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.1rem; }
+    .color-wrap { display: flex; align-items: center; gap: 0.55rem; }
+    input[type="color"] {
+      width: 36px; height: 36px; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--input-bg);
+      cursor: pointer; padding: 2px; flex-shrink: 0;
+    }
+    .hex-input {
+      flex: 1; background: var(--input-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.5rem 0.75rem;
+      font-family: monospace; font-size: 0.8rem; color: var(--ink); outline: none;
+      transition: border-color 0.2s;
+    }
+    .hex-input:focus { border-color: var(--ac); }
+    .preview-bar { height: 6px; border-radius: 3px; margin-top: 1.1rem; transition: background 0.35s; }
+
+    /* ── DYNAMIC ITEMS ── */
+    .dyn-item {
+      background: rgba(255,255,255,0.6); border: 1px solid var(--border);
+      border-left: 3px solid var(--ac-light); border-radius: 9px;
+      padding: 1.3rem 1.4rem; margin-bottom: 0.85rem;
+    }
+    .dyn-label {
+      font-size: 0.55rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ac); margin-bottom: 0.9rem;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      font-family: var(--sans); font-size: 0.67rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.52rem 1.1rem; transition: all 0.18s;
+    }
+    .btn-ac { background: var(--ac); color: #fff; border-radius: 100px; box-shadow: 0 3px 12px var(--ac-glow); }
+    .btn-ac:hover { background: var(--ac-dark); transform: translateY(-1px); }
+    .btn-ghost { background: var(--ac-dim); color: var(--ac); border: 1px solid var(--ac-glow); border-radius: 100px; }
+    .btn-ghost:hover { background: rgba(192,98,47,0.18); }
+    .btn-danger {
+      background: rgba(200,50,50,0.07); color: rgba(180,40,40,0.7);
+      border: 1px solid rgba(200,50,50,0.14); border-radius: 6px;
+    }
+    .btn-danger:hover { background: rgba(200,50,50,0.15); color: #c03232; }
+    .btn-add {
+      width: 100%; justify-content: center; padding: 0.65rem; border-radius: 8px;
+      background: var(--ac-dim); color: var(--ac); border: 1px dashed var(--ac-glow);
+    }
+    .btn-add:hover { background: rgba(192,98,47,0.18); }
+
+    /* ── ACTION BAR ── */
+    .action-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(253,248,243,0.97); backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      padding: 0.9rem 2rem;
+      display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 76px; right: 1.5rem; z-index: 300;
+      background: #fff; border: 1px solid var(--ac-light); border-left: 3px solid var(--ac);
+      border-radius: 8px; padding: 0.8rem 1.3rem; font-size: 0.8rem; color: var(--ink);
+      box-shadow: var(--shadow); transform: translateY(14px); opacity: 0;
+      transition: all 0.25s; pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .navbar { padding: 0 1.2rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .form-wrap, .page-header { padding-left: 1.2rem; padding-right: 1.2rem; }
+      .two-col, .color-row { grid-template-columns: 1fr; }
+      .action-bar { padding: 0.9rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a class="nav-logo" href="index.html">Resume</a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html"><i class="fas fa-eye"></i> View</a></li>
+    <li><a href="#personal">Personal</a></li>
+    <li><a href="#theme-section">Theme</a></li>
+    <li><a href="#exp-section">Experience</a></li>
+  </ul>
+  <span class="nav-badge"><i class="fas fa-pen-nib"></i> Builder</span>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html"><i class="fas fa-eye"></i> View Resume</a>
+  <a href="#personal">Personal</a>
+  <a href="#theme-section">Theme</a>
+  <a href="#exp-section">Experience</a>
+  <a href="#edu-section">Education</a>
+  <a href="#skills-section">Skills</a>
+  <a href="#refs-section">References</a>
+  <a href="#contact-section">Contact</a>
+</div>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="page-eyebrow">Resume Builder</div>
+  <h1 class="page-title">Build Your Resume</h1>
+  <p class="page-sub">Fill in your details, pick a background theme, then generate your data file.</p>
+</header>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+  <!-- PERSONAL -->
+  <div class="form-card" id="personal">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-user"></i></div>
+      <h2 class="card-title">Personal Information</h2>
+    </div>
+    <div class="two-col">
+      <div class="field"><label>Full Name</label><input type="text" id="name" placeholder="Marcus Reyes"></div>
+      <div class="field"><label>Job Title</label><input type="text" id="job-title" placeholder="Senior Financial Analyst"></div>
+    </div>
+    <div class="field"><label>About / Summary</label><textarea id="about" placeholder="A compelling professional summary…"></textarea></div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="form-card" id="contact-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-address-card"></i></div>
+      <h2 class="card-title">Contact</h2>
+    </div>
+    <div class="two-col">
+      <div class="field"><label>Phone</label><input type="tel" id="contact-phone" placeholder="+63 917 000 0000"></div>
+      <div class="field"><label>Email</label><input type="email" id="contact-email" placeholder="you@example.com"></div>
+    </div>
+    <div class="field"><label>Address / Location</label><input type="text" id="contact-address" placeholder="Makati City, Metro Manila"></div>
+  </div>
+
+  <!-- THEME -->
+  <div class="form-card" id="theme-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-palette"></i></div>
+      <h2 class="card-title">Background Theme</h2>
+    </div>
+    <label style="margin-bottom:.75rem;display:block">Quick Presets</label>
+    <div class="presets-row" id="presets-row"></div>
+    <div class="color-row">
+      <div class="field">
+        <label>Gradient Start</label>
+        <div class="color-wrap">
+          <input type="color" id="color-g1" value="#fdf8f3">
+          <input type="text" class="hex-input" id="hex-g1" value="#fdf8f3" maxlength="7">
+        </div>
+      </div>
+      <div class="field">
+        <label>Gradient End</label>
+        <div class="color-wrap">
+          <input type="color" id="color-g2" value="#f5ede3">
+          <input type="text" class="hex-input" id="hex-g2" value="#f5ede3" maxlength="7">
+        </div>
+      </div>
+      <div class="field">
+        <label>Accent Color</label>
+        <div class="color-wrap">
+          <input type="color" id="color-ac" value="#c0622f">
+          <input type="text" class="hex-input" id="hex-ac" value="#c0622f" maxlength="7">
+        </div>
+      </div>
+    </div>
+    <div class="preview-bar" id="preview-bar"></div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="form-card" id="exp-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-briefcase"></i></div>
+      <h2 class="card-title">Work Experience</h2>
+    </div>
+    <div id="exp-container"></div>
+    <button class="btn btn-add" onclick="addExp()"><i class="fas fa-plus"></i> Add Experience</button>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="form-card" id="edu-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+      <h2 class="card-title">Education</h2>
+    </div>
+    <div id="edu-container"></div>
+    <button class="btn btn-add" onclick="addEdu()"><i class="fas fa-plus"></i> Add Education</button>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="form-card" id="skills-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+      <h2 class="card-title">Skills</h2>
+    </div>
+    <div id="skills-container"></div>
+    <button class="btn btn-add" onclick="addSkill()"><i class="fas fa-plus"></i> Add Skill</button>
+  </div>
+
+  <!-- LANGUAGES -->
+  <div class="form-card" id="lang-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-globe"></i></div>
+      <h2 class="card-title">Languages</h2>
+    </div>
+    <div id="lang-container"></div>
+    <button class="btn btn-add" onclick="addLang()"><i class="fas fa-plus"></i> Add Language</button>
+  </div>
+
+  <!-- REFERENCES -->
+  <div class="form-card" id="refs-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-users"></i></div>
+      <h2 class="card-title">References</h2>
+    </div>
+    <div id="refs-container"></div>
+    <button class="btn btn-add" onclick="addRef()"><i class="fas fa-plus"></i> Add Reference</button>
+  </div>
+
+  <!-- FOOTER / SOCIALS -->
+  <div class="form-card" id="footer-section">
+    <div class="card-head">
+      <div class="card-icon"><i class="fas fa-share-alt"></i></div>
+      <h2 class="card-title">Footer & Socials</h2>
+    </div>
+    <div class="field"><label>Footer Text</label>
+      <input type="text" id="footer-text" placeholder="© 2025 Your Name. All rights reserved.">
+    </div>
+    <div id="socials-container"></div>
+    <button class="btn btn-add" onclick="addSocial()"><i class="fas fa-plus"></i> Add Social Link</button>
+  </div>
+
+</div>
+
+<!-- ACTION BAR -->
+<div class="action-bar">
+  <input type="file" id="load-json" accept=".json" style="display:none" onchange="loadJSON(event)">
+  <button class="btn btn-ghost" onclick="document.getElementById('load-json').click()">
+    <i class="fas fa-upload"></i> Load JSON
+  </button>
+  <button class="btn btn-ac" onclick="generateJSON()">
+    <i class="fas fa-download"></i> Generate & Download
+  </button>
+  <button class="btn btn-ghost" onclick="preview()">
+    <i class="fas fa-eye"></i> Preview
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── PRESETS ── */
+const PRESETS = [
+  { label:'Terracotta', g1:'#fdf8f3', g2:'#f5ede3', ac:'#c0622f' },
+  { label:'Sage',       g1:'#fdf6ee', g2:'#e8f5e9', ac:'#5a9e6f' },
+  { label:'Ocean',      g1:'#f0f8ff', g2:'#e3f2fd', ac:'#2980b9' },
+  { label:'Lavender',   g1:'#faf5ff', g2:'#ede7f6', ac:'#7c5cbf' },
+  { label:'Rose',       g1:'#fff5f7', g2:'#fce4ec', ac:'#c2185b' },
+  { label:'Slate',      g1:'#f4f6f8', g2:'#e8ecf0', ac:'#546e7a' },
+  { label:'Amber',      g1:'#fffdf0', g2:'#fff8e1', ac:'#e67e22' },
+  { label:'Teal',       g1:'#f0fdfb', g2:'#e0f2f1', ac:'#00897b' },
+];
+
+function buildPresets() {
+  const wrap = document.getElementById('presets-row');
+  PRESETS.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'preset-swatch' + (i === 0 ? ' active' : '');
+    btn.title = p.label;
+    btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+    btn.innerHTML = `<span class="dot" style="background:${p.ac}"></span>`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      applyTheme(p.g1, p.g2, p.ac, true);
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function applyTheme(g1, g2, ac, updateInputs = false) {
+  document.body.style.background = `linear-gradient(150deg, ${g1} 0%, ${g2} 100%)`;
+  document.body.style.backgroundAttachment = 'fixed';
+  const root = document.documentElement;
+  root.style.setProperty('--g1', g1);
+  root.style.setProperty('--g2', g2);
+  root.style.setProperty('--ac', ac);
+  root.style.setProperty('--ac-dim',  hexA(ac, 0.10));
+  root.style.setProperty('--ac-glow', hexA(ac, 0.25));
+  document.getElementById('preview-bar').style.background = `linear-gradient(90deg, ${g1}, ${ac}, ${g2})`;
+  if (updateInputs) {
+    document.getElementById('color-g1').value = g1; document.getElementById('hex-g1').value = g1;
+    document.getElementById('color-g2').value = g2; document.getElementById('hex-g2').value = g2;
+    document.getElementById('color-ac').value = ac; document.getElementById('hex-ac').value = ac;
+  }
+}
+
+function bindPicker(pid, hid) {
+  const p = document.getElementById(pid), h = document.getElementById(hid);
+  p.addEventListener('input', () => { h.value = p.value; deactivate(); refresh(); });
+  h.addEventListener('input', () => { if (/^#[0-9a-f]{6}$/i.test(h.value)) { p.value = h.value; deactivate(); refresh(); } });
+}
+function deactivate() { document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active')); }
+function refresh() { applyTheme(document.getElementById('color-g1').value, document.getElementById('color-g2').value, document.getElementById('color-ac').value); }
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  buildPresets(); applyTheme('#fdf8f3','#f5ede3','#c0622f');
+  bindPicker('color-g1','hex-g1'); bindPicker('color-g2','hex-g2'); bindPicker('color-ac','hex-ac');
+  addExp(); addEdu(); addSkill(); addLang(); addRef(); addSocial();
+
+  const ham = document.getElementById('hamburger'), mn = document.getElementById('mobile-nav');
+  let open = false;
+  ham.addEventListener('click', e => { e.stopPropagation(); open = !open; ham.classList.toggle('active',open); mn.classList.toggle('open',open); });
+  mn.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { open=false; ham.classList.remove('active'); mn.classList.remove('open'); }));
+  document.addEventListener('click', e => { if (open && !ham.contains(e.target) && !mn.contains(e.target)) { open=false; ham.classList.remove('active'); mn.classList.remove('open'); } });
+});
+
+/* ── TOAST ── */
+function toast(msg, dur=3200) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),dur); }
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ── FIELD GENERATORS ── */
+function addExp(d={}) {
+  const id='exp-'+Date.now();
+  document.getElementById('exp-container').insertAdjacentHTML('beforeend',`
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Experience</div>
+      <div class="two-col">
+        <div class="field"><label>Company</label><input type="text" class="e-company" value="${esc(d.company)}" placeholder="Company Name"></div>
+        <div class="field"><label>Role / Title</label><input type="text" class="e-role" value="${esc(d.role)}" placeholder="Senior Analyst"></div>
+      </div>
+      <div class="two-col">
+        <div class="field"><label>Start</label><input type="text" class="e-start" value="${esc(d.start)}" placeholder="Jun 2020"></div>
+        <div class="field"><label>End</label><input type="text" class="e-end" value="${esc(d.end)}" placeholder="Present"></div>
+      </div>
+      <div class="field"><label>Details (one per line)</label><textarea class="e-details" placeholder="Each bullet on its own line">${esc((d.details||[]).join('\n'))}</textarea></div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>`);
+}
+
+function addEdu(d={}) {
+  const id='edu-'+Date.now();
+  document.getElementById('edu-container').insertAdjacentHTML('beforeend',`
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Education</div>
+      <div class="field"><label>Degree</label><input type="text" class="ed-degree" value="${esc(d.degree)}" placeholder="B.Sc. Accountancy"></div>
+      <div class="field"><label>Institution</label><input type="text" class="ed-inst" value="${esc(d.institution)}" placeholder="University Name"></div>
+      <div class="two-col">
+        <div class="field"><label>Start Year</label><input type="text" class="ed-start" value="${esc(d.start)}" placeholder="2012"></div>
+        <div class="field"><label>End Year</label><input type="text" class="ed-end" value="${esc(d.end)}" placeholder="2016"></div>
+      </div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>`);
+}
+
+function addSkill(val='') {
+  const id='sk-'+Date.now();
+  document.getElementById('skills-container').insertAdjacentHTML('beforeend',`
+    <div class="dyn-item" id="${id}" style="display:flex;align-items:center;gap:.7rem;padding:.8rem 1.1rem;">
+      <input type="text" class="sk-val" value="${esc(val)}" placeholder="e.g. Financial Modelling" style="flex:1">
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i></button>
+    </div>`);
+}
+
+function addLang(val='') {
+  const id='lg-'+Date.now();
+  document.getElementById('lang-container').insertAdjacentHTML('beforeend',`
+    <div class="dyn-item" id="${id}" style="display:flex;align-items:center;gap:.7rem;padding:.8rem 1.1rem;">
+      <input type="text" class="lg-val" value="${esc(val)}" placeholder="e.g. English (Fluent)" style="flex:1">
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i></button>
+    </div>`);
+}
+
+function addRef(d={}) {
+  const id='rf-'+Date.now();
+  document.getElementById('refs-container').insertAdjacentHTML('beforeend',`
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Reference</div>
+      <div class="two-col">
+        <div class="field"><label>Name</label><input type="text" class="rf-name" value="${esc(d.name)}" placeholder="Dr. Juan Santos"></div>
+        <div class="field"><label>Role</label><input type="text" class="rf-role" value="${esc(d.role)}" placeholder="Head of Finance, Company"></div>
+      </div>
+      <div class="two-col">
+        <div class="field"><label>Phone</label><input type="tel" class="rf-phone" value="${esc(d.phone)}" placeholder="+63 2 8000 0000"></div>
+        <div class="field"><label>Email</label><input type="email" class="rf-email" value="${esc(d.email)}" placeholder="ref@company.com"></div>
+      </div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>`);
+}
+
+function addSocial(d={}) {
+  const id='sc-'+Date.now();
+  const platforms=['LinkedIn','Twitter','Facebook','Instagram','GitHub','Dribbble'];
+  const opts=platforms.map(p=>`<option value="${p}" ${d.name===p?'selected':''}>${p}</option>`).join('');
+  document.getElementById('socials-container').insertAdjacentHTML('beforeend',`
+    <div class="dyn-item" id="${id}">
+      <div class="dyn-label">Social Link</div>
+      <div class="two-col">
+        <div class="field"><label>Platform</label><select class="sc-name">${opts}</select></div>
+        <div class="field"><label>URL</label><input type="url" class="sc-url" value="${esc(d.url)}" placeholder="https://linkedin.com/in/…"></div>
+      </div>
+      <button class="btn btn-danger" onclick="document.getElementById('${id}').remove()"><i class="fas fa-trash-alt"></i> Remove</button>
+    </div>`);
+}
+
+/* ── COLLECT ── */
+function collect() {
+  const experience=[], education=[], skills=[], languages=[], references=[], socials=[];
+
+  document.querySelectorAll('[id^="exp-"]').forEach(el => {
+    const role=el.querySelector('.e-role')?.value.trim();
+    if(role) experience.push({
+      company: el.querySelector('.e-company').value.trim(), role,
+      start: el.querySelector('.e-start').value.trim(),
+      end:   el.querySelector('.e-end').value.trim(),
+      details: el.querySelector('.e-details').value.split('\n').filter(d=>d.trim())
+    });
+  });
+  document.querySelectorAll('[id^="edu-"]').forEach(el => {
+    const degree=el.querySelector('.ed-degree')?.value.trim();
+    if(degree) education.push({ degree, institution:el.querySelector('.ed-inst').value.trim(), start:el.querySelector('.ed-start').value.trim(), end:el.querySelector('.ed-end').value.trim() });
+  });
+  document.querySelectorAll('.sk-val').forEach(el => { if(el.value.trim()) skills.push(el.value.trim()); });
+  document.querySelectorAll('.lg-val').forEach(el => { if(el.value.trim()) languages.push(el.value.trim()); });
+  document.querySelectorAll('[id^="rf-"]').forEach(el => {
+    const name=el.querySelector('.rf-name')?.value.trim();
+    if(name) references.push({ name, role:el.querySelector('.rf-role').value.trim(), phone:el.querySelector('.rf-phone').value.trim(), email:el.querySelector('.rf-email').value.trim() });
+  });
+  document.querySelectorAll('[id^="sc-"]').forEach(el => {
+    const url=el.querySelector('.sc-url')?.value.trim();
+    if(url) socials.push({ name:el.querySelector('.sc-name').value, url });
+  });
+
+  return {
+    name:  document.getElementById('name').value.trim(),
+    title: document.getElementById('job-title').value.trim(),
+    about: document.getElementById('about').value.trim(),
+    theme: {
+      gradientStart: document.getElementById('color-g1').value,
+      gradientEnd:   document.getElementById('color-g2').value,
+      accentColor:   document.getElementById('color-ac').value,
+    },
+    contact: {
+      phone:   document.getElementById('contact-phone').value.trim(),
+      email:   document.getElementById('contact-email').value.trim(),
+      address: document.getElementById('contact-address').value.trim()
+    },
+    experience, education, skills, languages, references,
+    footer: { text: document.getElementById('footer-text').value.trim(), socials }
+  };
+}
+
+/* ── LOAD ── */
+function loadJSON(e) {
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try {
+      const d=JSON.parse(ev.target.result);
+      ['exp-container','edu-container','skills-container','lang-container','refs-container','socials-container']
+        .forEach(id=>document.getElementById(id).innerHTML='');
+      document.getElementById('name').value         = d.name||'';
+      document.getElementById('job-title').value    = d.title||'';
+      document.getElementById('about').value        = d.about||'';
+      document.getElementById('contact-phone').value  = d.contact?.phone||'';
+      document.getElementById('contact-email').value  = d.contact?.email||'';
+      document.getElementById('contact-address').value= d.contact?.address||'';
+      document.getElementById('footer-text').value    = d.footer?.text||'';
+      if(d.theme) applyTheme(d.theme.gradientStart||'#fdf8f3',d.theme.gradientEnd||'#f5ede3',d.theme.accentColor||'#c0622f',true);
+      (d.experience||[]).forEach(x=>addExp(x));
+      (d.education||[]).forEach(x=>addEdu(x));
+      (d.skills||[]).forEach(x=>addSkill(x));
+      (d.languages||[]).forEach(x=>addLang(x));
+      (d.references||[]).forEach(x=>addRef(x));
+      (d.footer?.socials||[]).forEach(x=>addSocial(x));
+      toast('✓ Data loaded successfully!');
+    } catch { toast('Error: invalid JSON file'); }
+  };
+  r.readAsText(file);
+}
+
+/* ── GENERATE ── */
+function generateJSON() {
+  const data=collect();
+  if(!data.name){ toast('Please enter your name first.'); return; }
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='data.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast('✓ data.json downloaded! Place it alongside index.html to view.');
+}
+
+function preview() {
+  window.open('index.html#data='+encodeURIComponent(JSON.stringify(collect())),'_blank');
+}
+
+function hexA(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;}
+</script>
+</body>
+</html>
