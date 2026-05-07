@@ -1,0 +1,142 @@
+{
+  "title": "Isabelle Santos | Registered Dietitian",
+  "theme": {
+    "gradientStart": "#fdf6ee",
+    "gradientEnd": "#e8f5e9",
+    "accentColor": "#5a9e6f",
+    "accentLight": "#c8e6c9",
+    "accentDark": "#2e7d52"
+  },
+  "profile": {
+    "name": "Isabelle Santos",
+    "image": "assets/profile.jpg",
+    "social_links": [
+      { "platform": "linkedin",  "url": "https://linkedin.com",  "icon": "fab fa-linkedin" },
+      { "platform": "instagram", "url": "https://instagram.com", "icon": "fab fa-instagram" },
+      { "platform": "twitter",   "url": "https://twitter.com",   "icon": "fab fa-twitter" }
+    ]
+  },
+  "hero": {
+    "title": "Registered Dietitian & Nutrition Educator",
+    "description": "Helping people build sustainable, evidence-based relationships with food — one plate at a time.",
+    "image": "assets/designer-work.jpg"
+  },
+  "about": {
+    "description": [
+      "Registered Dietitian Nutritionist (RDN) with 6 years of clinical and community nutrition experience. I specialise in medical nutrition therapy, weight management counselling, and preventive health education for diverse populations across Metro Manila and Central Luzon.",
+      "My approach is rooted in culturally-sensitive, person-centred care — I meet clients where they are, adapt traditional Filipino cuisine to therapeutic goals, and use behaviour-change science to drive lasting results."
+    ],
+    "personal_info": {
+      "email": "isabelle@nutricare.ph",
+      "location": "San Fernando, Pampanga, PH",
+      "availability": "Accepting new clients"
+    },
+    "stats": [
+      { "value": "6+",  "label": "Years in Practice" },
+      { "value": "800+","label": "Clients Counselled" },
+      { "value": "97%", "label": "Client Retention" }
+    ]
+  },
+  "experience": [
+    {
+      "date": "Jan 2022 – Present",
+      "title": "Senior Clinical Dietitian",
+      "company": "Manila Doctors Hospital",
+      "responsibilities": [
+        "Manage medical nutrition therapy for 40+ inpatients weekly across oncology, nephrology, and ICU wards.",
+        "Developed a renal diet education module adopted hospital-wide, reducing diet-related readmissions by 19%.",
+        "Lead monthly nutrition grand rounds and supervise 3 dietetic interns per rotation.",
+        "Collaborate with the multidisciplinary team on nutrition support protocols and parenteral nutrition orders."
+      ]
+    },
+    {
+      "date": "Jun 2019 – Dec 2021",
+      "title": "Community Nutrition Officer",
+      "company": "Department of Health — Region III",
+      "responsibilities": [
+        "Coordinated nutrition programs across 12 municipalities serving 60,000+ beneficiaries.",
+        "Trained 180 barangay health workers on complementary feeding, micronutrient supplementation, and IMCI.",
+        "Authored the Regional Operation Timbang monitoring report submitted to the National Nutrition Council.",
+        "Spearheaded a school-based feeding program pilot that improved wasting prevalence by 23% in target schools."
+      ]
+    },
+    {
+      "date": "Jul 2018 – May 2019",
+      "title": "Dietitian I",
+      "company": "Jose B. Lingad Memorial Regional Hospital",
+      "responsibilities": [
+        "Conducted nutritional assessments and diet counselling for outpatient and inpatient clients.",
+        "Assisted in diet order verification and therapeutic meal planning in the food service department.",
+        "Participated in the hospital quality improvement committee on malnutrition screening protocols."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "category": "Clinical Nutrition",
+      "items": [
+        { "name": "Medical Nutrition Therapy",  "progress": 95 },
+        { "name": "Enteral & Parenteral Support","progress": 88 },
+        { "name": "Nutritional Assessment",      "progress": 93 }
+      ]
+    },
+    {
+      "category": "Counselling & Education",
+      "items": [
+        { "name": "Motivational Interviewing",  "progress": 90 },
+        { "name": "Group Health Education",     "progress": 87 },
+        { "name": "Behaviour Change Coaching",  "progress": 85 }
+      ]
+    },
+    {
+      "category": "Languages",
+      "items": [
+        { "name": "Filipino",  "progress": 100 },
+        { "name": "English",   "progress": 96 },
+        { "name": "Kapampangan","progress": 90 }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "date": "2021 – 2023",
+      "title": "M.Sc. Human Nutrition",
+      "institution": "University of the Philippines Manila",
+      "description": "Thesis on the effectiveness of mHealth interventions in improving dietary adherence among type 2 diabetic patients in peri-urban communities."
+    },
+    {
+      "date": "2014 – 2018",
+      "title": "B.Sc. Nutrition and Dietetics, cum laude",
+      "institution": "Holy Angel University",
+      "description": "Board Passer — Nutritionist-Dietitian Licensure Exam 2018 (89th percentile nationwide)."
+    }
+  ],
+  "awards": [
+    {
+      "date": "2023",
+      "title": "Outstanding Clinical Dietitian of the Year",
+      "institution": "Philippine Dietetic Association — NCR",
+      "description": "Recognised for excellence in medical nutrition therapy and measurable patient outcomes."
+    },
+    {
+      "date": "2021",
+      "title": "Public Health Nutrition Excellence Award",
+      "institution": "National Nutrition Council",
+      "description": "Awarded for the successful regional school-based feeding program pilot impacting 4,200 school children."
+    },
+    {
+      "date": "2018",
+      "title": "Best Undergraduate Research",
+      "institution": "Holy Angel University Research Congress",
+      "description": "For the study: 'Dietary Patterns and Metabolic Syndrome Risk among Urban Filipino Adults'."
+    }
+  ],
+  "contact": {
+    "email": "isabelle@nutricare.ph",
+    "phone": "+63 918 774 3302",
+    "location": "San Fernando, Pampanga, Philippines"
+  },
+  "footer": {
+    "copyright": "© {year} Isabelle Santos, RDN. All rights reserved."
+  }
+}
