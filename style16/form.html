@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>
+    :root {
+      --g1: #0a0e1a;
+      --g2: #0d1f3c;
+      --accent: #00e5ff;
+      --accent-dim: rgba(0,229,255,0.12);
+      --accent-glow: rgba(0,229,255,0.35);
+      --accent-border: rgba(0,229,255,0.45);
+      --text-primary: #e8edf5;
+      --text-secondary: #8a9ab8;
+      --text-muted: #4a5a78;
+      --surface: rgba(255,255,255,0.04);
+      --surface-hover: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
+      --input-bg: rgba(255,255,255,0.06);
+      --nav-h: 68px;
+      --serif: 'Sora', sans-serif;
+      --mono: 'Space Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--serif);
+      background: linear-gradient(160deg, var(--g1) 0%, var(--g2) 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 100px;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.6;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(10,14,26,0.93);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 2rem; height: 100%;
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    }
+    .nav-brand {
+      font-family: var(--mono); font-size: 0.7rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); text-decoration: none; white-space: nowrap;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .nav-badge {
+      background: var(--accent); color: #0a0e1a;
+      font-family: var(--mono); font-size: 0.55rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.2rem 0.55rem; font-weight: 700;
+    }
+    .nav-links { display: flex; align-items: center; gap: 0; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-secondary); text-decoration: none;
+      padding: 0.5rem 0.85rem; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-view {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border: 1px solid var(--accent-border);
+      color: var(--accent); background: transparent;
+      text-decoration: none; transition: all 0.2s; white-space: nowrap;
+    }
+    .nav-view:hover { background: var(--accent-dim); box-shadow: 0 0 12px var(--accent-glow); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px; background: none; border: none;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-primary); transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav {
+      display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+      background: rgba(10,14,26,0.97); border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px); z-index: 999; padding: 0.5rem 0;
+    }
+    .mobile-nav.open { display: block; }
+    .mobile-nav a {
+      display: block; font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-secondary); text-decoration: none;
+      padding: 0.85rem 2rem; border-bottom: 1px solid var(--border); transition: color 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--accent); }
+
+    /* ── Page content ── */
+    main { position: relative; z-index: 1; padding-top: calc(var(--nav-h) + 3rem); }
+    .page-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem 2rem; }
+
+    /* Page header */
+    .page-header { margin-bottom: 3rem; }
+    .page-eyebrow {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .page-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--accent); }
+    .page-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; }
+    .page-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
+
+    /* ── Cards ── */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      margin-bottom: 2rem;
+      backdrop-filter: blur(16px);
+      position: relative; overflow: hidden;
+    }
+    .form-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 60px;
+      background: radial-gradient(ellipse at 50% -10%, rgba(0,229,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-header-left { display: flex; align-items: center; gap: 1rem; }
+    .card-num {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.2em; color: var(--accent);
+    }
+    .card-title-text {
+      font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
+    }
+    .card-body { padding: 2rem; }
+
+    /* ── Form fields ── */
+    .form-row { display: grid; gap: 1.25rem; margin-bottom: 1.25rem; }
+    .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-row.cols-1 { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 400;
+    }
+    .form-input {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: var(--serif);
+      font-size: 0.88rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    .form-input:focus {
+      border-color: var(--accent-border);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    select.form-input { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%238a9ab8' d='M4 6l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 14px; padding-right: 2.5rem; }
+    textarea.form-input { min-height: 110px; resize: vertical; line-height: 1.6; }
+
+    /* Dynamic entry cards */
+    .dynamic-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent-border);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .dynamic-card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .dynamic-card-label {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    }
+    .btn-remove {
+      background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3);
+      color: #ff6b6b; cursor: pointer; padding: 0.35rem 0.7rem;
+      font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em;
+      text-transform: uppercase; transition: all 0.2s;
+    }
+    .btn-remove:hover { background: rgba(255,80,80,0.22); box-shadow: 0 0 10px rgba(255,80,80,0.2); }
+    .btn-remove:disabled, .btn-remove[style*="hidden"] { visibility: hidden; }
+
+    .btn-add {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--accent-dim); border: 1px dashed var(--accent-border);
+      color: var(--accent); cursor: pointer;
+      padding: 0.75rem 1.5rem; width: 100%;
+      transition: all 0.2s; margin-top: 0.5rem;
+    }
+    .btn-add:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 14px var(--accent-glow); }
+
+    /* Responsibility row */
+    .resp-row { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
+    .resp-row .form-input { flex: 1; }
+    .btn-remove-small {
+      background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.25);
+      color: #ff6b6b; cursor: pointer; padding: 0.6rem 0.75rem;
+      transition: all 0.2s; flex-shrink: 0; font-size: 0.75rem;
+    }
+    .btn-remove-small:hover { background: rgba(255,80,80,0.2); }
+
+    /* Social icon preview */
+    .social-icon-preview {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 0.9rem; background: var(--input-bg);
+      align-self: flex-end; margin-bottom: 1px;
+    }
+
+    /* ── Theme Picker ── */
+    .theme-section { }
+    .presets-label {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 1rem;
+    }
+    .preset-swatches {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem;
+    }
+    .preset-swatch {
+      width: 52px; height: 52px;
+      border: 2px solid transparent;
+      cursor: pointer; position: relative;
+      transition: border-color 0.2s, transform 0.15s;
+      outline: none;
+    }
+    .preset-swatch:hover { transform: scale(1.08); }
+    .preset-swatch.active { border-color: white; box-shadow: 0 0 0 2px var(--accent); }
+    .preset-swatch .accent-dot {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .color-pickers-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .color-picker-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .color-picker-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .color-picker-row { display: flex; gap: 0.5rem; align-items: center; }
+    input[type="color"] {
+      width: 38px; height: 38px; border: 1px solid var(--border);
+      background: none; cursor: pointer; padding: 2px; flex-shrink: 0;
+    }
+    .hex-input {
+      flex: 1; background: var(--input-bg); border: 1px solid var(--border);
+      color: var(--text-primary); font-family: var(--mono); font-size: 0.75rem;
+      padding: 0.6rem 0.75rem; letter-spacing: 0.05em; outline: none;
+      transition: border-color 0.2s;
+    }
+    .hex-input:focus { border-color: var(--accent-border); }
+    .preview-bar-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .preview-bar {
+      height: 24px; width: 100%;
+      border: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    /* ── Action Bar ── */
+    .action-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(10,14,26,0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      z-index: 500; padding: 1rem 2rem;
+    }
+    .action-bar-inner {
+      max-width: 900px; margin: 0 auto;
+      display: flex; gap: 1rem; align-items: center; justify-content: flex-end;
+    }
+    .action-bar-label {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); margin-right: auto;
+    }
+    .btn-action {
+      font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.75rem 1.5rem; cursor: pointer;
+      transition: all 0.2s; border: none;
+    }
+    .btn-action.load {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .btn-action.load:hover { border-color: var(--accent-border); color: var(--accent); }
+    .btn-action.preview {
+      background: transparent; border: 1px solid var(--accent-border); color: var(--accent);
+    }
+    .btn-action.preview:hover { background: var(--accent-dim); box-shadow: 0 0 16px var(--accent-glow); }
+    .btn-action.generate {
+      background: var(--accent); color: #0a0e1a; font-weight: 700;
+    }
+    .btn-action.generate:hover { background: #33ebff; box-shadow: 0 0 20px var(--accent-glow); }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 90px; right: 2rem;
+      background: rgba(10,14,26,0.95); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 0.85rem 1.25rem; color: var(--text-primary);
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.05em;
+      backdrop-filter: blur(20px); z-index: 9000;
+      transform: translateY(20px); opacity: 0;
+      transition: all 0.3s; pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.error { border-left-color: #ff6b6b; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links, .nav-view { display: none; }
+      .hamburger { display: flex; }
+      .form-row.cols-2, .form-row.cols-3 { grid-template-columns: 1fr; }
+      .color-pickers-row { grid-template-columns: 1fr; }
+      .action-bar-label { display: none; }
+      .action-bar-inner { justify-content: space-between; }
+      .btn-action { padding: 0.65rem 1rem; font-size: 0.6rem; }
+      .page-inner { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        SecStack Resume
+        <span class="nav-badge">Builder</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#section-basic">Basic</a></li>
+        <li><a href="#section-experience">Experience</a></li>
+        <li><a href="#section-education">Education</a></li>
+        <li><a href="#section-skills">Skills</a></li>
+        <li><a href="#section-theme">Theme</a></li>
+      </ul>
+      <a href="index.html" class="nav-view">View Resume →</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <ul>
+      <li><a href="index.html">← View Resume</a></li>
+      <li><a href="#section-basic">Basic Info</a></li>
+      <li><a href="#section-experience">Experience</a></li>
+      <li><a href="#section-education">Education</a></li>
+      <li><a href="#section-skills">Skills</a></li>
+      <li><a href="#section-theme">Theme</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="page-inner">
+      <div class="page-header">
+        <p class="page-eyebrow">Resume Builder</p>
+        <h1 class="page-title">Build Your Profile</h1>
+        <p class="page-subtitle">Fill in your details below, then generate your data.json or preview live.</p>
+      </div>
+
+      <!-- ── Basic Info ── -->
+      <div class="form-card" id="section-basic">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 01</span>
+            <span class="card-title-text">Basic Information</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label class="form-label" for="name">Full Name *</label>
+              <input type="text" id="name" class="form-input" placeholder="e.g. Marcus Delgado">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="title">Job Title</label>
+              <input type="text" id="title" class="form-input" placeholder="e.g. Senior Cybersecurity Engineer">
+            </div>
+          </div>
+          <div class="form-row cols-1">
+            <div class="form-group">
+              <label class="form-label" for="aboutMe">About Me</label>
+              <textarea id="aboutMe" class="form-input" placeholder="Write a short professional bio..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Contact ── -->
+      <div class="form-card" id="section-contact">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 02</span>
+            <span class="card-title-text">Contact Details</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row cols-3">
+            <div class="form-group">
+              <label class="form-label" for="contact-phone">Phone</label>
+              <input type="tel" id="contact-phone" class="form-input" placeholder="+49 30 0000 0000">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-email">Email</label>
+              <input type="email" id="contact-email" class="form-input" placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-address">Address / Location</label>
+              <input type="text" id="contact-address" class="form-input" placeholder="City, Country">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Social Links ── -->
+      <div class="form-card" id="section-social">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 03</span>
+            <span class="card-title-text">Social Links</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="social-links-container"></div>
+          <button type="button" class="btn-add" id="add-social">+ Add Social Link</button>
+        </div>
+      </div>
+
+      <!-- ── Experience ── -->
+      <div class="form-card" id="section-experience">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 04</span>
+            <span class="card-title-text">Work Experience</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="experience-container"></div>
+          <button type="button" class="btn-add" id="add-experience">+ Add Experience</button>
+        </div>
+      </div>
+
+      <!-- ── Education ── -->
+      <div class="form-card" id="section-education">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 05</span>
+            <span class="card-title-text">Education</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="education-container"></div>
+          <button type="button" class="btn-add" id="add-education">+ Add Education</button>
+        </div>
+      </div>
+
+      <!-- ── Skills ── -->
+      <div class="form-card" id="section-skills">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 06</span>
+            <span class="card-title-text">Skills</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="skills-container"></div>
+          <button type="button" class="btn-add" id="add-skill">+ Add Skill</button>
+        </div>
+      </div>
+
+      <!-- ── Languages ── -->
+      <div class="form-card" id="section-languages">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 07</span>
+            <span class="card-title-text">Languages</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="languages-container"></div>
+          <button type="button" class="btn-add" id="add-language">+ Add Language</button>
+        </div>
+      </div>
+
+      <!-- ── Theme ── -->
+      <div class="form-card" id="section-theme">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-num">// 08</span>
+            <span class="card-title-text">Background Theme</span>
+          </div>
+        </div>
+        <div class="card-body theme-section">
+          <p class="presets-label">Preset Themes</p>
+          <div class="preset-swatches" id="preset-swatches"></div>
+
+          <div class="color-pickers-row">
+            <div class="color-picker-group">
+              <label class="color-picker-label">Gradient Start</label>
+              <div class="color-picker-row">
+                <input type="color" id="g1-picker" value="#0a0e1a">
+                <input type="text" id="g1-hex" class="hex-input" value="#0a0e1a" maxlength="7">
+              </div>
+            </div>
+            <div class="color-picker-group">
+              <label class="color-picker-label">Gradient End</label>
+              <div class="color-picker-row">
+                <input type="color" id="g2-picker" value="#0d1f3c">
+                <input type="text" id="g2-hex" class="hex-input" value="#0d1f3c" maxlength="7">
+              </div>
+            </div>
+            <div class="color-picker-group">
+              <label class="color-picker-label">Accent Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="ac-picker" value="#00e5ff">
+                <input type="text" id="ac-hex" class="hex-input" value="#00e5ff" maxlength="7">
+              </div>
+            </div>
+          </div>
+
+          <p class="preview-bar-label">Live Preview</p>
+          <div class="preview-bar" id="preview-bar"></div>
+        </div>
+      </div>
+
+    </div><!-- /page-inner -->
+  </main>
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <div class="action-bar-inner">
+      <span class="action-bar-label">Resume Builder</span>
+      <button type="button" class="btn-action load" id="btn-load">Load JSON</button>
+      <button type="button" class="btn-action preview" id="btn-preview">Preview</button>
+      <button type="button" class="btn-action generate" id="btn-generate">Generate & Download</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Hidden file input -->
+  <input type="file" id="json-upload" accept=".json" style="display:none">
+
+  <script>
+    // ── Counters ──
+    let socialIndex = 0, skillIndex = 0, langIndex = 0, eduIndex = 0, expIndex = 0;
+    const respIndices = {};
+
+    const platformIcons = {
+      linkedin: 'fab fa-linkedin',
+      twitter: 'fab fa-x-twitter',
+      facebook: 'fab fa-facebook',
+      github: 'fab fa-github',
+      instagram: 'fab fa-instagram',
+      youtube: 'fab fa-youtube',
+      globe: 'fas fa-globe'
+    };
+
+    // ── Toast ──
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = isError ? 'error show' : 'show';
+      setTimeout(() => t.className = isError ? 'error' : '', 3200);
+    }
+
+    // ── Hamburger ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileNav.classList.toggle('open'); });
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { hamburger.classList.remove('open'); mobileNav.classList.remove('open'); }));
+    document.addEventListener('click', e => { if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) { hamburger.classList.remove('open'); mobileNav.classList.remove('open'); } });
+
+    // ── hexAlpha helper ──
+    function hexAlpha(hex, a) {
+      hex = hex.replace('#','');
+      if (hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+      const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+
+    // ── Theme ──
+    const presetData = [
+      { g1:'#0a0e1a', g2:'#0d1f3c', ac:'#00e5ff' },
+      { g1:'#0a0a0a', g2:'#1a1a2e', ac:'#e040fb' },
+      { g1:'#001a12', g2:'#003322', ac:'#00ff9d' },
+      { g1:'#1a0a00', g2:'#3d1a00', ac:'#ff9500' },
+      { g1:'#f5f0eb', g2:'#e8ddd0', ac:'#c84b31' },
+      { g1:'#f0f4ff', g2:'#dde8ff', ac:'#3b5bdb' },
+      { g1:'#1a0022', g2:'#320040', ac:'#ff4dc4' },
+      { g1:'#0a0a0a', g2:'#1c1c1c', ac:'#f5c518' }
+    ];
+
+    function applyTheme(g1, g2, ac, updatePickers = true) {
+      const r = document.documentElement;
+      r.style.setProperty('--g1', g1);
+      r.style.setProperty('--g2', g2);
+      r.style.setProperty('--accent', ac);
+      r.style.setProperty('--accent-dim', hexAlpha(ac, 0.12));
+      r.style.setProperty('--accent-glow', hexAlpha(ac, 0.35));
+      r.style.setProperty('--accent-border', hexAlpha(ac, 0.45));
+      document.body.style.backgroundImage = `linear-gradient(160deg, ${g1} 0%, ${g2} 100%)`;
+      updatePreviewBar(g1, ac, g2);
+      if (updatePickers) {
+        document.getElementById('g1-picker').value = g1;
+        document.getElementById('g2-picker').value = g2;
+        document.getElementById('ac-picker').value = ac;
+        document.getElementById('g1-hex').value = g1;
+        document.getElementById('g2-hex').value = g2;
+        document.getElementById('ac-hex').value = ac;
+      }
+    }
+
+    function updatePreviewBar(g1, ac, g2) {
+      document.getElementById('preview-bar').style.background = `linear-gradient(90deg, ${g1}, ${ac}, ${g2})`;
+    }
+
+    // Build preset swatches
+    const swatchContainer = document.getElementById('preset-swatches');
+    presetData.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-swatch' + (i === 0 ? ' active' : '');
+      btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+      btn.innerHTML = `<span class="accent-dot" style="background:${p.ac}"></span>`;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        applyTheme(p.g1, p.g2, p.ac);
+      });
+      swatchContainer.appendChild(btn);
+    });
+
+    // Color picker sync
+    function bindColorPair(pickerId, hexId, role) {
+      const picker = document.getElementById(pickerId);
+      const hex = document.getElementById(hexId);
+      picker.addEventListener('input', () => {
+        hex.value = picker.value;
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+        liveUpdateFromPickers();
+      });
+      hex.addEventListener('input', () => {
+        const v = hex.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+          picker.value = v;
+          document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+          liveUpdateFromPickers();
+        }
+      });
+    }
+    function liveUpdateFromPickers() {
+      applyTheme(
+        document.getElementById('g1-picker').value,
+        document.getElementById('g2-picker').value,
+        document.getElementById('ac-picker').value,
+        false
+      );
+    }
+    bindColorPair('g1-picker','g1-hex','g1');
+    bindColorPair('g2-picker','g2-hex','g2');
+    bindColorPair('ac-picker','ac-hex','ac');
+    applyTheme('#0a0e1a','#0d1f3c','#00e5ff');
+
+    // ── Social Link ──
+    function makeSocialEntry(idx, platform='', url='') {
+      const div = document.createElement('div');
+      div.className = 'dynamic-card';
+      div.dataset.socialIdx = idx;
+      div.innerHTML = `
+        <div class="dynamic-card-header">
+          <span class="dynamic-card-label">Social Link ${idx+1}</span>
+          <button type="button" class="btn-remove" data-remove-social="${idx}">Remove</button>
+        </div>
+        <div class="form-row cols-2" style="align-items:flex-end">
+          <div class="form-group">
+            <label class="form-label">Platform</label>
+            <select id="social-platform-${idx}" class="form-input">
+              <option value="" disabled ${!platform?'selected':''}>Select platform</option>
+              <option value="linkedin" ${platform==='linkedin'?'selected':''}>LinkedIn</option>
+              <option value="twitter" ${platform==='twitter'?'selected':''}>Twitter / X</option>
+              <option value="facebook" ${platform==='facebook'?'selected':''}>Facebook</option>
+              <option value="github" ${platform==='github'?'selected':''}>GitHub</option>
+              <option value="instagram" ${platform==='instagram'?'selected':''}>Instagram</option>
+              <option value="youtube" ${platform==='youtube'?'selected':''}>YouTube</option>
+              <option value="globe" ${platform==='globe'?'selected':''}>Other (Globe)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex-direction:row;gap:0.5rem;align-items:flex-end">
+            <div style="flex:1;display:flex;flex-direction:column;gap:0.5rem">
+              <label class="form-label">URL</label>
+              <input type="url" id="social-url-${idx}" class="form-input" placeholder="https://..." value="${url}">
+            </div>
+            <div class="social-icon-preview" id="social-icon-${idx}">
+              <i class="${platformIcons[platform]||'fas fa-globe'}"></i>
+            </div>
+          </div>
+        </div>
+      `;
+      div.querySelector(`#social-platform-${idx}`).addEventListener('change', (e) => {
+        const icon = div.querySelector(`#social-icon-${idx} i`);
+        icon.className = platformIcons[e.target.value] || 'fas fa-globe';
+      });
+      return div;
+    }
+    document.getElementById('social-links-container').addEventListener('click', e => {
+      const btn = e.target.closest('[data-remove-social]');
+      if (btn) {
+        const idx = btn.dataset.removeSocial;
+        document.querySelector(`.dynamic-card[data-social-idx="${idx}"]`)?.remove();
+      }
+    });
+    document.getElementById('add-social').addEventListener('click', () => {
+      document.getElementById('social-links-container').appendChild(makeSocialEntry(socialIndex++));
+    });
+
+    // ── Experience ──
+    function makeRespRow(expIdx, rIdx, value='', hidden=false) {
+      const div = document.createElement('div');
+      div.className = 'resp-row';
+      div.innerHTML = `
+        <input type="text" id="resp-${expIdx}-${rIdx}" class="form-input" placeholder="e.g. Led security audits" value="${value}">
+        <button type="button" class="btn-remove-small" data-remove-resp="${expIdx}-${rIdx}" ${hidden?'style="visibility:hidden"':''}><i class="fas fa-times"></i></button>
+      `;
+      return div;
+    }
+    function makeExpEntry(idx, data={}) {
+      const div = document.createElement('div');
+      div.className = 'dynamic-card';
+      div.dataset.expIdx = idx;
+      div.innerHTML = `
+        <div class="dynamic-card-header">
+          <span class="dynamic-card-label">Experience ${idx+1}</span>
+          <button type="button" class="btn-remove" data-remove-exp="${idx}">Remove</button>
+        </div>
+        <div class="form-row cols-3">
+          <div class="form-group">
+            <label class="form-label">Job Title</label>
+            <input type="text" id="exp-title-${idx}" class="form-input" placeholder="e.g. Security Engineer" value="${data.title||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company</label>
+            <input type="text" id="exp-company-${idx}" class="form-input" placeholder="e.g. VaultCore Technologies" value="${data.company||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Years</label>
+            <input type="text" id="exp-years-${idx}" class="form-input" placeholder="e.g. 2021–Present" value="${data.years||''}">
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:0.75rem">
+          <label class="form-label">Responsibilities</label>
+          <div id="resp-container-${idx}"></div>
+          <button type="button" class="btn-add" style="margin-top:0.4rem" data-add-resp="${idx}">+ Add Responsibility</button>
+        </div>
+      `;
+      const resps = data.responsibilities && data.responsibilities.length ? data.responsibilities : [''];
+      respIndices[idx] = 0;
+      resps.forEach((r, ri) => {
+        div.querySelector(`#resp-container-${idx}`).appendChild(makeRespRow(idx, ri, r, resps.length===1&&ri===0));
+        respIndices[idx] = ri + 1;
+      });
+      return div;
+    }
+    document.getElementById('experience-container').addEventListener('click', e => {
+      const removeExp = e.target.closest('[data-remove-exp]');
+      if (removeExp) { document.querySelector(`.dynamic-card[data-exp-idx="${removeExp.dataset.removeExp}"]`)?.remove(); return; }
+      const addResp = e.target.closest('[data-add-resp]');
+      if (addResp) {
+        const idx = addResp.dataset.addResp;
+        const sub = respIndices[idx] || 0;
+        const container = document.getElementById(`resp-container-${idx}`);
+        // Show first resp remove btn if previously hidden
+        const firstBtn = container.querySelector('[data-remove-resp]');
+        if (firstBtn) firstBtn.style.visibility = 'visible';
+        container.appendChild(makeRespRow(idx, sub));
+        respIndices[idx] = sub + 1;
+        return;
+      }
+      const removeResp = e.target.closest('[data-remove-resp]');
+      if (removeResp) {
+        const key = removeResp.dataset.removeResp;
+        removeResp.closest('.resp-row')?.remove();
+      }
+    });
+    document.getElementById('add-experience').addEventListener('click', () => {
+      document.getElementById('experience-container').appendChild(makeExpEntry(expIndex++));
+    });
+
+    // ── Education ──
+    function makeEduEntry(idx, data={}) {
+      const div = document.createElement('div');
+      div.className = 'dynamic-card';
+      div.dataset.eduIdx = idx;
+      div.innerHTML = `
+        <div class="dynamic-card-header">
+          <span class="dynamic-card-label">Education ${idx+1}</span>
+          <button type="button" class="btn-remove" data-remove-edu="${idx}">Remove</button>
+        </div>
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Degree</label>
+            <input type="text" id="edu-degree-${idx}" class="form-input" placeholder="e.g. B.Sc. Computer Science" value="${data.degree||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">University</label>
+            <input type="text" id="edu-uni-${idx}" class="form-input" placeholder="e.g. University of Berlin" value="${data.university||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Years</label>
+            <input type="text" id="edu-years-${idx}" class="form-input" placeholder="e.g. 2014–2018" value="${data.years||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Grade / GPA</label>
+            <input type="text" id="edu-grade-${idx}" class="form-input" placeholder="e.g. 3.8 GPA" value="${data.grade||''}">
+          </div>
+        </div>
+      `;
+      return div;
+    }
+    document.getElementById('education-container').addEventListener('click', e => {
+      const btn = e.target.closest('[data-remove-edu]');
+      if (btn) document.querySelector(`.dynamic-card[data-edu-idx="${btn.dataset.removeEdu}"]`)?.remove();
+    });
+    document.getElementById('add-education').addEventListener('click', () => {
+      document.getElementById('education-container').appendChild(makeEduEntry(eduIndex++));
+    });
+
+    // ── Skills ──
+    function makeSkillEntry(idx, value='') {
+      const div = document.createElement('div');
+      div.className = 'dynamic-card';
+      div.dataset.skillIdx = idx;
+      div.innerHTML = `
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <input type="text" id="skill-${idx}" class="form-input" placeholder="e.g. Penetration Testing" value="${value}" style="flex:1">
+          <button type="button" class="btn-remove-small" data-remove-skill="${idx}"><i class="fas fa-times"></i></button>
+        </div>
+      `;
+      return div;
+    }
+    document.getElementById('skills-container').addEventListener('click', e => {
+      const btn = e.target.closest('[data-remove-skill]');
+      if (btn) document.querySelector(`.dynamic-card[data-skill-idx="${btn.dataset.removeSkill}"]`)?.remove();
+    });
+    document.getElementById('add-skill').addEventListener('click', () => {
+      document.getElementById('skills-container').appendChild(makeSkillEntry(skillIndex++));
+    });
+
+    // ── Languages ──
+    function makeLangEntry(idx, value='') {
+      const div = document.createElement('div');
+      div.className = 'dynamic-card';
+      div.dataset.langIdx = idx;
+      div.innerHTML = `
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <input type="text" id="lang-${idx}" class="form-input" placeholder="e.g. English (Native)" value="${value}" style="flex:1">
+          <button type="button" class="btn-remove-small" data-remove-lang="${idx}"><i class="fas fa-times"></i></button>
+        </div>
+      `;
+      return div;
+    }
+    document.getElementById('languages-container').addEventListener('click', e => {
+      const btn = e.target.closest('[data-remove-lang]');
+      if (btn) document.querySelector(`.dynamic-card[data-lang-idx="${btn.dataset.removeLang}"]`)?.remove();
+    });
+    document.getElementById('add-language').addEventListener('click', () => {
+      document.getElementById('languages-container').appendChild(makeLangEntry(langIndex++));
+    });
+
+    // ── Collect data ──
+    function collectData() {
+      const name = document.getElementById('name').value.trim();
+      if (!name) { showToast('⚠ Please enter a name.', true); return null; }
+      const data = {
+        name,
+        title: document.getElementById('title').value.trim(),
+        aboutMe: document.getElementById('aboutMe').value.trim(),
+        contact: {
+          phone: document.getElementById('contact-phone').value.trim(),
+          email: document.getElementById('contact-email').value.trim(),
+          address: document.getElementById('contact-address').value.trim()
+        },
+        social_links: [],
+        skills: [],
+        languages: [],
+        education: [],
+        experience: [],
+        theme: {
+          gradientStart: document.getElementById('g1-picker').value,
+          gradientEnd: document.getElementById('g2-picker').value,
+          accentColor: document.getElementById('ac-picker').value
+        }
+      };
+
+      // Social
+      document.querySelectorAll('.dynamic-card[data-social-idx]').forEach(card => {
+        const idx = card.dataset.socialIdx;
+        const platform = document.getElementById(`social-platform-${idx}`)?.value;
+        const url = document.getElementById(`social-url-${idx}`)?.value.trim();
+        if (platform && url) data.social_links.push({ platform, url, icon: platformIcons[platform] || 'fas fa-globe' });
+      });
+
+      // Skills
+      document.querySelectorAll('.dynamic-card[data-skill-idx]').forEach(card => {
+        const v = document.getElementById(`skill-${card.dataset.skillIdx}`)?.value.trim();
+        if (v) data.skills.push(v);
+      });
+
+      // Languages
+      document.querySelectorAll('.dynamic-card[data-lang-idx]').forEach(card => {
+        const v = document.getElementById(`lang-${card.dataset.langIdx}`)?.value.trim();
+        if (v) data.languages.push(v);
+      });
+
+      // Education
+      document.querySelectorAll('.dynamic-card[data-edu-idx]').forEach(card => {
+        const idx = card.dataset.eduIdx;
+        const degree = document.getElementById(`edu-degree-${idx}`)?.value.trim();
+        const university = document.getElementById(`edu-uni-${idx}`)?.value.trim();
+        const years = document.getElementById(`edu-years-${idx}`)?.value.trim();
+        const grade = document.getElementById(`edu-grade-${idx}`)?.value.trim();
+        if (degree || university) data.education.push({ degree, university, years, grade });
+      });
+
+      // Experience
+      document.querySelectorAll('.dynamic-card[data-exp-idx]').forEach(card => {
+        const idx = card.dataset.expIdx;
+        const title = document.getElementById(`exp-title-${idx}`)?.value.trim();
+        const company = document.getElementById(`exp-company-${idx}`)?.value.trim();
+        const years = document.getElementById(`exp-years-${idx}`)?.value.trim();
+        const responsibilities = [];
+        card.querySelectorAll(`#resp-container-${idx} .form-input`).forEach(inp => {
+          if (inp.value.trim()) responsibilities.push(inp.value.trim());
+        });
+        if (title || company) data.experience.push({ title, company, years, responsibilities });
+      });
+
+      return data;
+    }
+
+    // ── Generate ──
+    document.getElementById('btn-generate').addEventListener('click', () => {
+      const data = collectData();
+      if (!data) return;
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'data.json'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('✓ data.json downloaded successfully!');
+    });
+
+    // ── Preview ──
+    document.getElementById('btn-preview').addEventListener('click', () => {
+      const data = collectData();
+      if (!data) return;
+      const encoded = encodeURIComponent(JSON.stringify(data));
+      window.open(`index.html#data=${encoded}`, '_blank');
+    });
+
+    // ── Load JSON ──
+    document.getElementById('btn-load').addEventListener('click', () => document.getElementById('json-upload').click());
+    document.getElementById('json-upload').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          populateForm(data);
+          showToast('✓ Data loaded successfully!');
+        } catch(err) {
+          showToast('⚠ Invalid JSON file.', true);
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    });
+
+    // ── Populate form ──
+    function populateForm(data) {
+      // Clear all dynamic containers
+      document.getElementById('social-links-container').innerHTML = '';
+      document.getElementById('experience-container').innerHTML = '';
+      document.getElementById('education-container').innerHTML = '';
+      document.getElementById('skills-container').innerHTML = '';
+      document.getElementById('languages-container').innerHTML = '';
+      socialIndex = 0; expIndex = 0; eduIndex = 0; skillIndex = 0; langIndex = 0;
+      Object.keys(respIndices).forEach(k => delete respIndices[k]);
+
+      document.getElementById('name').value = data.name || '';
+      document.getElementById('title').value = data.title || '';
+      document.getElementById('aboutMe').value = data.aboutMe || '';
+      document.getElementById('contact-phone').value = data.contact?.phone || '';
+      document.getElementById('contact-email').value = data.contact?.email || '';
+      document.getElementById('contact-address').value = data.contact?.address || '';
+
+      (data.social_links || []).forEach(l => {
+        document.getElementById('social-links-container').appendChild(makeSocialEntry(socialIndex++, l.platform, l.url));
+      });
+      (data.experience || []).forEach(exp => {
+        document.getElementById('experience-container').appendChild(makeExpEntry(expIndex++, exp));
+      });
+      (data.education || []).forEach(edu => {
+        document.getElementById('education-container').appendChild(makeEduEntry(eduIndex++, edu));
+      });
+      (data.skills || []).forEach(s => {
+        document.getElementById('skills-container').appendChild(makeSkillEntry(skillIndex++, s));
+      });
+      (data.languages || []).forEach(l => {
+        document.getElementById('languages-container').appendChild(makeLangEntry(langIndex++, l));
+      });
+      if (data.theme) {
+        applyTheme(data.theme.gradientStart || '#0a0e1a', data.theme.gradientEnd || '#0d1f3c', data.theme.accentColor || '#00e5ff');
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+      }
+    }
+  </script>
+</body>
+</html>
