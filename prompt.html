@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Redesign Prompt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e10;
+      --surface: #16161a;
+      --surface2: #1e1e24;
+      --border: rgba(255,255,255,0.07);
+      --ac: #7c6ef7;
+      --ac2: #b49eff;
+      --ac-dim: rgba(124,110,247,0.12);
+      --ac-glow: rgba(124,110,247,0.30);
+      --text: rgba(255,255,255,0.90);
+      --muted: rgba(255,255,255,0.48);
+      --dim: rgba(255,255,255,0.24);
+      --green: #4ade80;
+      --display: 'Syne', sans-serif;
+      --body: 'DM Sans', sans-serif;
+      --mono: 'Fira Code', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── NOISE ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* ── GLOW ORBS ── */
+    .orb {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      filter: blur(80px);
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(124,110,247,0.08); top: -100px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(74,222,128,0.05); bottom: 100px; left: -80px; }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      max-width: 860px; margin: 0 auto;
+      padding: 0 2rem 6rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      padding: 5rem 0 3.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+    .header-eyebrow {
+      font-family: var(--display);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--ac); margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .header-eyebrow::before { content:''; width:2rem; height:1px; background:var(--ac); display:block; }
+
+    .header-title {
+      font-family: var(--display);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800; line-height: 1.05;
+      color: #fff; margin-bottom: 1rem;
+    }
+    .header-title span { color: var(--ac2); }
+
+    .header-sub {
+      font-size: 0.92rem; color: var(--muted);
+      font-weight: 300; max-width: 520px; line-height: 1.8;
+    }
+
+    .header-meta {
+      display: flex; flex-wrap: wrap; gap: 1.2rem;
+      margin-top: 1.8rem; align-items: center;
+    }
+    .meta-pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--ac-dim); border: 1px solid var(--ac-glow);
+      border-radius: 100px; padding: 0.3rem 0.9rem;
+      font-size: 0.76rem; color: var(--ac2);
+    }
+    .meta-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+    /* ── COPY ALL BTN ── */
+    .copy-all-wrap {
+      margin-bottom: 2.5rem;
+    }
+    .copy-all-btn {
+      font-family: var(--display);
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--ac); color: #fff;
+      border: none; cursor: pointer;
+      padding: 0.75rem 1.8rem; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 24px var(--ac-glow);
+    }
+    .copy-all-btn:hover { background: #6b5de6; transform: translateY(-2px); box-shadow: 0 8px 32px var(--ac-glow); }
+    .copy-all-btn.copied { background: #16a34a; box-shadow: 0 4px 24px rgba(74,222,128,0.3); }
+
+    /* ── STEP CARDS ── */
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+
+    .step-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 1.8rem;
+      cursor: pointer;
+      user-select: none;
+      gap: 1rem;
+      transition: background 0.2s;
+    }
+    .step-header:hover { background: rgba(255,255,255,0.025); }
+
+    .step-header-left { display: flex; align-items: center; gap: 1.1rem; }
+
+    .step-num {
+      font-family: var(--display);
+      font-size: 0.6rem; font-weight: 800;
+      letter-spacing: 0.12em;
+      background: var(--ac-dim); color: var(--ac2);
+      border: 1px solid var(--ac-glow);
+      border-radius: 4px; padding: 0.2rem 0.55rem;
+      white-space: nowrap;
+    }
+
+    .step-title {
+      font-family: var(--display);
+      font-size: 0.95rem; font-weight: 700;
+      color: var(--text);
+    }
+
+    .step-actions { display: flex; align-items: center; gap: 0.5rem; }
+
+    .chevron {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--dim); font-size: 0.75rem;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .step.open .chevron { transform: rotate(180deg); }
+
+    .step-body {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+    .step.open .step-body { display: block; }
+
+    /* ── CONTENT INSIDE STEPS ── */
+    .step-content {
+      padding: 1.8rem;
+    }
+
+    .prose {
+      font-size: 0.88rem; line-height: 1.85;
+      color: var(--muted);
+    }
+    .prose p { margin-bottom: 0.9rem; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--text); font-weight: 600; }
+    .prose code {
+      font-family: var(--mono); font-size: 0.8rem;
+      background: rgba(124,110,247,0.14); color: var(--ac2);
+      padding: 0.1rem 0.4rem; border-radius: 3px;
+    }
+    .prose ul { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 0.9rem; }
+    .prose ul li { padding-left: 1.3rem; position: relative; }
+    .prose ul li::before { content:'▸'; position:absolute; left:0; color:var(--ac); font-size:0.65rem; top:0.25rem; }
+
+    /* rule between sections inside a step */
+    .prose hr { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .checklist li {
+      font-size: 0.86rem; color: var(--muted);
+      padding: 0.55rem 0.9rem 0.55rem 2.6rem;
+      position: relative;
+      background: var(--surface2); border-radius: 6px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .checklist li:hover { background: rgba(255,255,255,0.05); }
+    .checklist li::before {
+      content: '';
+      position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%);
+      width: 14px; height: 14px;
+      border: 1.5px solid var(--dim); border-radius: 3px;
+      transition: all 0.2s;
+    }
+    .checklist li.checked { color: var(--text); }
+    .checklist li.checked::before {
+      background: var(--green); border-color: var(--green);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3 3 7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: center; background-size: 9px;
+    }
+
+    /* ── CODE BLOCK ── */
+    .code-block {
+      position: relative;
+      background: #0a0a0c;
+      border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+      margin: 1rem 0;
+    }
+    .code-block-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border);
+    }
+    .code-lang {
+      font-family: var(--mono); font-size: 0.7rem; color: var(--dim);
+    }
+    .copy-snippet-btn {
+      font-family: var(--display);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ac-dim); color: var(--ac2);
+      border: 1px solid var(--ac-glow);
+      padding: 0.22rem 0.7rem; border-radius: 3px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .copy-snippet-btn:hover { background: rgba(124,110,247,0.25); }
+    .copy-snippet-btn.copied { background: rgba(74,222,128,0.15); color: var(--green); border-color: rgba(74,222,128,0.3); }
+    .code-block pre {
+      padding: 1.2rem 1.4rem;
+      font-family: var(--mono); font-size: 0.8rem;
+      color: rgba(255,255,255,0.75); line-height: 1.7;
+      white-space: pre-wrap; word-break: break-word;
+      overflow-x: auto;
+    }
+
+    /* ── TAG PILLS ── */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
+    .tag {
+      font-size: 0.72rem; font-weight: 500;
+      background: var(--surface2); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 100px;
+      padding: 0.22rem 0.75rem;
+    }
+    .tag.ac { background: var(--ac-dim); color: var(--ac2); border-color: var(--ac-glow); }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .footer-text { font-size: 0.76rem; color: var(--dim); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .wrapper { padding: 0 1.2rem 5rem; }
+      .header { padding: 3rem 0 2.5rem; }
+      .step-content { padding: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-eyebrow">Reference Prompt</div>
+    <h1 class="header-title">Resume Template<br><span>Redesign Prompt</span></h1>
+    <p class="header-sub">A comprehensive prompt for redesigning resume and portfolio HTML templates — covering design rules, features, offline/online behaviour, and quality checks.</p>
+    <div class="header-meta">
+      <div class="meta-pill"><span class="dot"></span> 7 Steps</div>
+      <div class="meta-pill">index.html + form.html + data.json</div>
+      <div class="meta-pill">5 Previous Styles on Record</div>
+    </div>
+  </header>
+
+  <!-- COPY ALL -->
+  <div class="copy-all-wrap">
+    <button class="copy-all-btn" id="copy-all-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy Full Prompt
+    </button>
+  </div>
+
+  <!-- STEPS -->
+
+  <!-- STEP 1 -->
+  <div class="step open" id="step-1">
+    <div class="step-header" onclick="toggleStep('step-1')">
+      <div class="step-header-left">
+        <span class="step-num">STEP 01</span>
+        <span class="step-title">Read the Files First</span>
+      </div>
+      <div class="step-actions">
+        <button class="copy-snippet-btn" onclick="copyStep(event,'step-1')">Copy</button>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="prose">
+          <p>Before writing any code, extract and read every file in the zip:</p>
+          <ul>
+            <li><code>index.html</code> — the main resume/portfolio page</li>
+            <li><code>form.html</code> — the data entry / builder page</li>
+            <li><code>form.js</code> / <code>main.js</code> — all JavaScript logic</li>
+            <li><code>data.json</code> — the data structure and field names</li>
+            <li><code>style.css</code> — original styles (for reference only, do not reuse)</li>
+          </ul>
+          <p>Understand the full data structure, all sections rendered, all dynamic fields in the form, and every piece of functionality before proceeding.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2">
+    <div class="step-header" onclick="toggleStep('step-2')">
+      <div class="step-header-left">
+        <span class="step-num">STEP 02</span>
+        <span class="step-title">Design Rules</span>
+      </div>
+      <div class="step-actions">
+        <button class="copy-snippet-btn" onclick="copyStep(event,'step-2')">Copy</button>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="prose">
+          <p>Create a completely new design. It must be visually distinct from these previously used styles:</p>
+          <ul>
+            <li><strong>Style 1</strong> — Dark editorial: black/charcoal with gold accents, DM Serif Display + Syne</li>
+            <li><strong>Style 2</strong> — Dark glass: deep green gradient, frosted glass cards, Fraunces + Plus Jakarta Sans</li>
+            <li><strong>Style 3</strong> — Dark cosmic: deep indigo gradient, star-field texture, Instrument Serif + Outfit</li>
+            <li><strong>Style 4</strong> — Light airy: warm cream/sage gradient, fixed sidebar, Cormorant Garamond + DM Sans</li>
+            <li><strong>Style 5</strong> — Light terracotta: warm linen gradient, single-column, Playfair Display + Inter</li>
+          </ul>
+          <p>Pick a direction that hasn't been used. Some ideas: bold brutalist, soft pastel minimal, high-contrast monochrome, magazine editorial, Swiss grid, neon-accent dark, warm newspaper, cool nordic, rich jewel tones. You decide — just make it fresh, modern, and beautiful.</p>
+          <hr>
+          <p><strong>Design requirements:</strong></p>
+          <ul>
+            <li>Use a gradient background (<code>linear-gradient</code>, <code>background-attachment: fixed</code>) — store the two gradient colors and accent color in CSS variables so they can be changed at runtime</li>
+            <li>Use Google Fonts — pick a pairing that fits the aesthetic (one serif or display + one sans-serif)</li>
+            <li>All text must be readable — maintain sufficient contrast on every element</li>
+            <li>Use subtle texture overlays (CSS <code>feTurbulence</code> SVG filter or <code>radial-gradient</code> dot/star patterns) for depth</li>
+            <li>Cards, sections, or panels should use <code>backdrop-filter: blur</code> or soft box shadows — not flat solid boxes</li>
+            <li>Must be fully responsive: desktop, tablet, and mobile</li>
+            <li>Smooth scroll, fade-in on scroll via <code>IntersectionObserver</code>, active nav link highlighting on scroll</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3">
+    <div class="step-header" onclick="toggleStep('step-3')">
+      <div class="step-header-left">
+        <span class="step-num">STEP 03</span>
+        <span class="step-title">New Sample Data</span>
+      </div>
+      <div class="step-actions">
+        <button class="copy-snippet-btn" onclick="copyStep(event,'step-3')">Copy</button>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="prose">
+          <p>Replace the sample data in <code>data.json</code> with a completely different person. Requirements:</p>
+          <ul>
+            <li>Different name (Filipino or international — vary it)</li>
+            <li>Different job/career field from all previous designs (previous fields used: UX Designer, Environmental Scientist, Aerospace Engineer, Nutritionist/Dietitian, Financial Analyst)</li>
+            <li>Realistic, detailed content — proper job titles, company names, responsibilities, education, skills</li>
+            <li>Philippine context is fine but not required — vary the location too</li>
+            <li>All fields in the original <code>data.json</code> structure must be present and populated</li>
+            <li>Include a <code>theme</code> object in <code>data.json</code> with <code>gradientStart</code>, <code>gradientEnd</code>, and <code>accentColor</code> so the index page applies the correct colors on load</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4">
+    <div class="step-header" onclick="toggleStep('step-4')">
+      <div class="step-header-left">
+        <span class="step-num">STEP 04</span>
+        <span class="step-title">index.html Requirements</span>
+      </div>
+      <div class="step-actions">
+        <button class="copy-snippet-btn" onclick="copyStep(event,'step-4')">Copy</button>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="prose">
+          <p>Rebuild <code>index.html</code> from scratch. Keep every section the original had. Add or improve sections if it makes sense.</p>
+          <hr>
+          <p><strong>Navigation:</strong></p>
+          <ul>
+            <li>Fixed top navbar (or fixed sidebar on desktop if the layout suits it)</li>
+            <li>Logo/brand shows the person's name (populated from <code>data.json</code>)</li>
+            <li>Nav links scroll to each section; active link highlights on scroll</li>
+            <li>On mobile: nav links collapse, a hamburger button appears</li>
+            <li>Hamburger must work correctly: clicking toggles the mobile menu open/closed, icon changes from ☰ to ✕ when open, clicking any nav link closes the menu, clicking anywhere outside the menu closes it. Use a class toggle (e.g. <code>.open</code>) — never use <code>style.display</code> toggling directly on the nav list</li>
+          </ul>
+          <hr>
+          <p><strong>Offline-only elements — THE MOST IMPORTANT RULE:</strong></p>
+          <p>The following elements must be <strong>hidden when deployed</strong> (served over <code>http://</code> or <code>https://</code>) and <strong>only visible when opened locally</strong> as a file (<code>file://</code> protocol):</p>
+          <ul>
+            <li>"Load JSON" button (for uploading a <code>data.json</code> file manually)</li>
+            <li>"Edit" navigation link (linking to <code>form.html</code>)</li>
+            <li>Any equivalent mobile menu versions of the above</li>
+          </ul>
+          <p><strong>Implementation — do this exactly:</strong></p>
+          <ul>
+            <li>Add <code>class="offline-only"</code> AND <code>style="display:none"</code> (inline) to every one of these elements in the HTML. The inline style ensures they are hidden before any JavaScript runs, preventing a flash of visible content on page load.</li>
+            <li>In the JavaScript, detect the protocol: <code>const isLocal = location.protocol === 'file:';</code></li>
+            <li>Only if <code>isLocal</code> is true, reveal them: <code>if (isLocal) document.querySelectorAll('.offline-only').forEach(el =&gt; el.style.display = '');</code></li>
+            <li>Never conditionally hide them — only conditionally show them. Default is always hidden.</li>
+          </ul>
+          <hr>
+          <p><strong>Data loading:</strong></p>
+          <ul>
+            <li>On load, <code>fetch('data.json')</code> — if it succeeds, render the resume</li>
+            <li>If fetch fails, check for a <code>#data=</code> URL hash (used by <code>form.html</code> preview) and try to parse and render that</li>
+            <li>If both fail, show a centered upload overlay/modal where the user can select their <code>data.json</code> file</li>
+            <li>The upload overlay must have a link to <code>form.html</code> for users who don't have a data file yet</li>
+          </ul>
+          <hr>
+          <p><strong>Theme application:</strong></p>
+          <ul>
+            <li>Read <code>data.theme.gradientStart</code>, <code>data.theme.gradientEnd</code>, and <code>data.theme.accentColor</code> from the loaded JSON</li>
+            <li>Apply them to CSS variables at runtime using <code>document.documentElement.style.setProperty()</code></li>
+            <li>Also update <code>document.body.style.background</code> directly so it overrides the default</li>
+            <li>Derive secondary accent values (dim, glow, rgba variants) from the accent hex using a <code>hexAlpha(hex, alpha)</code> helper function</li>
+          </ul>
+          <p><strong>No Download PDF button</strong> — do not include a PDF download button on <code>index.html</code> unless explicitly requested.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step-5">
+    <div class="step-header" onclick="toggleStep('step-5')">
+      <div class="step-header-left">
+        <span class="step-num">STEP 05</span>
+        <span class="step-title">form.html Requirements</span>
+      </div>
+      <div class="step-actions">
+        <button class="copy-snippet-btn" onclick="copyStep(event,'step-5')">Copy</button>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="prose">
+          <p>Rebuild <code>form.html</code> from scratch. It must match the visual design of <code>index.html</code> exactly — same fonts, same gradient background, same card styles, same button styles.</p>
+          <hr>
+          <p><strong>Navigation:</strong> Same fixed navbar as <code>index.html</code> but with a "Builder" badge instead of the Load JSON / Edit buttons. Links to <code>index.html</code> and anchor links to major form sections. Same working hamburger with mobile dropdown.</p>
+          <hr>
+          <p><strong>Theme / Background Color Picker section — required in every redesign:</strong></p>
+          <ul>
+            <li>A dedicated card/section titled "Background Theme" or similar</li>
+            <li><strong>8 preset swatches</strong>: circular gradient buttons the user can click to instantly apply a preset theme. Each preset has <code>g1</code> (gradient start), <code>g2</code> (gradient end), and <code>ac</code> (accent color). Each swatch shows a small colored dot representing the accent color.</li>
+            <li><strong>3 manual color pickers</strong>: one each for Gradient Start, Gradient End, and Accent Color. Each picker has both an <code>&lt;input type="color"&gt;</code> and a synced hex text input next to it so users can type exact values.</li>
+            <li><strong>Live preview bar</strong>: a thin horizontal gradient strip that updates in real time as colors change, showing <code>gradientStart → accent → gradientEnd</code></li>
+            <li>Clicking a preset activates it (adds <code>.active</code> class), deselects all others, and updates both the pickers and the live page background instantly</li>
+            <li>Manually changing a color picker deselects all presets</li>
+            <li>All changes apply live to the form page background and accent color</li>
+          </ul>
+          <hr>
+          <p><strong>Form sections:</strong></p>
+          <ul>
+            <li>Recreate every section that existed in the original <code>form.js</code> / <code>form.html</code> — do not remove any fields</li>
+            <li>Use dynamic add/remove cards for repeating sections (experience, education, skills, languages, references, social links, etc.)</li>
+            <li>Each dynamic card has a styled "Remove" button</li>
+            <li>"Add [Item]" buttons at the bottom of each section</li>
+          </ul>
+          <hr>
+          <p><strong>Action bar (sticky bottom):</strong></p>
+          <ul>
+            <li><strong>Load JSON</strong> — opens a file picker to load an existing <code>data.json</code>, populates all form fields</li>
+            <li><strong>Generate &amp; Download</strong> — collects all form data, validates that name is filled, creates and downloads <code>data.json</code></li>
+            <li><strong>Preview</strong> — opens <code>index.html#data=&lt;encoded JSON&gt;</code> in a new tab so the user can see the result without downloading</li>
+          </ul>
+          <hr>
+          <p><strong>Load JSON functionality:</strong></p>
+          <ul>
+            <li>When a JSON file is loaded, clear all dynamic containers first, then repopulate every field</li>
+            <li>Also read <code>data.theme</code> and apply it to the form background via <code>applyTheme()</code></li>
+            <li>Show a toast notification on success or error</li>
+          </ul>
+          <hr>
+          <p><strong>Toast notifications:</strong> Small notification that slides up from the bottom-right, shows success/error messages, auto-dismisses after ~3 seconds, styled with accent color left border.</p>
+          <hr>
+          <p><strong>Data collection:</strong> <code>collectData()</code> function reads all form fields and returns a complete JSON object matching the exact structure of <code>data.json</code>. Include the current theme colors under <code>data.theme</code>. Validate required fields before generating.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step" id="step-6">
+    <div class="step-header" onclick="toggleStep('step-6')">
+      <div class="step-header-left">
+        <span class="step-num">STEP 06</span>
+        <span class="step-title">File Output</span>
+      </div>
+      <div class="step-actions">
+        <button class="copy-snippet-btn" onclick="copyStep(event,'step-6')">Copy</button>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="prose">
+          <p>Produce these files:</p>
+          <ul>
+            <li><code>index.html</code> — complete, self-contained (no external CSS files)</li>
+            <li><code>form.html</code> — complete, self-contained (no external CSS files)</li>
+            <li><code>data.json</code> — new sample data for the new person</li>
+            <li>Keep any original <code>assets/</code> folder contents (profile photo, images)</li>
+          </ul>
+          <p>Package everything into a <code>.zip</code> file and present it as a download along with the individual HTML files for preview.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 — CHECKLIST -->
+  <div class="step" id="step-7">
+    <div class="step-header" onclick="toggleStep('step-7')">
+      <div class="step-header-left">
+        <span class="step-num">STEP 07</span>
+        <span class="step-title">Quality Checklist</span>
+      </div>
+      <div class="step-actions">
+        <button class="copy-snippet-btn" onclick="copyStep(event,'step-7')">Copy</button>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="prose" style="margin-bottom:1.2rem">
+          <p>Before finishing, verify every item below. Click to check off as you review.</p>
+        </div>
+        <ul class="checklist" id="checklist">
+          <li onclick="this.classList.toggle('checked')">All <code>.offline-only</code> elements have both <code>class="offline-only"</code> AND <code>style="display:none"</code> in the HTML</li>
+          <li onclick="this.classList.toggle('checked')">The JS only shows them if <code>location.protocol === 'file:'</code> — never hides them via JS</li>
+          <li onclick="this.classList.toggle('checked')">Hamburger works: toggle icon, outside-click close, closes on link click</li>
+          <li onclick="this.classList.toggle('checked')">form.html theme picker live-updates the page background and accent color</li>
+          <li onclick="this.classList.toggle('checked')">data.json has a <code>theme</code> object with <code>gradientStart</code>, <code>gradientEnd</code>, <code>accentColor</code></li>
+          <li onclick="this.classList.toggle('checked')">index.html applies the theme from data.json on render</li>
+          <li onclick="this.classList.toggle('checked')">form.html Load JSON repopulates every field including dynamic ones</li>
+          <li onclick="this.classList.toggle('checked')">Preview button passes data via URL hash and index.html reads it as fallback</li>
+          <li onclick="this.classList.toggle('checked')">Upload overlay shows when data.json fails to load and hash fallback also fails</li>
+          <li onclick="this.classList.toggle('checked')">No Download PDF button unless asked</li>
+          <li onclick="this.classList.toggle('checked')">Mobile is fully usable — no horizontal scroll, readable text, tappable buttons</li>
+          <li onclick="this.classList.toggle('checked')">Design is visually distinct from all 5 previous styles listed above</li>
+          <li onclick="this.classList.toggle('checked')">Sample data is a completely new person with a different career field</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer-text">Resume Redesign Prompt Reference &nbsp;·&nbsp; 7 Steps &nbsp;·&nbsp; Keep this file alongside your template zips</p>
+  </footer>
+
+</div>
+
+<script>
+/* ── hidden full prompt text for "Copy Full Prompt" ── */
+const FULL_PROMPT = `RESUME/PORTFOLIO TEMPLATE REDESIGN PROMPT
+
+You are redesigning an HTML/CSS/JS resume or portfolio template. I will upload a .zip file containing the original template. Your job is to fully redesign it — new design, new layout, new fonts, new colors — while keeping all functionality intact and adding the standard features described below.
+
+---
+
+STEP 1 — READ THE FILES FIRST
+
+Before writing any code, extract and read every file in the zip:
+- index.html — the main resume/portfolio page
+- form.html — the data entry / builder page
+- form.js / main.js — all JavaScript logic
+- data.json — the data structure and field names
+- style.css — original styles (for reference only, do not reuse)
+
+Understand the full data structure, all sections rendered, all dynamic fields in the form, and every piece of functionality before proceeding.
+
+---
+
+STEP 2 — DESIGN RULES
+
+Create a completely new design. It must be visually distinct from these previously used styles:
+1. Dark editorial — black/charcoal with gold accents, DM Serif Display + Syne
+2. Dark glass — deep green gradient, frosted glass cards, Fraunces + Plus Jakarta Sans
+3. Dark cosmic — deep indigo gradient, star-field texture, Instrument Serif + Outfit
+4. Light airy — warm cream/sage gradient, fixed sidebar, Cormorant Garamond + DM Sans
+5. Light terracotta — warm linen gradient, single-column, Playfair Display + Inter
+
+Pick a direction that hasn't been used. Some ideas: bold brutalist, soft pastel minimal, high-contrast monochrome, magazine editorial, Swiss grid, neon-accent dark, warm newspaper, cool nordic, rich jewel tones. You decide — just make it fresh, modern, and beautiful.
+
+Design requirements:
+- Use a gradient background (linear-gradient, background-attachment: fixed) — store the two gradient colors and accent color in CSS variables so they can be changed at runtime
+- Use Google Fonts — pick a pairing that fits the aesthetic (one serif or display + one sans-serif)
+- All text must be readable — maintain sufficient contrast on every element
+- Use subtle texture overlays (CSS feTurbulence SVG filter or radial-gradient dot/star patterns) for depth
+- Cards, sections, or panels should use backdrop-filter: blur or soft box shadows — not flat solid boxes
+- Must be fully responsive: desktop, tablet, and mobile
+- Smooth scroll, fade-in on scroll via IntersectionObserver, active nav link highlighting on scroll
+
+---
+
+STEP 3 — NEW SAMPLE DATA
+
+Replace the sample data in data.json with a completely different person. Requirements:
+- Different name (Filipino or international — vary it)
+- Different job/career field from all previous designs (previous fields used: UX Designer, Environmental Scientist, Aerospace Engineer, Nutritionist/Dietitian, Financial Analyst)
+- Realistic, detailed content — proper job titles, company names, responsibilities, education, skills
+- Philippine context is fine but not required — vary the location too
+- All fields in the original data.json structure must be present and populated
+- Include a theme object in data.json with gradientStart, gradientEnd, and accentColor so the index page applies the correct colors on load
+
+---
+
+STEP 4 — index.html REQUIREMENTS
+
+Rebuild index.html from scratch. Keep every section the original had (e.g. about, experience, education, skills, languages, references, contact, footer — whatever was in the original). Add or improve sections if it makes sense.
+
+Navigation:
+- Fixed top navbar (or fixed sidebar on desktop if the layout suits it)
+- Logo/brand shows the person's name (populated from data.json)
+- Nav links scroll to each section
+- Active link highlights on scroll
+- On mobile: nav links collapse, a hamburger button appears
+- Hamburger must work correctly:
+  - Clicking toggles the mobile menu open/closed
+  - Icon changes from ☰ to ✕ when open
+  - Clicking any nav link closes the menu
+  - Clicking anywhere outside the menu closes it
+  - Use a class toggle (e.g. .open) — never use style.display toggling directly on the nav list
+
+Offline-only elements — THE MOST IMPORTANT RULE:
+The following elements must be hidden when the site is deployed (served over http:// or https://) and only visible when opened locally as a file (file:// protocol):
+- "Load JSON" button (for uploading a data.json file manually)
+- "Edit" navigation link (linking to form.html)
+- Any equivalent mobile menu versions of the above
+
+Implementation — do this exactly:
+1. Add class="offline-only" AND style="display:none" (inline) to every one of these elements in the HTML. The inline style ensures they are hidden before any JavaScript runs, preventing a flash of visible content on page load.
+2. In the JavaScript, detect the protocol: const isLocal = location.protocol === 'file:';
+3. Only if isLocal is true, reveal them: if (isLocal) document.querySelectorAll('.offline-only').forEach(el => el.style.display = '');
+4. Never conditionally hide them — only conditionally show them. Default is always hidden.
+
+Data loading:
+- On load, fetch('data.json') — if it succeeds, render the resume
+- If fetch fails, check for a #data= URL hash (used by form.html preview) and try to parse and render that
+- If both fail, show a centered upload overlay/modal where the user can select their data.json file
+- The upload overlay must have a link to form.html for users who don't have a data file yet
+
+Theme application:
+- Read data.theme.gradientStart, data.theme.gradientEnd, and data.theme.accentColor from the loaded JSON
+- Apply them to CSS variables at runtime using document.documentElement.style.setProperty()
+- Also update document.body.style.background directly so it overrides the default
+- Derive secondary accent values (dim, glow, rgba variants) from the accent hex using a hexAlpha(hex, alpha) helper function
+
+No Download PDF button — do not include a PDF download button on index.html unless explicitly requested.
+
+---
+
+STEP 5 — form.html REQUIREMENTS
+
+Rebuild form.html from scratch. It must match the visual design of index.html exactly — same fonts, same gradient background, same card styles, same button styles.
+
+Navigation:
+- Same fixed navbar as index.html but with a "Builder" badge instead of the Load JSON / Edit buttons
+- Links to index.html (View Resume/Portfolio), and anchor links to major form sections
+- Same working hamburger with mobile dropdown
+
+Theme / Background Color Picker section — required in every redesign:
+- A dedicated card/section titled "Background Theme" or similar
+- 8 preset swatches: circular gradient buttons the user can click to instantly apply a preset theme. Each preset has g1 (gradient start), g2 (gradient end), and ac (accent color). Choose 8 presets that complement your design direction — mix light and dark or all-light depending on the style. Each swatch shows a small colored dot representing the accent color.
+- 3 manual color pickers: one each for Gradient Start, Gradient End, and Accent Color. Each picker has both an <input type="color"> and a synced hex text input next to it so users can type exact values.
+- Live preview bar: a thin horizontal gradient strip that updates in real time as colors change, showing gradientStart → accent → gradientEnd
+- Clicking a preset activates it (adds .active class), deselects all others, and updates both the pickers and the live page background instantly
+- Manually changing a color picker deselects all presets
+- All changes apply live to the form page background and accent color so the user sees exactly what the resume will look like
+
+Form sections:
+- Recreate every section that existed in the original form.js / form.html — do not remove any fields
+- Use dynamic add/remove cards for repeating sections (experience, education, skills, languages, references, social links, etc.)
+- Each dynamic card has a styled "Remove" button
+- "Add [Item]" buttons at the bottom of each section
+- Input fields: dark or light background (matching the theme), clear labels in uppercase small caps, focus state with accent color border and subtle glow
+
+Action bar (sticky bottom):
+- Fixed to the bottom of the viewport
+- Contains three buttons:
+  1. Load JSON — opens a file picker to load an existing data.json, populates all form fields
+  2. Generate & Download — collects all form data, validates that name is filled, creates and downloads data.json
+  3. Preview — opens index.html#data=<encoded JSON> in a new tab so the user can see the result without downloading
+
+Load JSON functionality:
+- When a JSON file is loaded, clear all dynamic containers first, then repopulate every field
+- Also read data.theme and apply it to the form background via applyTheme()
+- Show a toast notification on success or error
+
+Toast notifications:
+- Small notification that slides up from the bottom-right
+- Shows success messages ("✓ Data loaded", "✓ data.json downloaded") and error messages
+- Auto-dismisses after ~3 seconds
+- Styled to match the theme (light background or dark, with accent color left border)
+
+Data collection:
+- collectData() function reads all form fields and returns a complete JSON object matching the exact structure of data.json
+- Include the current theme colors in the output under data.theme
+- Validate required fields before generating
+
+---
+
+STEP 6 — FILE OUTPUT
+
+Produce these files:
+- index.html — complete, self-contained (no external CSS files)
+- form.html — complete, self-contained (no external CSS files)
+- data.json — new sample data for the new person
+- Keep any original assets/ folder contents (profile photo, images)
+
+Package everything into a .zip file and present it as a download along with the individual HTML files for preview.
+
+---
+
+STEP 7 — QUALITY CHECKLIST
+
+Before finishing, verify:
+- [ ] All .offline-only elements have both class="offline-only" AND style="display:none" in the HTML
+- [ ] The JS only shows them if location.protocol === 'file:' — never hides them via JS
+- [ ] Hamburger works: toggle icon, outside-click close, closes on link click
+- [ ] form.html theme picker live-updates the page background and accent color
+- [ ] data.json has a theme object with gradientStart, gradientEnd, accentColor
+- [ ] index.html applies the theme from data.json on render
+- [ ] form.html Load JSON repopulates every field including dynamic ones
+- [ ] Preview button passes data via URL hash and index.html reads it as fallback
+- [ ] Upload overlay shows when data.json fails to load and hash fallback also fails
+- [ ] No Download PDF button unless asked
+- [ ] Mobile is fully usable — no horizontal scroll, readable text, tappable buttons
+- [ ] Design is visually distinct from all 5 previous styles listed above
+- [ ] Sample data is a completely new person with a different career field`;
+
+/* ── step content extractor (plain text) ── */
+function getStepText(stepId) {
+  const step = document.getElementById(stepId);
+  const body = step.querySelector('.step-body');
+  const title = step.querySelector('.step-title').textContent.trim();
+  const num = step.querySelector('.step-num').textContent.trim();
+
+  // Extract text, strip HTML
+  const tmp = document.createElement('div');
+  tmp.innerHTML = body.innerHTML;
+
+  // Replace code tags with backticks
+  tmp.querySelectorAll('code').forEach(c => { c.textContent = '`' + c.textContent + '`'; });
+  // Replace li with bullet
+  tmp.querySelectorAll('.prose li').forEach(li => {
+    li.textContent = '- ' + li.textContent.replace(/^▸\s*/,'').trim();
+  });
+  // Replace checklist li
+  tmp.querySelectorAll('.checklist li').forEach(li => {
+    li.textContent = '[ ] ' + li.textContent.replace(/^\[.\]\s*/,'').trim();
+  });
+
+  const text = `${num} — ${title}\n\n${tmp.textContent.trim().replace(/\n{3,}/g,'\n\n')}`;
+  return text;
+}
+
+/* ── toggle ── */
+function toggleStep(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+/* ── copy step ── */
+function copyStep(event, stepId) {
+  event.stopPropagation();
+  const btn = event.target;
+  const text = getStepText(stepId);
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+/* ── copy all ── */
+document.getElementById('copy-all-btn').addEventListener('click', () => {
+  const btn = document.getElementById('copy-all-btn');
+  navigator.clipboard.writeText(FULL_PROMPT).then(() => {
+    btn.innerHTML = '✓ Copied to Clipboard!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Full Prompt`;
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+});
+</script>
+</body>
+</html>
