@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous">
+  <style>
+    :root {
+      --g1: #f5f0e8;
+      --g2: #ede5d8;
+      --accent: #c0392b;
+      --ink: #1a1208;
+      --ink-mid: #3d3020;
+      --ink-light: #7a6a52;
+      --ink-faint: #b8aa96;
+      --paper: #faf7f2;
+      --paper-mid: #f0ead8;
+      --rule: #c8b89a;
+      --rule-light: #ddd0ba;
+      --nav-h: 56px;
+      --display: 'Playfair Display', Georgia, serif;
+      --body: 'IBM Plex Serif', Georgia, serif;
+      --mono: 'IBM Plex Mono', monospace;
+      --input-bg: rgba(255,255,255,0.7);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: linear-gradient(160deg, var(--g1) 0%, var(--g2) 100%);
+      background-attachment: fixed;
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 100px;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.055'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(160,140,110,0.12) 1px, transparent 1px);
+      background-size: 18px 18px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Masthead ── */
+    .masthead {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: var(--paper);
+      border-bottom: 3px double var(--rule);
+    }
+    .masthead-top {
+      border-bottom: 1px solid var(--rule-light);
+      padding: 0 2rem; height: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .masthead-dateline {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light);
+    }
+    .builder-badge {
+      background: var(--accent); color: #fff;
+      font-family: var(--mono); font-size: 0.55rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; font-weight: 500;
+    }
+    .masthead-main {
+      height: var(--nav-h);
+      display: flex; align-items: center; padding: 0 2rem; gap: 0;
+    }
+    .nav-brand {
+      font-family: var(--display); font-size: 1.25rem; font-weight: 900;
+      color: var(--ink); text-decoration: none; letter-spacing: -0.02em;
+      flex-shrink: 0; padding-right: 1.5rem;
+      border-right: 1px solid var(--rule); margin-right: 1.5rem; line-height: 1;
+    }
+    .nav-links { display: flex; align-items: center; gap: 0; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-mid); text-decoration: none;
+      padding: 0.4rem 0.8rem; transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-view {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1px solid var(--rule); background: transparent; color: var(--ink-mid);
+      padding: 0.4rem 0.9rem; cursor: pointer; text-decoration: none;
+      transition: all 0.15s; margin-left: auto; white-space: nowrap;
+    }
+    .nav-view:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column; gap: 4px;
+      cursor: pointer; background: none; border: none; padding: 6px;
+    }
+    .hamburger span { display: block; width: 20px; height: 2px; background: var(--ink); transition: all 0.25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .mobile-nav {
+      display: none; position: fixed;
+      top: calc(var(--nav-h) + 29px); left: 0; right: 0;
+      background: var(--paper); border-bottom: 2px solid var(--rule); z-index: 999;
+    }
+    .mobile-nav.open { display: block; }
+    .mobile-nav a {
+      display: block; font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-mid); text-decoration: none;
+      padding: 0.8rem 2rem; border-bottom: 1px solid var(--rule-light); transition: color 0.15s;
+    }
+    .mobile-nav a:hover { color: var(--accent); }
+
+    /* ── Page layout ── */
+    main {
+      position: relative; z-index: 1;
+      padding-top: calc(var(--nav-h) + 29px + 2.5rem);
+    }
+    .page-inner { max-width: 860px; margin: 0 auto; padding: 0 2rem 2rem; }
+
+    /* Page header */
+    .page-header {
+      border-bottom: 4px solid var(--ink);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+    }
+    .page-edition {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.5rem;
+    }
+    .page-title {
+      font-family: var(--display);
+      font-size: 2.8rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 0.95;
+      color: var(--ink);
+    }
+    .page-title em {
+      font-style: italic; font-weight: 400; color: var(--ink-mid);
+    }
+    .page-subtitle {
+      font-family: var(--body); font-style: italic;
+      font-size: 0.88rem; color: var(--ink-light); margin-top: 0.5rem;
+    }
+
+    /* ── Form cards ── */
+    .form-card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-top: 4px solid var(--ink);
+      margin-bottom: 1.75rem;
+      position: relative;
+    }
+    .card-head {
+      border-bottom: 2px solid var(--rule-light);
+      padding: 1.1rem 1.75rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .card-edition {
+      font-family: var(--mono); font-size: 0.55rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint);
+    }
+    .card-title {
+      font-family: var(--display); font-size: 1.05rem;
+      font-weight: 700; color: var(--ink);
+    }
+    .card-body { padding: 1.75rem; }
+
+    /* ── Inputs ── */
+    .form-row { display: grid; gap: 1.1rem; margin-bottom: 1.1rem; }
+    .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-row.cols-1 { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-light);
+    }
+    .form-input {
+      background: var(--input-bg);
+      border: 1px solid var(--rule);
+      border-bottom: 2px solid var(--rule);
+      color: var(--ink); font-family: var(--body);
+      font-size: 0.88rem; padding: 0.7rem 0.9rem;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 2px 0 var(--accent);
+    }
+    .form-input::placeholder { color: var(--ink-faint); font-style: italic; }
+    textarea.form-input { min-height: 100px; resize: vertical; line-height: 1.65; }
+    select.form-input {
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%237a6a52' d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 14px;
+      padding-right: 2.5rem;
+    }
+
+    /* Dynamic entries */
+    .dyn-card {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--rule-light);
+      border-left: 3px solid var(--accent);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .dyn-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1rem;
+    }
+    .dyn-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+    }
+    .btn-remove {
+      background: transparent; border: 1px solid var(--rule);
+      color: var(--ink-light); cursor: pointer;
+      padding: 0.3rem 0.7rem; font-family: var(--mono);
+      font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: all 0.15s;
+    }
+    .btn-remove:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-add {
+      width: 100%; background: transparent;
+      border: 1px dashed var(--rule);
+      color: var(--ink-light); cursor: pointer;
+      padding: 0.7rem; font-family: var(--mono);
+      font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: all 0.15s; margin-top: 0.25rem;
+    }
+    .btn-add:hover { background: rgba(192,57,43,0.07); border-color: var(--accent); color: var(--accent); }
+
+    /* Skill slider */
+    .skill-slider-row { display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem; }
+    input[type="range"] {
+      flex: 1; accent-color: var(--accent);
+      height: 4px; cursor: pointer;
+    }
+    .skill-val {
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--accent); min-width: 36px; text-align: right;
+    }
+
+    /* Social icon preview */
+    .social-icon-cell {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 0.9rem;
+      background: var(--paper); align-self: flex-end; margin-bottom: 1px;
+    }
+
+    /* ── Theme section ── */
+    .preset-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-light); margin-bottom: 0.8rem;
+    }
+    .preset-swatches {
+      display: flex; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 2rem;
+    }
+    .preset-swatch {
+      width: 50px; height: 50px;
+      border: 2px solid transparent;
+      cursor: pointer; position: relative;
+      transition: border-color 0.2s, transform 0.15s; outline: none;
+    }
+    .preset-swatch:hover { transform: scale(1.08); }
+    .preset-swatch.active { border-color: var(--ink); box-shadow: 2px 2px 0 var(--accent); }
+    .preset-swatch .accent-dot {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .color-pickers-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .color-picker-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .color-picker-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-light);
+    }
+    .color-picker-row { display: flex; gap: 0.5rem; align-items: center; }
+    input[type="color"] {
+      width: 38px; height: 38px; border: 1px solid var(--rule);
+      background: none; cursor: pointer; padding: 2px; flex-shrink: 0;
+    }
+    .hex-input {
+      flex: 1; background: var(--input-bg); border: 1px solid var(--rule);
+      border-bottom: 2px solid var(--rule);
+      color: var(--ink); font-family: var(--mono); font-size: 0.75rem;
+      padding: 0.55rem 0.75rem; outline: none; transition: border-color 0.2s;
+    }
+    .hex-input:focus { border-color: var(--accent); }
+    .preview-bar-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-light); margin-bottom: 0.5rem;
+    }
+    .preview-bar {
+      height: 28px; width: 100%;
+      border: 1px solid var(--rule);
+      transition: background 0.3s;
+    }
+
+    /* ── Action bar ── */
+    .action-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--ink);
+      border-top: 2px solid rgba(255,255,255,0.1);
+      z-index: 500; padding: 0.85rem 2rem;
+    }
+    .action-bar-inner {
+      max-width: 860px; margin: 0 auto;
+      display: flex; gap: 0.75rem; align-items: center;
+    }
+    .action-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink-faint); margin-right: auto;
+    }
+    .btn-action {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.65rem 1.25rem; border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-action.load {
+      background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--ink-faint);
+    }
+    .btn-action.load:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .btn-action.preview {
+      background: transparent; border: 1px solid rgba(192,57,43,0.6); color: #e07060;
+    }
+    .btn-action.preview:hover { background: rgba(192,57,43,0.2); color: #ff7060; }
+    .btn-action.generate {
+      background: var(--accent); color: #fff; font-weight: 500;
+    }
+    .btn-action.generate:hover { background: #a93226; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 80px; right: 2rem;
+      background: var(--paper); border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem 1.2rem; color: var(--ink);
+      font-family: var(--mono); font-size: 0.68rem;
+      box-shadow: 4px 4px 0 var(--rule); z-index: 9000;
+      transform: translateY(16px); opacity: 0;
+      transition: all 0.3s; pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.error { border-left-color: #c0392b; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links, .nav-view { display: none; }
+      .hamburger { display: flex; }
+      .form-row.cols-2, .form-row.cols-3 { grid-template-columns: 1fr; }
+      .color-pickers-row { grid-template-columns: 1fr; }
+      .action-label { display: none; }
+      .page-inner { padding: 0 1.25rem; }
+      .page-title { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="masthead-top">
+      <span class="masthead-dateline">Resume Builder</span>
+      <span class="builder-badge">Builder</span>
+    </div>
+    <div class="masthead-main">
+      <a href="index.html" class="nav-brand">Resume</a>
+      <ul class="nav-links">
+        <li><a href="#sec-basic">Basic</a></li>
+        <li><a href="#sec-experience">Experience</a></li>
+        <li><a href="#sec-education">Education</a></li>
+        <li><a href="#sec-skills">Skills</a></li>
+        <li><a href="#sec-theme">Theme</a></li>
+      </ul>
+      <a href="index.html" class="nav-view">View Resume →</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <ul>
+      <li><a href="index.html">← View Resume</a></li>
+      <li><a href="#sec-basic">Basic Info</a></li>
+      <li><a href="#sec-experience">Experience</a></li>
+      <li><a href="#sec-education">Education</a></li>
+      <li><a href="#sec-skills">Skills</a></li>
+      <li><a href="#sec-theme">Theme</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="page-inner">
+
+      <div class="page-header">
+        <p class="page-edition">Resume Builder · Special Edition</p>
+        <h1 class="page-title">Build Your <em>Profile</em></h1>
+        <p class="page-subtitle">Complete each section, then generate or preview your resume.</p>
+      </div>
+
+      <!-- Basic Info -->
+      <div class="form-card" id="sec-basic">
+        <div class="card-head">
+          <span class="card-edition">§ 01</span>
+          <span class="card-title">Basic Information</span>
+        </div>
+        <div class="card-body">
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label class="form-label" for="name">Full Name *</label>
+              <input type="text" id="name" class="form-input" placeholder="e.g. Priya Venkataraman">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="title">Professional Title</label>
+              <input type="text" id="title" class="form-input" placeholder="e.g. Marine Biologist">
+            </div>
+          </div>
+          <div class="form-row cols-1">
+            <div class="form-group">
+              <label class="form-label" for="about">About (Short Bio)</label>
+              <textarea id="about" class="form-input" placeholder="A brief personal introduction..."></textarea>
+            </div>
+          </div>
+          <div class="form-row cols-1">
+            <div class="form-group">
+              <label class="form-label" for="summary">Professional Summary</label>
+              <textarea id="summary" class="form-input" placeholder="Longer professional overview with achievements..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="form-card" id="sec-contact">
+        <div class="card-head">
+          <span class="card-edition">§ 02</span>
+          <span class="card-title">Contact Information</span>
+        </div>
+        <div class="card-body">
+          <div class="form-row cols-3">
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone</label>
+              <input type="tel" id="phone" class="form-input" placeholder="+61 2 0000 0000">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email</label>
+              <input type="email" id="email" class="form-input" placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="location">Location</label>
+              <input type="text" id="location" class="form-input" placeholder="City, Country">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Languages -->
+      <div class="form-card" id="sec-languages">
+        <div class="card-head">
+          <span class="card-edition">§ 03</span>
+          <span class="card-title">Languages</span>
+        </div>
+        <div class="card-body">
+          <div id="languages-container"></div>
+          <button type="button" class="btn-add" id="add-language">+ Add Language</button>
+        </div>
+      </div>
+
+      <!-- Expertise -->
+      <div class="form-card" id="sec-expertise">
+        <div class="card-head">
+          <span class="card-edition">§ 04</span>
+          <span class="card-title">Areas of Expertise</span>
+        </div>
+        <div class="card-body">
+          <div id="expertise-container"></div>
+          <button type="button" class="btn-add" id="add-expertise">+ Add Expertise</button>
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="form-card" id="sec-experience">
+        <div class="card-head">
+          <span class="card-edition">§ 05</span>
+          <span class="card-title">Work Experience</span>
+        </div>
+        <div class="card-body">
+          <div id="experience-container"></div>
+          <button type="button" class="btn-add" id="add-experience">+ Add Experience</button>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="form-card" id="sec-education">
+        <div class="card-head">
+          <span class="card-edition">§ 06</span>
+          <span class="card-title">Education</span>
+        </div>
+        <div class="card-body">
+          <div id="education-container"></div>
+          <button type="button" class="btn-add" id="add-education">+ Add Education</button>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="form-card" id="sec-skills">
+        <div class="card-head">
+          <span class="card-edition">§ 07</span>
+          <span class="card-title">Skills (with Level)</span>
+        </div>
+        <div class="card-body">
+          <div id="skills-container"></div>
+          <button type="button" class="btn-add" id="add-skill">+ Add Skill</button>
+        </div>
+      </div>
+
+      <!-- Social Links -->
+      <div class="form-card" id="sec-social">
+        <div class="card-head">
+          <span class="card-edition">§ 08</span>
+          <span class="card-title">Social Links</span>
+        </div>
+        <div class="card-body">
+          <div id="social-container"></div>
+          <button type="button" class="btn-add" id="add-social">+ Add Social Link</button>
+        </div>
+      </div>
+
+      <!-- Theme -->
+      <div class="form-card" id="sec-theme">
+        <div class="card-head">
+          <span class="card-edition">§ 09</span>
+          <span class="card-title">Background Theme</span>
+        </div>
+        <div class="card-body">
+          <p class="preset-label">Preset Themes — Click to Apply</p>
+          <div class="preset-swatches" id="preset-swatches"></div>
+          <div class="color-pickers-row">
+            <div class="color-picker-group">
+              <label class="color-picker-label">Gradient Start</label>
+              <div class="color-picker-row">
+                <input type="color" id="g1-picker" value="#f5f0e8">
+                <input type="text" id="g1-hex" class="hex-input" value="#f5f0e8" maxlength="7">
+              </div>
+            </div>
+            <div class="color-picker-group">
+              <label class="color-picker-label">Gradient End</label>
+              <div class="color-picker-row">
+                <input type="color" id="g2-picker" value="#ede5d8">
+                <input type="text" id="g2-hex" class="hex-input" value="#ede5d8" maxlength="7">
+              </div>
+            </div>
+            <div class="color-picker-group">
+              <label class="color-picker-label">Accent Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="ac-picker" value="#c0392b">
+                <input type="text" id="ac-hex" class="hex-input" value="#c0392b" maxlength="7">
+              </div>
+            </div>
+          </div>
+          <p class="preview-bar-label">Live Preview</p>
+          <div class="preview-bar" id="preview-bar"></div>
+        </div>
+      </div>
+
+    </div><!-- /page-inner -->
+  </main>
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <div class="action-bar-inner">
+      <span class="action-label">Resume Builder</span>
+      <button type="button" class="btn-action load" id="btn-load">Load JSON</button>
+      <button type="button" class="btn-action preview" id="btn-preview">Preview</button>
+      <button type="button" class="btn-action generate" id="btn-generate">Generate &amp; Download</button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <input type="file" id="json-upload" accept=".json" style="display:none">
+
+  <script>
+    // ── Counters ──
+    let langIdx=0, expIdx=0, expertIdx=0, eduIdx=0, skillIdx=0, socialIdx=0;
+
+    const socialIcons = {
+      LinkedIn:'fab fa-linkedin', GitHub:'fab fa-github',
+      Twitter:'fab fa-twitter', Facebook:'fab fa-facebook',
+      Instagram:'fab fa-instagram', Email:'fas fa-envelope',
+      Website:'fas fa-globe', Other:'fas fa-link'
+    };
+
+    // ── Toast ──
+    function showToast(msg, err=false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = err ? 'error show' : 'show';
+      setTimeout(() => t.className = err ? 'error' : '', 3200);
+    }
+
+    // ── Hamburger ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileNav.classList.toggle('open'); });
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { hamburger.classList.remove('open'); mobileNav.classList.remove('open'); }));
+    document.addEventListener('click', e => { if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) { hamburger.classList.remove('open'); mobileNav.classList.remove('open'); }});
+
+    // ── Theme ──
+    const presets = [
+      {g1:'#f5f0e8',g2:'#ede5d8',ac:'#c0392b'},  // warm cream + red
+      {g1:'#e8f0f5',g2:'#d8e5ed',ac:'#1a5276'},  // cool blue-grey
+      {g1:'#f0f5e8',g2:'#e2edce',ac:'#2e7d32'},  // sage + forest
+      {g1:'#f5e8f0',g2:'#eddde8',ac:'#7b1fa2'},  // lavender + plum
+      {g1:'#0a0e1a',g2:'#0d1f3c',ac:'#00e5ff'},  // dark navy + cyan
+      {g1:'#1a0a00',g2:'#3d1a00',ac:'#ff9500'},  // dark warm + amber
+      {g1:'#1a1a1a',g2:'#2d2d2d',ac:'#f5c518'},  // dark mono + gold
+      {g1:'#0a0a0a',g2:'#1c1c1c',ac:'#e040fb'},  // dark + magenta
+    ];
+
+    function applyTheme(g1, g2, ac, updatePickers=true) {
+      const r = document.documentElement;
+      r.style.setProperty('--g1', g1);
+      r.style.setProperty('--g2', g2);
+      r.style.setProperty('--accent', ac);
+      document.body.style.backgroundImage = `linear-gradient(160deg, ${g1} 0%, ${g2} 100%)`;
+      // For light themes keep dark ink, for dark themes swap
+      const isDark = isColorDark(g1);
+      if (isDark) {
+        r.style.setProperty('--ink', '#e8edf5');
+        r.style.setProperty('--ink-mid', '#9aa8bf');
+        r.style.setProperty('--ink-light', '#5a6a88');
+        r.style.setProperty('--paper', 'rgba(255,255,255,0.05)');
+        r.style.setProperty('--rule', 'rgba(255,255,255,0.12)');
+        r.style.setProperty('--rule-light', 'rgba(255,255,255,0.07)');
+        r.style.setProperty('--input-bg', 'rgba(255,255,255,0.06)');
+      } else {
+        r.style.setProperty('--ink', '#1a1208');
+        r.style.setProperty('--ink-mid', '#3d3020');
+        r.style.setProperty('--ink-light', '#7a6a52');
+        r.style.setProperty('--paper', '#faf7f2');
+        r.style.setProperty('--rule', '#c8b89a');
+        r.style.setProperty('--rule-light', '#ddd0ba');
+        r.style.setProperty('--input-bg', 'rgba(255,255,255,0.7)');
+      }
+      document.getElementById('preview-bar').style.background = `linear-gradient(90deg, ${g1}, ${ac}, ${g2})`;
+      if (updatePickers) {
+        document.getElementById('g1-picker').value = g1;
+        document.getElementById('g2-picker').value = g2;
+        document.getElementById('ac-picker').value = ac;
+        document.getElementById('g1-hex').value = g1;
+        document.getElementById('g2-hex').value = g2;
+        document.getElementById('ac-hex').value = ac;
+      }
+    }
+
+    function isColorDark(hex) {
+      hex = hex.replace('#','');
+      if (hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+      const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+      return (0.299*r + 0.587*g + 0.114*b) < 128;
+    }
+
+    // Build presets
+    const swatchWrap = document.getElementById('preset-swatches');
+    presets.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-swatch' + (i===0?' active':'');
+      btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+      btn.innerHTML = `<span class="accent-dot" style="background:${p.ac}"></span>`;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-swatch').forEach(s=>s.classList.remove('active'));
+        btn.classList.add('active');
+        applyTheme(p.g1, p.g2, p.ac);
+      });
+      swatchWrap.appendChild(btn);
+    });
+
+    function bindPair(pickId, hexId) {
+      const pick = document.getElementById(pickId);
+      const hex = document.getElementById(hexId);
+      pick.addEventListener('input', () => {
+        hex.value = pick.value;
+        document.querySelectorAll('.preset-swatch').forEach(s=>s.classList.remove('active'));
+        applyTheme(document.getElementById('g1-picker').value, document.getElementById('g2-picker').value, document.getElementById('ac-picker').value, false);
+      });
+      hex.addEventListener('input', () => {
+        const v = hex.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+          pick.value = v;
+          document.querySelectorAll('.preset-swatch').forEach(s=>s.classList.remove('active'));
+          applyTheme(document.getElementById('g1-picker').value, document.getElementById('g2-picker').value, document.getElementById('ac-picker').value, false);
+        }
+      });
+    }
+    bindPair('g1-picker','g1-hex');
+    bindPair('g2-picker','g2-hex');
+    bindPair('ac-picker','ac-hex');
+    applyTheme('#f5f0e8','#ede5d8','#c0392b');
+
+    // ── Language entry ──
+    function makeLang(idx, val='') {
+      const d = document.createElement('div');
+      d.className = 'dyn-card'; d.dataset.langIdx = idx;
+      d.innerHTML = `<div style="display:flex;gap:.6rem;align-items:center">
+        <input type="text" id="lang-${idx}" class="form-input" placeholder="e.g. English (Native)" value="${val}" style="flex:1">
+        <button type="button" class="btn-remove" data-rl="${idx}">Remove</button>
+      </div>`;
+      return d;
+    }
+    document.getElementById('languages-container').addEventListener('click', e => {
+      const b = e.target.closest('[data-rl]');
+      if (b) document.querySelector(`.dyn-card[data-lang-idx="${b.dataset.rl}"]`)?.remove();
+    });
+    document.getElementById('add-language').addEventListener('click', () => {
+      document.getElementById('languages-container').appendChild(makeLang(langIdx++));
+    });
+
+    // ── Expertise entry ──
+    function makeExpert(idx, val='') {
+      const d = document.createElement('div');
+      d.className = 'dyn-card'; d.dataset.expertIdx = idx;
+      d.innerHTML = `<div style="display:flex;gap:.6rem;align-items:center">
+        <input type="text" id="expert-${idx}" class="form-input" placeholder="e.g. Coral Reef Ecology" value="${val}" style="flex:1">
+        <button type="button" class="btn-remove" data-re="${idx}">Remove</button>
+      </div>`;
+      return d;
+    }
+    document.getElementById('expertise-container').addEventListener('click', e => {
+      const b = e.target.closest('[data-re]');
+      if (b) document.querySelector(`.dyn-card[data-expert-idx="${b.dataset.re}"]`)?.remove();
+    });
+    document.getElementById('add-expertise').addEventListener('click', () => {
+      document.getElementById('expertise-container').appendChild(makeExpert(expertIdx++));
+    });
+
+    // ── Experience entry ──
+    function makeExp(idx, data={}) {
+      const d = document.createElement('div');
+      d.className = 'dyn-card'; d.dataset.expIdx = idx;
+      d.innerHTML = `
+        <div class="dyn-head">
+          <span class="dyn-label">Experience ${idx+1}</span>
+          <button type="button" class="btn-remove" data-rx="${idx}">Remove</button>
+        </div>
+        <div class="form-row cols-3">
+          <div class="form-group">
+            <label class="form-label">Role / Title</label>
+            <input type="text" id="exp-role-${idx}" class="form-input" placeholder="e.g. Senior Researcher" value="${data.role||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company / Organisation</label>
+            <input type="text" id="exp-company-${idx}" class="form-input" placeholder="e.g. AIMS — Townsville" value="${data.company||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Period</label>
+            <input type="text" id="exp-period-${idx}" class="form-input" placeholder="e.g. 2020 – Present" value="${data.period||''}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea id="exp-desc-${idx}" class="form-input" placeholder="Key responsibilities and achievements...">${data.description||''}</textarea>
+        </div>
+      `;
+      return d;
+    }
+    document.getElementById('experience-container').addEventListener('click', e => {
+      const b = e.target.closest('[data-rx]');
+      if (b) document.querySelector(`.dyn-card[data-exp-idx="${b.dataset.rx}"]`)?.remove();
+    });
+    document.getElementById('add-experience').addEventListener('click', () => {
+      document.getElementById('experience-container').appendChild(makeExp(expIdx++));
+    });
+
+    // ── Education entry ──
+    function makeEdu(idx, data={}) {
+      const d = document.createElement('div');
+      d.className = 'dyn-card'; d.dataset.eduIdx = idx;
+      d.innerHTML = `
+        <div class="dyn-head">
+          <span class="dyn-label">Education ${idx+1}</span>
+          <button type="button" class="btn-remove" data-reu="${idx}">Remove</button>
+        </div>
+        <div class="form-row cols-3">
+          <div class="form-group">
+            <label class="form-label">Institution</label>
+            <input type="text" id="edu-inst-${idx}" class="form-input" placeholder="e.g. University of Queensland" value="${data.institution||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Degree</label>
+            <input type="text" id="edu-deg-${idx}" class="form-input" placeholder="e.g. Ph.D. Marine Biology" value="${data.degree||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Year</label>
+            <input type="text" id="edu-year-${idx}" class="form-input" placeholder="e.g. 2014–2017" value="${data.year||''}">
+          </div>
+        </div>
+      `;
+      return d;
+    }
+    document.getElementById('education-container').addEventListener('click', e => {
+      const b = e.target.closest('[data-reu]');
+      if (b) document.querySelector(`.dyn-card[data-edu-idx="${b.dataset.reu}"]`)?.remove();
+    });
+    document.getElementById('add-education').addEventListener('click', () => {
+      document.getElementById('education-container').appendChild(makeEdu(eduIdx++));
+    });
+
+    // ── Skill entry ──
+    function makeSkill(idx, data={}) {
+      const level = data.level !== undefined ? data.level : 75;
+      const d = document.createElement('div');
+      d.className = 'dyn-card'; d.dataset.skillIdx = idx;
+      d.innerHTML = `
+        <div class="dyn-head">
+          <span class="dyn-label">Skill ${idx+1}</span>
+          <button type="button" class="btn-remove" data-rsk="${idx}">Remove</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Skill Name</label>
+          <input type="text" id="skill-name-${idx}" class="form-input" placeholder="e.g. Statistical Modelling" value="${data.name||''}">
+        </div>
+        <div class="form-group" style="margin-top:.5rem">
+          <label class="form-label">Proficiency Level</label>
+          <div class="skill-slider-row">
+            <input type="range" id="skill-level-${idx}" min="0" max="100" value="${level}">
+            <span class="skill-val" id="skill-val-${idx}">${level}%</span>
+          </div>
+        </div>
+      `;
+      const slider = d.querySelector(`#skill-level-${idx}`);
+      const valEl = d.querySelector(`#skill-val-${idx}`);
+      slider.addEventListener('input', () => valEl.textContent = slider.value + '%');
+      return d;
+    }
+    document.getElementById('skills-container').addEventListener('click', e => {
+      const b = e.target.closest('[data-rsk]');
+      if (b) document.querySelector(`.dyn-card[data-skill-idx="${b.dataset.rsk}"]`)?.remove();
+    });
+    document.getElementById('add-skill').addEventListener('click', () => {
+      document.getElementById('skills-container').appendChild(makeSkill(skillIdx++));
+    });
+
+    // ── Social entry ──
+    function makeSocial(idx, data={}) {
+      const opts = Object.keys(socialIcons).map(k =>
+        `<option value="${k}" ${data.name===k?'selected':''}>${k}</option>`
+      ).join('');
+      const d = document.createElement('div');
+      d.className = 'dyn-card'; d.dataset.socialIdx = idx;
+      d.innerHTML = `
+        <div class="dyn-head">
+          <span class="dyn-label">Social Link ${idx+1}</span>
+          <button type="button" class="btn-remove" data-rso="${idx}">Remove</button>
+        </div>
+        <div class="form-row cols-2" style="align-items:flex-end">
+          <div class="form-group">
+            <label class="form-label">Platform</label>
+            <select id="social-name-${idx}" class="form-input">${opts}</select>
+          </div>
+          <div style="display:flex;gap:.5rem;align-items:flex-end">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">URL</label>
+              <input type="url" id="social-url-${idx}" class="form-input" placeholder="https://..." value="${data.url||''}">
+            </div>
+            <div class="social-icon-cell" id="social-icon-${idx}">
+              <i class="${socialIcons[data.name||'LinkedIn']||'fas fa-link'}"></i>
+            </div>
+          </div>
+        </div>
+      `;
+      d.querySelector(`#social-name-${idx}`).addEventListener('change', function() {
+        d.querySelector(`#social-icon-${idx} i`).className = socialIcons[this.value] || 'fas fa-link';
+      });
+      return d;
+    }
+    document.getElementById('social-container').addEventListener('click', e => {
+      const b = e.target.closest('[data-rso]');
+      if (b) document.querySelector(`.dyn-card[data-social-idx="${b.dataset.rso}"]`)?.remove();
+    });
+    document.getElementById('add-social').addEventListener('click', () => {
+      document.getElementById('social-container').appendChild(makeSocial(socialIdx++));
+    });
+
+    // ── Collect ──
+    function collectData() {
+      const name = document.getElementById('name').value.trim();
+      if (!name) { showToast('⚠ Please enter your name.', true); return null; }
+
+      const data = {
+        profile_image: 'assets/profile.jpg',
+        name,
+        title: document.getElementById('title').value.trim(),
+        about: document.getElementById('about').value.trim(),
+        summary: document.getElementById('summary').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        location: document.getElementById('location').value.trim(),
+        languages: [],
+        expertise: [],
+        experience: [],
+        education: [],
+        skills: [],
+        footer: { copyright: `© [year] [name]. All rights reserved.`, social_links: [] },
+        theme: {
+          gradientStart: document.getElementById('g1-picker').value,
+          gradientEnd: document.getElementById('g2-picker').value,
+          accentColor: document.getElementById('ac-picker').value
+        }
+      };
+
+      document.querySelectorAll('.dyn-card[data-lang-idx]').forEach(c => {
+        const v = document.getElementById(`lang-${c.dataset.langIdx}`)?.value.trim();
+        if (v) data.languages.push(v);
+      });
+      document.querySelectorAll('.dyn-card[data-expert-idx]').forEach(c => {
+        const v = document.getElementById(`expert-${c.dataset.expertIdx}`)?.value.trim();
+        if (v) data.expertise.push(v);
+      });
+      document.querySelectorAll('.dyn-card[data-exp-idx]').forEach(c => {
+        const i = c.dataset.expIdx;
+        data.experience.push({
+          role: document.getElementById(`exp-role-${i}`)?.value.trim()||'',
+          company: document.getElementById(`exp-company-${i}`)?.value.trim()||'',
+          period: document.getElementById(`exp-period-${i}`)?.value.trim()||'',
+          description: document.getElementById(`exp-desc-${i}`)?.value.trim()||''
+        });
+      });
+      document.querySelectorAll('.dyn-card[data-edu-idx]').forEach(c => {
+        const i = c.dataset.eduIdx;
+        data.education.push({
+          institution: document.getElementById(`edu-inst-${i}`)?.value.trim()||'',
+          degree: document.getElementById(`edu-deg-${i}`)?.value.trim()||'',
+          year: document.getElementById(`edu-year-${i}`)?.value.trim()||''
+        });
+      });
+      document.querySelectorAll('.dyn-card[data-skill-idx]').forEach(c => {
+        const i = c.dataset.skillIdx;
+        const nm = document.getElementById(`skill-name-${i}`)?.value.trim();
+        const lv = parseInt(document.getElementById(`skill-level-${i}`)?.value||'75');
+        if (nm) data.skills.push({ name: nm, level: lv });
+      });
+      document.querySelectorAll('.dyn-card[data-social-idx]').forEach(c => {
+        const i = c.dataset.socialIdx;
+        const nm = document.getElementById(`social-name-${i}`)?.value;
+        const url = document.getElementById(`social-url-${i}`)?.value.trim();
+        if (url) data.footer.social_links.push({ name: nm, url, icon: socialIcons[nm]||'fas fa-link' });
+      });
+
+      return data;
+    }
+
+    // ── Generate ──
+    document.getElementById('btn-generate').addEventListener('click', () => {
+      const data = collectData(); if (!data) return;
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'data.json'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('✓ data.json downloaded!');
+    });
+
+    // ── Preview ──
+    document.getElementById('btn-preview').addEventListener('click', () => {
+      const data = collectData(); if (!data) return;
+      window.open(`index.html#data=${encodeURIComponent(JSON.stringify(data))}`, '_blank');
+    });
+
+    // ── Load JSON ──
+    document.getElementById('btn-load').addEventListener('click', () => document.getElementById('json-upload').click());
+    document.getElementById('json-upload').addEventListener('change', e => {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try { populateForm(JSON.parse(ev.target.result)); showToast('✓ Data loaded!'); }
+        catch { showToast('⚠ Invalid JSON.', true); }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    });
+
+    // ── Populate ──
+    function populateForm(data) {
+      ['languages-container','expertise-container','experience-container',
+       'education-container','skills-container','social-container'].forEach(id => {
+        document.getElementById(id).innerHTML = '';
+      });
+      langIdx=0; expIdx=0; expertIdx=0; eduIdx=0; skillIdx=0; socialIdx=0;
+
+      document.getElementById('name').value = data.name||'';
+      document.getElementById('title').value = data.title||'';
+      document.getElementById('about').value = data.about||'';
+      document.getElementById('summary').value = data.summary||'';
+      document.getElementById('phone').value = data.phone||'';
+      document.getElementById('email').value = data.email||'';
+      document.getElementById('location').value = data.location||'';
+
+      (data.languages||[]).forEach(v => document.getElementById('languages-container').appendChild(makeLang(langIdx++,v)));
+      (data.expertise||[]).forEach(v => document.getElementById('expertise-container').appendChild(makeExpert(expertIdx++,v)));
+      (data.experience||[]).forEach(v => document.getElementById('experience-container').appendChild(makeExp(expIdx++,v)));
+      (data.education||[]).forEach(v => document.getElementById('education-container').appendChild(makeEdu(eduIdx++,v)));
+      (data.skills||[]).forEach(v => document.getElementById('skills-container').appendChild(makeSkill(skillIdx++,v)));
+      ((data.footer||{}).social_links||[]).forEach(v => document.getElementById('social-container').appendChild(makeSocial(socialIdx++,v)));
+
+      if (data.theme) {
+        applyTheme(data.theme.gradientStart||'#f5f0e8', data.theme.gradientEnd||'#ede5d8', data.theme.accentColor||'#c0392b');
+        document.querySelectorAll('.preset-swatch').forEach(s=>s.classList.remove('active'));
+      }
+    }
+  </script>
+</body>
+</html>
