@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Improve & Standardise — Prompt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #080c0f;
+      --surface: #0e1518;
+      --surface2: #141d22;
+      --border: rgba(255,255,255,0.07);
+      --ac: #2dd4bf;
+      --ac2: #5eead4;
+      --ac-dim: rgba(45,212,191,0.10);
+      --ac-glow: rgba(45,212,191,0.26);
+      --amber: #fbbf24;
+      --amber-dim: rgba(251,191,36,0.12);
+      --amber-glow: rgba(251,191,36,0.28);
+      --rose: #fb7185;
+      --rose-dim: rgba(251,113,133,0.10);
+      --rose-glow: rgba(251,113,133,0.25);
+      --text: rgba(255,255,255,0.90);
+      --muted: rgba(255,255,255,0.50);
+      --dim: rgba(255,255,255,0.24);
+      --display: 'Syne', sans-serif;
+      --body: 'DM Sans', sans-serif;
+      --mono: 'Fira Code', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    .orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(100px); }
+    .orb-1 { width: 550px; height: 550px; background: rgba(45,212,191,0.05); top: -80px; right: -80px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(251,191,36,0.04); bottom: 0; left: -60px; }
+
+    .wrapper { max-width: 920px; margin: 0 auto; padding: 0 2rem 6rem; position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    .header { padding: 5rem 0 3.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+
+    .header-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+    .htag {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      border-radius: 100px; padding: 0.28rem 0.85rem;
+      font-family: var(--display); font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .htag-teal  { background: var(--ac-dim);    color: var(--ac2);  border: 1px solid var(--ac-glow); }
+    .htag-amber { background: var(--amber-dim);  color: var(--amber); border: 1px solid var(--amber-glow); }
+    .htag-rose  { background: var(--rose-dim);   color: var(--rose);  border: 1px solid var(--rose-glow); }
+
+    .header-title {
+      font-family: var(--display); font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 800; line-height: 1.05; color: #fff; margin-bottom: 1rem;
+    }
+    .header-title .teal { color: var(--ac); }
+    .header-title .amber { color: var(--amber); }
+
+    .header-sub { font-size: 0.92rem; color: var(--muted); font-weight: 300; max-width: 580px; line-height: 1.8; }
+
+    .header-meta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+    .meta-chip {
+      display: flex; align-items: center; gap: 0.45rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.28rem 0.85rem;
+      font-size: 0.74rem; color: var(--muted);
+    }
+    .meta-chip i { color: var(--ac); font-size: 0.68rem; }
+
+    /* ── PROBLEM BANNER ── */
+    .problem-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--amber);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin: 2.5rem 0;
+    }
+    .problem-title {
+      font-family: var(--display); font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .inconsistency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; }
+    .incon-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.1rem;
+    }
+    .incon-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 0.4rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .incon-text { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── ACTION ROW ── */
+    .action-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 2rem 0; }
+
+    .btn-copy-all {
+      font-family: var(--display); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--ac); color: #000;
+      border: none; cursor: pointer;
+      padding: 0.75rem 1.8rem; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      transition: all 0.2s; box-shadow: 0 4px 24px var(--ac-glow);
+    }
+    .btn-copy-all:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-copy-all.copied { background: #059669; }
+
+    .btn-outline {
+      font-family: var(--display); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); cursor: pointer;
+      padding: 0.75rem 1.4rem; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--ac-glow); color: var(--ac); }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { margin-bottom: 2rem; }
+    .progress-label {
+      font-size: 0.68rem; color: var(--dim); margin-bottom: 0.4rem;
+      display: flex; justify-content: space-between;
+    }
+    .progress-label span { color: var(--ac); font-weight: 600; }
+    .progress-bar { height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--ac), var(--ac2)); border-radius: 2px; width: 0; transition: width 0.4s ease; }
+
+    /* ── STEP CARDS ── */
+    .step {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; margin-bottom: 1rem; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .step:hover { border-color: rgba(255,255,255,0.10); }
+    .step.open { border-color: rgba(45,212,191,0.18); }
+    .step.amber-step.open { border-color: rgba(251,191,36,0.18); }
+
+    .step-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.3rem 1.8rem; cursor: pointer; user-select: none; gap: 1rem;
+      transition: background 0.2s;
+    }
+    .step-header:hover { background: rgba(255,255,255,0.02); }
+
+    .step-left { display: flex; align-items: center; gap: 0.9rem; }
+
+    .step-num {
+      font-family: var(--display); font-size: 0.56rem; font-weight: 800;
+      letter-spacing: 0.12em; border-radius: 4px; padding: 0.2rem 0.55rem; white-space: nowrap;
+    }
+    .num-teal  { background: var(--ac-dim);    color: var(--ac2);  border: 1px solid var(--ac-glow); }
+    .num-amber { background: var(--amber-dim);  color: var(--amber); border: 1px solid var(--amber-glow); }
+
+    .step-title { font-family: var(--display); font-size: 0.94rem; font-weight: 700; color: var(--text); }
+
+    .step-right { display: flex; align-items: center; gap: 0.5rem; }
+
+    .copy-btn {
+      font-family: var(--display); font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ac-dim); color: var(--ac2);
+      border: 1px solid var(--ac-glow);
+      padding: 0.2rem 0.65rem; border-radius: 3px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .copy-btn:hover { background: rgba(45,212,191,0.2); }
+    .copy-btn.copied { background: rgba(45,212,191,0.2); color: var(--ac); }
+
+    .chevron { color: var(--dim); font-size: 0.72rem; transition: transform 0.3s; flex-shrink: 0; }
+    .step.open .chevron { transform: rotate(180deg); }
+
+    .step-body { display: none; border-top: 1px solid var(--border); }
+    .step.open .step-body { display: block; }
+    .step-content { padding: 1.8rem; }
+
+    /* ── PROSE ── */
+    .prose { font-size: 0.875rem; line-height: 1.85; color: var(--muted); }
+    .prose p { margin-bottom: 0.9rem; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--text); font-weight: 600; }
+    .prose code { font-family: var(--mono); font-size: 0.78rem; background: rgba(45,212,191,0.10); color: var(--ac2); padding: 0.1rem 0.38rem; border-radius: 3px; }
+    .prose ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+    .prose ul li { padding-left: 1.3rem; position: relative; }
+    .prose ul li::before { content:'▸'; position:absolute; left:0; color:var(--ac); font-size:0.62rem; top:0.27rem; }
+    .prose hr { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+    .prose ol { padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+    .prose ol li { font-size: 0.875rem; color: var(--muted); }
+
+    /* ── SECTION HEADING INSIDE STEP ── */
+    .sub-head {
+      font-family: var(--display); font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ac); margin: 1.4rem 0 0.75rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .sub-head::after { content:''; flex:1; height:1px; background: rgba(45,212,191,0.14); }
+    .sub-head.amber { color: var(--amber); }
+    .sub-head.amber::after { background: rgba(251,191,36,0.14); }
+
+    /* ── HIGHLIGHT BOXES ── */
+    .hl-box {
+      border-radius: 8px; padding: 1.1rem 1.3rem; margin: 1rem 0;
+    }
+    .hl-box.teal { background: rgba(45,212,191,0.06); border: 1px solid rgba(45,212,191,0.18); border-left: 3px solid var(--ac); }
+    .hl-box.amber { background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.18); border-left: 3px solid var(--amber); }
+    .hl-box.rose  { background: rgba(251,113,133,0.06); border: 1px solid rgba(251,113,133,0.18); border-left: 3px solid var(--rose); }
+    .hl-title { font-family: var(--display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.6rem; }
+    .hl-box.teal  .hl-title { color: var(--ac); }
+    .hl-box.amber .hl-title { color: var(--amber); }
+    .hl-box.rose  .hl-title { color: var(--rose); }
+    .hl-box .prose { color: rgba(255,255,255,0.68); }
+
+    /* ── STANDARD DATA TABLE ── */
+    .data-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.82rem; }
+    .data-table th {
+      font-family: var(--display); font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ac2); text-align: left; padding: 0.55rem 0.9rem;
+      background: var(--surface2); border-bottom: 1px solid var(--border);
+    }
+    .data-table td { padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table code { font-family: var(--mono); font-size: 0.75rem; background: rgba(45,212,191,0.08); color: var(--ac2); padding: 0.08rem 0.35rem; border-radius: 3px; }
+    .data-table .req { color: var(--rose); font-size: 0.68rem; font-weight: 600; }
+    .data-table .opt { color: var(--dim); font-size: 0.68rem; }
+
+    /* ── FEATURE MATRIX ── */
+    .matrix { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.8rem; overflow-x: auto; display: block; }
+    .matrix th {
+      font-family: var(--display); font-size: 0.56rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--dim); text-align: center; padding: 0.5rem 0.7rem;
+      background: var(--surface2); border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .matrix th:first-child { text-align: left; }
+    .matrix td { padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); color: var(--muted); text-align: center; }
+    .matrix td:first-child { text-align: left; font-weight: 500; color: var(--text); white-space: nowrap; }
+    .matrix tr:last-child td { border-bottom: none; }
+    .tick { color: var(--ac); }
+    .cross { color: var(--rose); }
+    .partial { color: var(--amber); }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .checklist li {
+      font-size: 0.86rem; color: var(--muted);
+      padding: 0.55rem 0.9rem 0.55rem 2.8rem; position: relative;
+      background: var(--surface2); border-radius: 6px; cursor: pointer;
+      transition: background 0.15s; line-height: 1.6;
+    }
+    .checklist li:hover { background: rgba(255,255,255,0.04); }
+    .checklist li::before {
+      content: ''; position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
+      width: 14px; height: 14px; border: 1.5px solid var(--dim); border-radius: 3px; transition: all 0.2s;
+    }
+    .checklist li.checked { color: var(--text); }
+    .checklist li.checked::before {
+      background: var(--ac); border-color: var(--ac);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3 3 7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: center; background-size: 9px;
+    }
+
+    /* ── FOOTER ── */
+    .footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-text { font-size: 0.74rem; color: var(--dim); }
+    .footer-links { display: flex; gap: 1.4rem; }
+    .footer-link { font-size: 0.72rem; color: var(--ac); text-decoration: none; font-family: var(--display); font-weight: 600; letter-spacing: 0.08em; }
+    .footer-link:hover { opacity: 0.75; }
+
+    @media (max-width: 600px) {
+      .wrapper { padding: 0 1.2rem 5rem; }
+      .header { padding: 3rem 0 2.5rem; }
+      .step-content { padding: 1.3rem; }
+      .inconsistency-grid { grid-template-columns: 1fr; }
+      .matrix { font-size: 0.72rem; }
+      .matrix th, .matrix td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-tags">
+      <span class="htag htag-teal"><i class="fas fa-arrow-up"></i> Improve</span>
+      <span class="htag htag-amber"><i class="fas fa-equals"></i> Standardise</span>
+      <span class="htag htag-rose"><i class="fas fa-layer-group"></i> Resume &amp; Portfolio</span>
+    </div>
+    <h1 class="header-title">
+      Improve &amp; <span class="teal">Standardise</span><br>
+      All <span class="amber">Templates</span>
+    </h1>
+    <p class="header-sub">A comprehensive prompt for improving existing resume and portfolio templates — fixing inconsistencies, adding missing features, unifying the data structure, and upgrading the design quality across the entire collection.</p>
+    <div class="header-meta">
+      <div class="meta-chip"><i class="fas fa-layer-group"></i> 7 Steps</div>
+      <div class="meta-chip"><i class="fas fa-database"></i> Unified data.json schema</div>
+      <div class="meta-chip"><i class="fas fa-puzzle-piece"></i> Full feature parity</div>
+      <div class="meta-chip"><i class="fas fa-wifi-slash"></i> Offline/online logic</div>
+      <div class="meta-chip"><i class="fas fa-palette"></i> Theme picker required</div>
+    </div>
+  </header>
+
+  <!-- PROBLEM BANNER -->
+  <div class="problem-banner">
+    <div class="problem-title"><i class="fas fa-triangle-exclamation"></i> Current Inconsistencies to Fix</div>
+    <div class="inconsistency-grid">
+      <div class="incon-card">
+        <div class="incon-label"><i class="fas fa-database"></i> Data Structure</div>
+        <div class="incon-text">Each template uses different top-level keys — <code>personalInfo</code> vs <code>name</code>, <code>socialLinks</code> vs nested in <code>footer</code>, etc. They don't share a common schema.</div>
+      </div>
+      <div class="incon-card">
+        <div class="incon-label"><i class="fas fa-puzzle-piece"></i> Missing Sections</div>
+        <div class="incon-text">Some templates have References, some have Projects, some have Awards, some have Stats, some have none. Not all sections appear in every template.</div>
+      </div>
+      <div class="incon-card">
+        <div class="incon-label"><i class="fas fa-palette"></i> Theme Picker Gap</div>
+        <div class="incon-text">Style 1 (redesign) has no theme picker at all in <code>form.html</code>. All others do. Every template must have one.</div>
+      </div>
+      <div class="incon-card">
+        <div class="incon-label"><i class="fas fa-wifi-slash"></i> Offline Buttons</div>
+        <div class="incon-text">Some templates still show Load JSON or Edit buttons when deployed. The inline <code>style="display:none"</code> guard was inconsistently applied.</div>
+      </div>
+      <div class="incon-card">
+        <div class="incon-label"><i class="fas fa-code"></i> Form Completeness</div>
+        <div class="incon-text">form.html sections don't match across templates. Some have social links, some don't. Some allow adding stats, others don't.</div>
+      </div>
+      <div class="incon-card">
+        <div class="incon-label"><i class="fas fa-mobile-screen"></i> Mobile Navigation</div>
+        <div class="incon-text">Hamburger menu was rebuilt differently each time with minor differences in behaviour. Needs one consistent, reliable implementation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ROW -->
+  <div class="action-row">
+    <button class="btn-copy-all" id="copy-all-btn"><i class="fas fa-copy"></i> Copy Full Prompt</button>
+    <button class="btn-outline" id="expand-btn"><i class="fas fa-chevron-down"></i> Expand All</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">Quality checklist progress <span id="progress-text">0 / 0</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <!-- ── STEP 1 ── -->
+  <div class="step open" id="step-1">
+    <div class="step-header" onclick="toggleStep('step-1')">
+      <div class="step-left"><span class="step-num num-teal">STEP 01</span><span class="step-title">What This Prompt Is For</span></div>
+      <div class="step-right"><button class="copy-btn" onclick="copyStep(event,'step-1')">Copy</button><span class="chevron">▾</span></div>
+    </div>
+    <div class="step-body"><div class="step-content">
+      <div class="prose">
+        <p>This prompt is for <strong>improving and standardising an existing resume or portfolio template</strong> that was previously redesigned. You will be given the current files. Your job is not to redesign the visual style — keep the existing look, fonts, and color palette. Instead you will:</p>
+        <ul>
+          <li>Update <code>data.json</code> to match the <strong>universal standard schema</strong> defined in Step 2</li>
+          <li>Update <code>index.html</code> to render all standard sections, apply the theme from JSON, and follow the correct offline/online button logic</li>
+          <li>Update <code>form.html</code> to include all standard sections, add the theme color picker if missing, and ensure Load JSON repopulates every field</li>
+          <li>Fix any broken or inconsistent features (hamburger, offline buttons, preview, toast)</li>
+          <li>Add any sections this template is missing compared to the standard feature set</li>
+        </ul>
+        <p>This applies equally to <strong>resume templates</strong> (CV-style, single-person focused) and <strong>portfolio templates</strong> (project-showcase focused, may include a works/gallery section). Treat them consistently — the same schema, the same features, the same rules.</p>
+        <div class="hl-box teal" style="margin-top:1rem">
+          <div class="hl-title">Golden Rule</div>
+          <div class="prose"><p><strong>Do not change the visual design.</strong> The existing color scheme, fonts, layout, and aesthetic identity of the template must be preserved. All improvements are functional and structural — not cosmetic.</p></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ── STEP 2 ── -->
+  <div class="step" id="step-2">
+    <div class="step-header" onclick="toggleStep('step-2')">
+      <div class="step-left"><span class="step-num num-teal">STEP 02</span><span class="step-title">Universal data.json Schema</span></div>
+      <div class="step-right"><button class="copy-btn" onclick="copyStep(event,'step-2')">Copy</button><span class="chevron">▾</span></div>
+    </div>
+    <div class="step-body"><div class="step-content">
+      <div class="prose">
+        <p>Every template — resume or portfolio — must use this exact top-level structure. Fields marked <strong>required</strong> must always be present. Fields marked <strong>optional</strong> should be included if the template has a section for them; they can be empty arrays or omitted entirely if truly unused.</p>
+      </div>
+
+      <table class="data-table">
+        <thead><tr><th>Key</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>name</code></td><td>string</td><td class="req">Required</td><td>Full name of the person. Used in page title, nav brand, hero, footer.</td></tr>
+          <tr><td><code>title</code></td><td>string</td><td class="req">Required</td><td>Job title or professional descriptor shown in the hero section.</td></tr>
+          <tr><td><code>about</code></td><td>string or string[]</td><td class="req">Required</td><td>Professional summary. Can be a single string or an array of paragraph strings.</td></tr>
+          <tr><td><code>theme</code></td><td>object</td><td class="req">Required</td><td>Contains <code>gradientStart</code>, <code>gradientEnd</code>, <code>accentColor</code>. Applied as CSS variables on load.</td></tr>
+          <tr><td><code>contact</code></td><td>object</td><td class="req">Required</td><td>Contains <code>phone</code>, <code>email</code>, <code>address</code>. Shown in hero chips and contact section.</td></tr>
+          <tr><td><code>profile</code></td><td>object</td><td class="req">Required</td><td>Contains <code>image</code> (path to photo, e.g. <code>"assets/profile.jpg"</code>) and <code>eyebrow</code> (short status label, e.g. "Open to Opportunities").</td></tr>
+          <tr><td><code>experience</code></td><td>array</td><td class="req">Required</td><td>Each item: <code>company</code>, <code>role</code>, <code>start</code>, <code>end</code>, <code>details</code> (string[]). Bullet-point responsibilities.</td></tr>
+          <tr><td><code>education</code></td><td>array</td><td class="req">Required</td><td>Each item: <code>degree</code>, <code>institution</code>, <code>start</code>, <code>end</code>, <code>description</code> (string).</td></tr>
+          <tr><td><code>skills</code></td><td>array</td><td class="req">Required</td><td>Each item: <code>name</code> (string) and <code>level</code> (0–100 integer). OR grouped by <code>category</code> with an <code>items</code> array — pick whichever the template uses.</td></tr>
+          <tr><td><code>languages</code></td><td>array</td><td class="req">Required</td><td>Each item: <code>name</code> (string) and <code>level</code> (0–100 integer).</td></tr>
+          <tr><td><code>references</code></td><td>array</td><td class="req">Required</td><td>Each item: <code>name</code>, <code>role</code>, <code>phone</code>, <code>email</code>.</td></tr>
+          <tr><td><code>projects</code></td><td>array</td><td class="opt">Optional</td><td>Each item: <code>name</code>, <code>description</code>, <code>liveUrl</code>, <code>codeUrl</code>. Include for portfolio-style or developer templates.</td></tr>
+          <tr><td><code>awards</code></td><td>array</td><td class="opt">Optional</td><td>Each item: <code>date</code>, <code>title</code>, <code>institution</code>, <code>description</code>.</td></tr>
+          <tr><td><code>stats</code></td><td>array</td><td class="opt">Optional</td><td>Each item: <code>value</code> (string, e.g. "6+") and <code>label</code> (string, e.g. "Years Experience"). Displayed as stat counters.</td></tr>
+          <tr><td><code>hero</code></td><td>object</td><td class="opt">Optional</td><td>For templates with a separate hero image: <code>description</code> (tagline string) and <code>image</code> (path string).</td></tr>
+          <tr><td><code>footer</code></td><td>object</td><td class="req">Required</td><td>Contains <code>text</code> (copyright string with <code>{year}</code> placeholder) and <code>socials</code> (array of <code>{ name, url }</code> objects).</td></tr>
+        </tbody>
+      </table>
+
+      <div class="hl-box amber">
+        <div class="hl-title">Consistency Rules</div>
+        <div class="prose">
+          <ul>
+            <li>Always use <code>name</code> at the top level — never <code>personalInfo.firstName</code> + <code>personalInfo.lastName</code> or nested variants</li>
+            <li>Always use <code>contact.phone</code>, <code>contact.email</code>, <code>contact.address</code> — never flat top-level keys</li>
+            <li>Always use <code>footer.socials</code> for social links — never a top-level <code>socialLinks</code> array</li>
+            <li>Always use <code>profile.image</code> for the photo path — never <code>personalInfo.photo</code> or similar</li>
+            <li>The <code>footer.text</code> string must contain <code>{year}</code> which is replaced at runtime with <code>new Date().getFullYear()</code></li>
+            <li>Skills can be flat (<code>[{ name, level }]</code>) or grouped (<code>[{ category, items: [{ name, level }] }]</code>) — choose based on the template's existing UI, but be consistent within the template</li>
+          </ul>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ── STEP 3 ── -->
+  <div class="step" id="step-3">
+    <div class="step-header" onclick="toggleStep('step-3')">
+      <div class="step-left"><span class="step-num num-teal">STEP 03</span><span class="step-title">Standard Feature Set</span></div>
+      <div class="step-right"><button class="copy-btn" onclick="copyStep(event,'step-3')">Copy</button><span class="chevron">▾</span></div>
+    </div>
+    <div class="step-body"><div class="step-content">
+      <div class="prose">
+        <p>Every template in the collection must have <strong>all</strong> of the following features working correctly. Use this table to identify what is currently missing and needs to be added.</p>
+      </div>
+
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Style 1</th><th>Style 2</th><th>Style 3</th><th>Style 4</th><th>Style 5</th>
+            <th>Required State</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Theme applied from data.json on load</td><td class="cross">✗</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Theme color picker in form.html</td><td class="cross">✗</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>8 preset swatches in theme picker</td><td class="cross">✗</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Load JSON button offline-only</td><td class="partial">~</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Edit link offline-only</td><td class="partial">~</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Inline style="display:none" on offline elements</td><td class="cross">✗</td><td class="cross">✗</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Hash #data= fallback for preview</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Upload overlay when fetch fails</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>References section</td><td class="cross">✗</td><td class="tick">✓</td><td class="cross">✗</td><td class="cross">✗</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Languages section</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✗</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Projects section</td><td class="tick">✓</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td><td>Optional per template</td></tr>
+          <tr><td>Awards section</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td><td class="tick">✓</td><td class="cross">✗</td><td>Optional per template</td></tr>
+          <tr><td>Stats counters</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td><td class="tick">✓</td><td class="cross">✗</td><td>Optional per template</td></tr>
+          <tr><td>Footer with socials + copyright</td><td class="cross">✗</td><td class="tick">✓</td><td class="partial">~</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Toast notifications in form.html</td><td class="cross">✗</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Hamburger closes on outside click</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Scroll fade-in animations</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Active nav link on scroll</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>All ✓</td></tr>
+          <tr><td>Universal data.json schema</td><td class="cross">✗</td><td class="partial">~</td><td class="partial">~</td><td class="partial">~</td><td class="partial">~</td><td>All ✓</td></tr>
+        </tbody>
+      </table>
+
+      <div class="prose" style="margin-top:1rem">
+        <p><span style="color:var(--ac)">✓</span> = present and working &nbsp;&nbsp; <span style="color:var(--amber)">~</span> = partial or inconsistent &nbsp;&nbsp; <span style="color:var(--rose)">✗</span> = missing</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ── STEP 4 ── -->
+  <div class="step" id="step-4">
+    <div class="step-header" onclick="toggleStep('step-4')">
+      <div class="step-left"><span class="step-num num-teal">STEP 04</span><span class="step-title">index.html — What to Fix &amp; Add</span></div>
+      <div class="step-right"><button class="copy-btn" onclick="copyStep(event,'step-4')">Copy</button><span class="chevron">▾</span></div>
+    </div>
+    <div class="step-body"><div class="step-content">
+      <div class="prose">
+
+        <div class="sub-head">Offline-Only Elements — Fix This First</div>
+        <p>Every element that should only appear when the site is opened locally as a <code>file://</code> URL must have <strong>both</strong> of the following directly in the HTML:</p>
+        <ul>
+          <li><code>class="offline-only"</code></li>
+          <li><code>style="display:none"</code> as an inline attribute</li>
+        </ul>
+        <p>This includes: the Load JSON button, the Edit nav link, and any mobile menu equivalents of those two. In CSS add <code>.offline-only { display: none; }</code> as a safety net. In JS, reveal them only if <code>location.protocol === 'file:'</code>:</p>
+        <p><code>if (isLocal) document.querySelectorAll('.offline-only').forEach(el =&gt; el.style.display = '');</code></p>
+        <p>Never conditionally hide them — the default is always hidden; JS only shows them.</p>
+
+        <div class="sub-head">Data Loading &amp; Theme</div>
+        <ul>
+          <li>The <code>render(data)</code> function must read from the unified schema in Step 2 — update any field references that don't match (e.g. change <code>data.personalInfo.firstName</code> to <code>data.name</code>)</li>
+          <li>Always call <code>applyTheme(data.theme)</code> immediately after parsing the data</li>
+          <li><code>applyTheme</code> must set <code>--g1</code>, <code>--g2</code>, <code>--ac</code> CSS variables and derive <code>--ac-dim</code> / <code>--ac-glow</code> using a <code>hexAlpha(hex, alpha)</code> helper</li>
+          <li>Also set <code>document.body.style.background</code> directly as an override</li>
+          <li>The <code>#data=</code> URL hash fallback must be present in the fetch catch block</li>
+          <li>Replace <code>{year}</code> in <code>footer.text</code> with <code>new Date().getFullYear()</code> when rendering</li>
+        </ul>
+
+        <div class="sub-head">Sections to Add If Missing</div>
+        <ul>
+          <li><strong>References</strong> — render as two-column card grid (name, role, phone, email). Add to <code>index.html</code> and add a nav link</li>
+          <li><strong>Languages</strong> — render as dot-bar indicators or pill list with level percentage</li>
+          <li><strong>Footer</strong> — must show <code>footer.text</code> (with year replaced) and social icon links from <code>footer.socials</code></li>
+          <li><strong>Profile eyebrow</strong> — show <code>profile.eyebrow</code> as a small label above the name in the hero (e.g. "Open to Opportunities")</li>
+        </ul>
+
+        <div class="sub-head">Navigation Consistency</div>
+        <ul>
+          <li>The nav brand/logo must display <code>data.name</code> loaded dynamically — never hardcoded</li>
+          <li>Nav must include links to every section present: About, Experience, Education, Skills, Languages, References, Contact — plus optional sections if present</li>
+          <li>Hamburger: toggle <code>.active</code> on the button, toggle <code>.open</code> on the mobile dropdown, swap icon ☰ ↔ ✕, close on outside click, close on link tap</li>
+        </ul>
+
+        <div class="sub-head">Page Title</div>
+        <ul>
+          <li>Always set <code>document.title = data.name + ' — Resume'</code> (or '— Portfolio' for portfolio-style templates) inside the render function</li>
+        </ul>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ── STEP 5 ── -->
+  <div class="step" id="step-5">
+    <div class="step-header" onclick="toggleStep('step-5')">
+      <div class="step-left"><span class="step-num num-teal">STEP 05</span><span class="step-title">form.html — What to Fix &amp; Add</span></div>
+      <div class="step-right"><button class="copy-btn" onclick="copyStep(event,'step-5')">Copy</button><span class="chevron">▾</span></div>
+    </div>
+    <div class="step-body"><div class="step-content">
+      <div class="prose">
+
+        <div class="sub-head">Theme Color Picker — Add If Missing</div>
+        <p>If the template does not already have a theme picker section, add it as a dedicated card between the Contact section and the first repeating section. It must contain:</p>
+        <ul>
+          <li><strong>8 preset swatches</strong> — circular buttons with a gradient background and a small accent-color dot. Clicking applies the preset live to the page</li>
+          <li><strong>3 manual color pickers</strong> — <code>input[type="color"]</code> each paired with a synced hex text input for Gradient Start, Gradient End, and Accent Color</li>
+          <li><strong>Live preview strip</strong> — a thin bar showing <code>g1 → accent → g2</code>, updating in real time as any picker changes</li>
+          <li>Selecting a preset marks it <code>.active</code> and deselects all others; manually changing any picker deselects all presets</li>
+          <li>All changes apply live to the form page background and accent CSS variables</li>
+        </ul>
+        <p>The 8 presets must be a varied set — include both light and dark options if the template supports them, or all-light / all-dark if the template is specifically one or the other. Label them clearly.</p>
+
+        <div class="sub-head">Sections to Add If Missing</div>
+        <ul>
+          <li><strong>References</strong> — dynamic add/remove cards with fields: Name, Role, Phone, Email</li>
+          <li><strong>Languages</strong> — dynamic add/remove with fields: Language name, Level (0–100 number input)</li>
+          <li><strong>Footer &amp; Socials</strong> — a card with Footer Text input and dynamic social link rows (platform dropdown + URL field)</li>
+          <li><strong>Profile fields</strong> — inputs for Profile Image path and Eyebrow label (the short status string above the name)</li>
+        </ul>
+
+        <div class="sub-head">Fix Load JSON</div>
+        <p>The <code>loadJSON()</code> function must be updated to match the unified schema. When a file is loaded it must:</p>
+        <ol>
+          <li>Clear all dynamic container elements (<code>innerHTML = ''</code>)</li>
+          <li>Populate all static fields: name, title, about, contact.phone, contact.email, contact.address, profile.image, profile.eyebrow, footer.text</li>
+          <li>Re-run the add function for every item in: experience, education, skills, languages, references, footer.socials, and any optional arrays (projects, awards, stats)</li>
+          <li>Call <code>applyTheme(d.theme)</code> and sync the color picker input values to the loaded theme</li>
+          <li>Show a success toast</li>
+        </ol>
+
+        <div class="sub-head">Fix collectData()</div>
+        <p>The <code>collectData()</code> function must output the <strong>exact unified schema</strong> from Step 2. Update all field names to match. The output must include:</p>
+        <ul>
+          <li><code>name</code>, <code>title</code>, <code>about</code>, <code>theme</code>, <code>contact</code>, <code>profile</code></li>
+          <li><code>experience</code>, <code>education</code>, <code>skills</code>, <code>languages</code>, <code>references</code></li>
+          <li><code>footer</code> with <code>text</code> and <code>socials</code></li>
+          <li>Any optional sections the template uses: <code>projects</code>, <code>awards</code>, <code>stats</code>, <code>hero</code></li>
+        </ul>
+
+        <div class="sub-head">Sticky Action Bar</div>
+        <p>Must contain these three buttons in order:</p>
+        <ol>
+          <li><strong>Load JSON</strong> — file picker, loads and populates all fields</li>
+          <li><strong>Generate &amp; Download</strong> — validates name, downloads <code>data.json</code></li>
+          <li><strong>Preview</strong> — opens <code>index.html#data=&lt;encoded JSON&gt;</code> in a new tab</li>
+        </ol>
+        <p>All three must be visible on the form.html page regardless of online/offline status — Load JSON on the form builder is always shown (unlike on index.html).</p>
+
+        <div class="sub-head">Toast Notifications</div>
+        <p>If not already present, add a small fixed toast element (bottom-right, z-index above action bar). Shows for ~3 seconds on: load success, download success, validation error. Styled with the template's accent color as a left border.</p>
+
+        <div class="sub-head">Hamburger</div>
+        <p>Must use the same implementation as index.html — class-based toggle, ☰ ↔ ✕ icon, outside-click close, link-tap close.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ── STEP 6 ── -->
+  <div class="step" id="step-6">
+    <div class="step-header" onclick="toggleStep('step-6')">
+      <div class="step-left"><span class="step-num num-teal">STEP 06</span><span class="step-title">Sample Data &amp; File Output</span></div>
+      <div class="step-right"><button class="copy-btn" onclick="copyStep(event,'step-6')">Copy</button><span class="chevron">▾</span></div>
+    </div>
+    <div class="step-body"><div class="step-content">
+      <div class="prose">
+
+        <div class="sub-head">Update data.json</div>
+        <p>Rewrite the template's <code>data.json</code> to conform to the unified schema in Step 2. Keep the same fictional persona (same name, same career field, same general content) but restructure the keys and add any missing top-level fields. Specifically:</p>
+        <ul>
+          <li>If <code>personalInfo.firstName/lastName</code> was used, flatten to <code>name</code></li>
+          <li>If <code>socialLinks</code> was at the top level, move it to <code>footer.socials</code></li>
+          <li>Add <code>theme</code> object if missing — choose colors that match the template's visual style</li>
+          <li>Add <code>profile</code> object with <code>image</code> and <code>eyebrow</code> if missing</li>
+          <li>Add <code>references</code> array if missing — create 2 realistic fictional references</li>
+          <li>Add <code>languages</code> array if missing</li>
+          <li>Add <code>footer</code> object with <code>text</code> (containing <code>{year}</code>) and <code>socials</code> if missing</li>
+          <li>Add any optional sections (<code>projects</code>, <code>awards</code>, <code>stats</code>) if the template's index.html renders them</li>
+        </ul>
+
+        <div class="sub-head">File Output</div>
+        <ul>
+          <li>Deliver the updated <code>index.html</code>, <code>form.html</code>, and <code>data.json</code></li>
+          <li>Keep all original <code>assets/</code> folder contents unchanged</li>
+          <li>Package as a <code>.zip</code> and present as a download, plus individual file previews</li>
+          <li>All CSS and JS must remain inline — no separate stylesheet or script files</li>
+        </ul>
+
+        <div class="hl-box rose">
+          <div class="hl-title">Do Not Change</div>
+          <div class="prose">
+            <ul>
+              <li>The visual design, color palette, fonts, or layout structure</li>
+              <li>The persona's name, career field, or content (only restructure the data keys)</li>
+              <li>Any section that already works correctly and follows the standard</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ── STEP 7 — CHECKLIST ── -->
+  <div class="step amber-step" id="step-7">
+    <div class="step-header" onclick="toggleStep('step-7')">
+      <div class="step-left"><span class="step-num num-amber">STEP 07</span><span class="step-title">Quality Checklist</span></div>
+      <div class="step-right"><button class="copy-btn" onclick="copyStep(event,'step-7')">Copy</button><span class="chevron">▾</span></div>
+    </div>
+    <div class="step-body"><div class="step-content">
+
+      <div class="hl-box amber" style="margin-bottom:1.4rem">
+        <div class="hl-title">Before finishing — verify every item. Click to check off.</div>
+        <div class="prose"><p>These apply to the template being improved. For each item, confirm it was already correct or that you have fixed it.</p></div>
+      </div>
+
+      <ul class="checklist" id="checklist">
+        <li onclick="toggle(this)">data.json uses <code>name</code> (not <code>personalInfo.firstName/lastName</code>) at the top level</li>
+        <li onclick="toggle(this)">data.json uses <code>contact.phone</code>, <code>contact.email</code>, <code>contact.address</code></li>
+        <li onclick="toggle(this)">data.json has <code>profile.image</code> and <code>profile.eyebrow</code></li>
+        <li onclick="toggle(this)">data.json has <code>theme</code> object with <code>gradientStart</code>, <code>gradientEnd</code>, <code>accentColor</code></li>
+        <li onclick="toggle(this)">data.json has <code>footer.text</code> (with <code>{year}</code> placeholder) and <code>footer.socials</code></li>
+        <li onclick="toggle(this)">data.json has <code>languages</code> array with <code>name</code> + <code>level</code> per item</li>
+        <li onclick="toggle(this)">data.json has <code>references</code> array with <code>name</code>, <code>role</code>, <code>phone</code>, <code>email</code> per item</li>
+        <li onclick="toggle(this)">index.html render() reads from the unified schema field names</li>
+        <li onclick="toggle(this)">index.html calls <code>applyTheme(data.theme)</code> after loading data</li>
+        <li onclick="toggle(this)">index.html sets <code>document.title</code> dynamically from <code>data.name</code></li>
+        <li onclick="toggle(this)">index.html renders the References section</li>
+        <li onclick="toggle(this)">index.html renders the Languages section</li>
+        <li onclick="toggle(this)">index.html renders the Footer with social links and year-replaced copyright</li>
+        <li onclick="toggle(this)">index.html renders <code>profile.eyebrow</code> in the hero section</li>
+        <li onclick="toggle(this)">Every offline-only element has BOTH <code>class="offline-only"</code> AND <code>style="display:none"</code> in the HTML</li>
+        <li onclick="toggle(this)">JS only reveals offline-only elements when <code>location.protocol === 'file:'</code></li>
+        <li onclick="toggle(this)">index.html falls back to <code>#data=</code> URL hash if fetch('data.json') fails</li>
+        <li onclick="toggle(this)">Upload overlay appears when both fetch and hash fallback fail, with link to form.html</li>
+        <li onclick="toggle(this)">Hamburger: toggles .active on button, .open on dropdown, swaps ☰/✕, closes on outside click and link tap</li>
+        <li onclick="toggle(this)">Active nav link updates correctly as the user scrolls</li>
+        <li onclick="toggle(this)">Scroll fade-in animations work on all sections</li>
+        <li onclick="toggle(this)">form.html has a theme color picker with 8 preset swatches</li>
+        <li onclick="toggle(this)">form.html has 3 manual color pickers with synced hex text inputs</li>
+        <li onclick="toggle(this)">form.html live preview strip updates as colors change</li>
+        <li onclick="toggle(this)">Clicking a preset applies theme live; manually changing a picker deselects presets</li>
+        <li onclick="toggle(this)">form.html has References section (dynamic add/remove)</li>
+        <li onclick="toggle(this)">form.html has Languages section (dynamic add/remove)</li>
+        <li onclick="toggle(this)">form.html has Footer &amp; Socials section</li>
+        <li onclick="toggle(this)">form.html has Profile fields (image path + eyebrow label)</li>
+        <li onclick="toggle(this)">form.html Load JSON clears all dynamic containers before repopulating</li>
+        <li onclick="toggle(this)">form.html Load JSON calls <code>applyTheme()</code> and syncs picker values</li>
+        <li onclick="toggle(this)">form.html collectData() outputs the unified schema from Step 2</li>
+        <li onclick="toggle(this)">form.html Preview button opens <code>index.html#data=...</code> in a new tab</li>
+        <li onclick="toggle(this)">form.html Generate validates name is filled before downloading</li>
+        <li onclick="toggle(this)">Toast notifications work: load success, download success, error</li>
+        <li onclick="toggle(this)">No Download PDF button on index.html (unless it was there before)</li>
+        <li onclick="toggle(this)">Mobile layout is fully usable — no horizontal scroll, readable text, tappable buttons</li>
+        <li onclick="toggle(this)">Visual design, fonts, and colors are unchanged from the original template</li>
+        <li onclick="toggle(this)">All CSS and JS remains inline — no separate files introduced</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span class="footer-text">Improve &amp; Standardise Prompt &nbsp;·&nbsp; 7 Steps · 39 checklist items</span>
+    <div class="footer-links">
+      <a href="redesign_prompt.html" class="footer-link">Redesign Prompt</a>
+      <a href="from_scratch_prompt.html" class="footer-link">From Scratch Prompt</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+const FULL_PROMPT = `RESUME & PORTFOLIO — IMPROVE & STANDARDISE PROMPT
+
+This prompt is for improving and standardising an existing resume or portfolio template. You will be given the current files. Your job is NOT to redesign the visual style — keep the existing look, fonts, and colors. Instead you will:
+- Update data.json to match the universal standard schema below
+- Update index.html to render all standard sections, apply the theme from JSON, and follow correct offline/online button logic
+- Update form.html to include all standard sections, add a theme color picker if missing, and ensure Load JSON repopulates every field
+- Fix any broken or inconsistent features (hamburger, offline buttons, preview, toast)
+
+GOLDEN RULE: Do not change the visual design. The existing color scheme, fonts, layout, and aesthetic must be preserved. All improvements are functional and structural — not cosmetic.
+
+This applies equally to resume templates and portfolio templates. Same schema, same features, same rules.
+
+---
+
+STEP 2 — UNIVERSAL data.json SCHEMA
+
+Every template must use this exact top-level structure:
+
+REQUIRED FIELDS:
+- name (string) — full name. Used in page title, nav brand, hero, footer.
+- title (string) — job title or professional descriptor.
+- about (string or string[]) — professional summary. Single string or array of paragraphs.
+- theme (object) — { gradientStart, gradientEnd, accentColor }. Applied as CSS variables on load.
+- contact (object) — { phone, email, address }. Shown in hero chips and contact section.
+- profile (object) — { image: "assets/profile.jpg", eyebrow: "Open to Opportunities" }.
+- experience (array) — each item: { company, role, start, end, details: string[] }.
+- education (array) — each item: { degree, institution, start, end, description }.
+- skills (array) — each item: { name, level (0-100) } OR grouped: { category, items: [{ name, level }] }.
+- languages (array) — each item: { name, level (0-100) }.
+- references (array) — each item: { name, role, phone, email }.
+- footer (object) — { text: "© {year} Name. All rights reserved.", socials: [{ name, url }] }.
+
+OPTIONAL FIELDS (include if the template renders them):
+- projects (array) — each item: { name, description, liveUrl, codeUrl }.
+- awards (array) — each item: { date, title, institution, description }.
+- stats (array) — each item: { value: "6+", label: "Years Experience" }.
+- hero (object) — { description, image } — for templates with a separate hero image.
+
+CONSISTENCY RULES:
+- Always use "name" at top level — never personalInfo.firstName/lastName
+- Always use contact.phone, contact.email, contact.address — never flat top-level keys
+- Always use footer.socials for social links — never a top-level socialLinks array
+- Always use profile.image for the photo path
+- footer.text must contain {year} which is replaced at runtime with new Date().getFullYear()
+
+---
+
+STEP 3 — STANDARD FEATURE SET
+
+Every template must have ALL of the following working correctly:
+
+index.html:
+- Theme applied from data.json on load via CSS variables
+- Offline-only elements (Load JSON button, Edit link) hidden on deployed sites, visible on file://
+- Every offline-only element has BOTH class="offline-only" AND style="display:none" in HTML
+- JS reveals offline-only elements only when location.protocol === 'file:'
+- Hash #data= fallback for preview from form.html
+- Upload overlay when fetch('data.json') fails and hash also fails
+- References section rendered
+- Languages section rendered
+- Footer with socials and copyright (year replaced)
+- Profile eyebrow text in hero
+- Document title set dynamically from data.name
+- Hamburger: .active on button, .open on dropdown, ☰ ↔ ✕ icon, outside-click close, link-tap close
+- Active nav link highlights on scroll
+- Scroll fade-in animations on all sections
+
+form.html:
+- Theme color picker section with 8 preset swatches
+- 3 manual color pickers (gradient start, gradient end, accent) each with synced hex text input
+- Live preview strip that updates as colors change
+- Preset click applies theme live and marks .active; manual change deselects presets
+- References section (dynamic add/remove)
+- Languages section (dynamic add/remove)
+- Footer & Socials section
+- Profile fields (image path + eyebrow label)
+- Load JSON clears all dynamic containers then repopulates every field
+- Load JSON calls applyTheme() and syncs picker input values
+- collectData() outputs the unified schema
+- Preview button opens index.html#data=<encoded JSON> in new tab
+- Generate validates name is filled before downloading
+- Toast notifications: load success, download success, validation error
+- Action bar with Load JSON, Generate & Download, Preview buttons
+
+---
+
+STEP 4 — index.html FIXES
+
+Offline-Only Elements (fix this first):
+1. Add class="offline-only" AND style="display:none" to: Load JSON button, Edit nav link, mobile menu equivalents
+2. In CSS: .offline-only { display: none; }
+3. In JS: const isLocal = location.protocol === 'file:';
+4. Then: if (isLocal) document.querySelectorAll('.offline-only').forEach(el => el.style.display = '');
+5. Never conditionally hide them — default is always hidden; JS only shows them
+
+Data loading & theme:
+- render() must read from the unified schema — update any field references that don't match
+- Always call applyTheme(data.theme) immediately after parsing data
+- applyTheme sets --g1, --g2, --ac CSS variables and derives --ac-dim / --ac-glow via hexAlpha(hex, alpha)
+- Also set document.body.style.background directly
+- The #data= URL hash fallback must be in the fetch catch block
+- Replace {year} in footer.text with new Date().getFullYear()
+
+Sections to add if missing:
+- References: two-column card grid with name, role, phone, email
+- Languages: dot-bar indicators or pill list with level percentage
+- Footer: footer.text (with year replaced) + social icon links from footer.socials
+- Profile eyebrow: profile.eyebrow as a small label above the name in the hero
+
+Navigation:
+- Nav brand must display data.name loaded dynamically
+- Include links to all sections present
+- Hamburger: toggle .active on button, .open on dropdown, swap icon ☰ ↔ ✕, close on outside click, close on link tap
+
+---
+
+STEP 5 — form.html FIXES
+
+Theme Color Picker (add if missing):
+- 8 preset swatches: circular buttons with gradient background + accent dot
+- 3 manual pickers: input[type="color"] + synced hex text input for each of Gradient Start, Gradient End, Accent Color
+- Live preview strip: thin bar showing g1 → accent → g2
+- Preset click: mark .active, deselect others, apply theme live
+- Manual change: deselect all presets, apply theme live
+
+Sections to add if missing:
+- References: dynamic add/remove cards — Name, Role, Phone, Email fields
+- Languages: dynamic add/remove — Language name + Level (0-100) number input
+- Footer & Socials: Footer Text input + dynamic social rows (platform dropdown + URL)
+- Profile: inputs for Profile Image path and Eyebrow label
+
+Fix Load JSON:
+1. Clear all dynamic containers (innerHTML = '')
+2. Populate static fields: name, title, about, contact.phone/email/address, profile.image/eyebrow, footer.text
+3. Re-run add functions for every item in: experience, education, skills, languages, references, footer.socials, optional arrays
+4. Call applyTheme(d.theme) and sync picker input values
+5. Show success toast
+
+Fix collectData():
+- Must output the exact unified schema from Step 2
+- Update all field names to match
+- Include theme object with current picker values
+
+Action bar must contain (in order):
+1. Load JSON — file picker, loads and populates all fields
+2. Generate & Download — validates name, downloads data.json
+3. Preview — opens index.html#data=<encoded JSON> in new tab
+
+Note: Load JSON on form.html is ALWAYS visible (not offline-only).
+
+Toast: fixed bottom-right, hidden by default, slides up for 3 seconds, accent color left border.
+
+---
+
+STEP 6 — SAMPLE DATA & OUTPUT
+
+Update data.json to unified schema — keep same persona, restructure keys:
+- Flatten personalInfo to name if needed
+- Move top-level socialLinks to footer.socials
+- Add theme object matching the template's existing color palette
+- Add profile object with image and eyebrow
+- Add references array (2 realistic fictional references) if missing
+- Add languages array if missing
+- Add footer object with text and socials if missing
+- Add optional sections (projects, awards, stats) only if index.html renders them
+
+Deliver: updated index.html, form.html, data.json — packaged as .zip plus individual previews.
+Do NOT change: visual design, persona name/content, sections that already work.
+
+---
+
+STEP 7 — QUALITY CHECKLIST
+
+Before finishing, verify every item:
+
+DATA:
+[ ] data.json uses name (not personalInfo.firstName/lastName) at top level
+[ ] data.json uses contact.phone, contact.email, contact.address
+[ ] data.json has profile.image and profile.eyebrow
+[ ] data.json has theme with gradientStart, gradientEnd, accentColor
+[ ] data.json has footer.text (with {year}) and footer.socials
+[ ] data.json has languages array with name + level per item
+[ ] data.json has references array with name, role, phone, email per item
+
+INDEX.HTML:
+[ ] render() reads from unified schema field names
+[ ] applyTheme(data.theme) called after loading data
+[ ] document.title set dynamically from data.name
+[ ] References section rendered
+[ ] Languages section rendered
+[ ] Footer with social links and year-replaced copyright rendered
+[ ] profile.eyebrow rendered in hero section
+[ ] Every offline-only element has class="offline-only" AND style="display:none" in HTML
+[ ] JS only reveals offline-only when location.protocol === 'file:'
+[ ] #data= hash fallback present in fetch catch block
+[ ] Upload overlay shown when both fetch and hash fail, with link to form.html
+[ ] Hamburger: .active on button, .open on dropdown, ☰/✕ icon, outside-click close, link-tap close
+[ ] Active nav link highlights on scroll
+[ ] Scroll fade-in animations on all sections
+
+FORM.HTML:
+[ ] Theme picker present with 8 preset swatches
+[ ] 3 manual color pickers with synced hex text inputs
+[ ] Live preview strip updates as colors change
+[ ] Preset click applies theme live; manual change deselects presets
+[ ] References section (dynamic add/remove)
+[ ] Languages section (dynamic add/remove)
+[ ] Footer & Socials section present
+[ ] Profile image path + eyebrow label fields present
+[ ] Load JSON clears all dynamic containers before repopulating
+[ ] Load JSON calls applyTheme() and syncs picker values
+[ ] collectData() outputs unified schema
+[ ] Preview opens index.html#data=... in new tab
+[ ] Generate validates name before downloading
+[ ] Toast notifications work: load, download, error
+[ ] No Download PDF button on index.html (unless it was already there)
+[ ] Mobile fully usable — no horizontal scroll, readable, tappable
+[ ] Visual design unchanged from original template
+[ ] All CSS and JS remains inline`;
+
+/* ── helpers ── */
+function toggle(el) { el.classList.toggle('checked'); updateProgress(); }
+
+function updateProgress() {
+  const items = document.querySelectorAll('.checklist li');
+  const checked = document.querySelectorAll('.checklist li.checked');
+  const pct = items.length ? (checked.length / items.length) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = checked.length + ' / ' + items.length;
+}
+
+function toggleStep(id) { document.getElementById(id).classList.toggle('open'); }
+
+function copyStep(evt, stepId) {
+  evt.stopPropagation();
+  const btn = evt.target;
+  const step = document.getElementById(stepId);
+  const title = step.querySelector('.step-title').textContent.trim();
+  const num = step.querySelector('.step-num').textContent.trim();
+  const body = step.querySelector('.step-body');
+  const tmp = document.createElement('div');
+  tmp.innerHTML = body.innerHTML;
+  tmp.querySelectorAll('code').forEach(c => c.textContent = '`' + c.textContent + '`');
+  tmp.querySelectorAll('li').forEach(li => {
+    li.textContent = '- ' + li.textContent.replace(/^▸\s*/,'').replace(/^-\s*/,'').replace(/^\[.\]\s*/,'').trim();
+  });
+  const text = num + ' — ' + title + '\n\n' + tmp.textContent.trim().replace(/\n{3,}/g,'\n\n');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+document.getElementById('copy-all-btn').addEventListener('click', () => {
+  const btn = document.getElementById('copy-all-btn');
+  navigator.clipboard.writeText(FULL_PROMPT).then(() => {
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!'; btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy Full Prompt'; btn.classList.remove('copied'); }, 2500);
+  });
+});
+
+let allOpen = false;
+document.getElementById('expand-btn').addEventListener('click', () => {
+  allOpen = !allOpen;
+  document.querySelectorAll('.step').forEach(s => s.classList.toggle('open', allOpen));
+  document.getElementById('expand-btn').innerHTML = allOpen
+    ? '<i class="fas fa-chevron-up"></i> Collapse All'
+    : '<i class="fas fa-chevron-down"></i> Expand All';
+});
+
+updateProgress();
+</script>
+</body>
+</html>
