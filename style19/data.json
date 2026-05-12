@@ -1,0 +1,103 @@
+{
+  "htmlTitle": "Sigríður Björnsdóttir — Marine Biologist",
+  "header": "Sigríður Björnsdóttir",
+  "about": "I am a marine biologist and ocean researcher specializing in deep-sea biodiversity and Arctic ecosystem dynamics. With over a decade of fieldwork across the North Atlantic, I combine rigorous scientific methodology with a deep respect for the natural world. My research focuses on how warming ocean temperatures are reshaping the vertical migration patterns of deep-sea organisms — work that has direct implications for global carbon cycling and fisheries policy. I collaborate with international research institutions, publish in peer-reviewed journals, and am passionate about translating complex science into actionable conservation strategies.",
+  "experience": [
+    {
+      "position": "Senior Research Scientist",
+      "company": "Marine and Freshwater Research Institute (MFRI), Reykjavík",
+      "duration": "2020 – Present",
+      "description": "Lead investigator on the Arctic Deep-Sea Biodiversity Project, managing a team of 6 researchers and overseeing ROV-based sampling expeditions in waters up to 2,400m depth. Secured €1.2M in EU Horizon funding. Published 14 peer-reviewed papers in journals including Nature Oceans and Deep-Sea Research."
+    },
+    {
+      "position": "Postdoctoral Fellow",
+      "company": "Woods Hole Oceanographic Institution, Massachusetts",
+      "duration": "2017 – 2020",
+      "description": "Conducted independent research on mesopelagic fish communities and diel vertical migration. Operated aboard R/V Atlantis for 3 research cruises. Co-developed a new acoustic tracking methodology now adopted by 12 international research stations."
+    },
+    {
+      "position": "Research Associate",
+      "company": "University of Iceland, Department of Life and Environmental Sciences",
+      "duration": "2014 – 2017",
+      "description": "Assisted with long-term monitoring of sub-Arctic benthic communities and contributed to environmental impact assessments for offshore energy projects. Mentored undergraduate field courses in marine ecology."
+    },
+    {
+      "position": "Field Research Intern",
+      "company": "Icelandic Institute of Natural History, Garðabær",
+      "duration": "2012 – 2014",
+      "description": "Supported coastal habitat surveys and marine mammal observation programs. Compiled species distribution data for the National Marine Biodiversity Database and contributed to public science communication campaigns."
+    }
+  ],
+  "education": [
+    {
+      "degree": "Ph.D. in Marine Biology",
+      "institution": "University of Iceland, Reykjavík",
+      "year": "2017"
+    },
+    {
+      "degree": "M.Sc. in Oceanography",
+      "institution": "University of Bergen, Norway",
+      "year": "2013"
+    },
+    {
+      "degree": "B.Sc. in Biology (Hons)",
+      "institution": "University of Iceland",
+      "year": "2011"
+    }
+  ],
+  "skills": [
+    "Deep-Sea ROV Operations",
+    "Acoustic Doppler Current Profiling",
+    "Oceanographic Data Analysis (R, MATLAB)",
+    "Species Distribution Modelling",
+    "Scientific Grant Writing",
+    "Marine Ecology & Taxonomy",
+    "CTD & Water Sampling",
+    "GIS & Spatial Analysis (ArcGIS, QGIS)",
+    "Science Communication",
+    "Environmental Impact Assessment"
+  ],
+  "languages": [
+    "Icelandic (Native)",
+    "English (Fluent)",
+    "Norwegian (Proficient)",
+    "German (Basic)"
+  ],
+  "references": [
+    {
+      "name": "Prof. Árni Einarsson",
+      "contact": "a.einarsson@mfri.is",
+      "relationship": "Department Head, MFRI — direct supervisor since 2020"
+    },
+    {
+      "name": "Dr. Clara Ventura-Moss",
+      "contact": "c.ventura@whoi.edu",
+      "relationship": "Senior Scientist, WHOI — postdoctoral advisor and collaborator"
+    }
+  ],
+  "contact": "Email: sigridur.bjornsdottir@mfri.is | Phone: +354 422 5180 | Location: Reykjavík, Iceland",
+  "footer": "© 2025 Sigríður Björnsdóttir. All rights reserved.",
+  "profilePhoto": "assets/profile.jpg",
+  "socialLinks": [
+    {
+      "name": "LinkedIn",
+      "url": "https://linkedin.com/in/sigridur-bjornsdottir",
+      "icon": "fa-linkedin"
+    },
+    {
+      "name": "GitHub",
+      "url": "https://github.com/sigridurb",
+      "icon": "fa-github"
+    },
+    {
+      "name": "Twitter",
+      "url": "https://twitter.com/sigridurb_ocean",
+      "icon": "fa-twitter"
+    }
+  ],
+  "theme": {
+    "gradientStart": "#0a1628",
+    "gradientEnd": "#0d2340",
+    "accentColor": "#d4894a"
+  }
+}

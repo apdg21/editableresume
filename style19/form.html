@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* ─── CSS Variables ───────────────────────────────────── */
+    :root {
+      --g1: #0a1628;
+      --g2: #0d2340;
+      --accent: #d4894a;
+      --accent-dim: rgba(212,137,74,0.18);
+      --accent-glow: rgba(212,137,74,0.45);
+      --accent-text: #f0b87a;
+      --text-primary: #eef2f7;
+      --text-secondary: #8da4be;
+      --text-muted: #4e6a85;
+      --border: rgba(212,137,74,0.22);
+      --card-bg: rgba(13,35,64,0.65);
+      --card-border: rgba(212,137,74,0.14);
+      --input-bg: rgba(5,14,30,0.7);
+      --nav-h: 64px;
+      --bar-h: 68px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Barlow Condensed', sans-serif;
+      background: linear-gradient(160deg, var(--g1) 0%, var(--g2) 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(212,137,74,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,137,74,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ─── Navigation ──────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      background: rgba(8,18,38,0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-brand {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent-text); text-decoration: none; white-space: nowrap;
+    }
+    .nav-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+      margin-left: 0.5rem;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 0;
+      list-style: none;
+    }
+    .nav-links a {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary); text-decoration: none;
+      padding: 0.5rem 0.8rem;
+      border-left: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent-text); border-left-color: var(--accent); }
+    .nav-links .view-link a { color: var(--accent-text); }
+
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 5px; padding: 6px;
+    }
+    .hamburger-line {
+      display: block; width: 24px; height: 2px;
+      background: var(--accent-text);
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .hamburger.open .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open .hamburger-line:nth-child(2) { opacity: 0; }
+    .hamburger.open .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── Main Layout ─────────────────────────────────────── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: calc(var(--nav-h) + 2.5rem) 1.5rem calc(var(--bar-h) + 2.5rem);
+    }
+
+    /* ─── Section Cards ───────────────────────────────────── */
+    .form-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      padding: 2rem 2.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .form-section::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .section-title {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .section-title h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--accent-text); white-space: nowrap;
+    }
+    .section-title-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* ─── Form Groups ─────────────────────────────────────── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid rgba(78,106,133,0.4);
+      color: var(--text-primary);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 400;
+      letter-spacing: 0.03em;
+      padding: 0.65rem 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: vertical;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    textarea { min-height: 90px; }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+
+    /* ─── Dynamic Items ───────────────────────────────────── */
+    .dynamic-item {
+      background: rgba(5,14,30,0.5);
+      border: 1px solid rgba(78,106,133,0.25);
+      padding: 1.25rem 1.25rem 1rem;
+      margin-bottom: 0.9rem;
+      position: relative;
+    }
+    .dynamic-item .item-actions {
+      display: flex; justify-content: flex-end; margin-top: 0.75rem;
+    }
+    .btn-remove {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+      background: rgba(200,60,60,0.12);
+      color: #e07070; border: 1px solid rgba(200,60,60,0.25);
+      padding: 0.4rem 0.9rem; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-remove:hover { background: rgba(200,60,60,0.25); color: #ff9090; }
+
+    .btn-add {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--accent-dim); color: var(--accent-text);
+      border: 1px dashed var(--border); padding: 0.65rem 1.4rem;
+      cursor: pointer; width: 100%; margin-top: 0.25rem;
+      transition: background 0.2s, border-style 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-add:hover { background: rgba(212,137,74,0.28); border-style: solid; }
+
+    /* ─── Theme Section ───────────────────────────────────── */
+    .theme-presets {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .preset-swatch {
+      width: 52px; height: 52px;
+      border: 2px solid transparent;
+      cursor: pointer; position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+    .preset-swatch:hover { transform: scale(1.08); }
+    .preset-swatch.active { border-color: #fff; }
+    .preset-swatch .accent-dot {
+      position: absolute; bottom: 5px; right: 5px;
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.5);
+    }
+
+    .color-pickers-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem; margin-bottom: 1.25rem;
+    }
+    .color-picker-group label { color: var(--text-muted); }
+    .color-picker-wrap {
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    input[type="color"] {
+      width: 38px; height: 38px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      cursor: pointer; padding: 2px;
+      flex-shrink: 0;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: none; }
+    .hex-input {
+      font-family: 'Space Mono', monospace !important;
+      font-size: 0.75rem !important;
+      letter-spacing: 0.08em !important;
+      min-width: 0; flex: 1;
+      text-transform: uppercase;
+    }
+
+    .preview-bar-wrap { margin-top: 0.5rem; }
+    .preview-bar-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.4rem;
+    }
+    #preview-bar {
+      height: 14px; width: 100%;
+      border: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    /* ─── Action Bar ──────────────────────────────────────── */
+    .action-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      height: var(--bar-h);
+      background: rgba(5,12,26,0.96);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.75rem; padding: 0 1.5rem;
+    }
+    .bar-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.7rem 1.6rem; border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+    .bar-btn:active { transform: scale(0.97); }
+    .bar-btn-load { background: var(--accent-dim); color: var(--accent-text); border: 1px solid var(--border); clip-path: none; }
+    .bar-btn-load:hover { background: rgba(212,137,74,0.28); }
+    .bar-btn-generate { background: var(--accent); color: #0a1628; font-weight: 700; }
+    .bar-btn-generate:hover { background: var(--accent-text); }
+    .bar-btn-preview { background: rgba(60,120,200,0.2); color: #90c0f0; border: 1px solid rgba(60,120,200,0.3); clip-path: none; }
+    .bar-btn-preview:hover { background: rgba(60,120,200,0.35); }
+
+    /* ─── Toast ───────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: calc(var(--bar-h) + 14px); right: 1.25rem;
+      z-index: 300;
+      background: rgba(8,18,38,0.97);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.08em;
+      color: var(--text-primary);
+      max-width: 280px;
+      transform: translateY(20px); opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.error { border-left-color: #e07070; }
+
+    /* ─── Responsive ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .form-row, .form-row.triple { grid-template-columns: 1fr; }
+      .color-pickers-row { grid-template-columns: 1fr; }
+      .nav-links {
+        display: none;
+        position: absolute; top: var(--nav-h); left: 0; right: 0;
+        background: rgba(8,18,38,0.97);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column; gap: 0; padding: 0.5rem 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { border-left: none; border-bottom: 1px solid rgba(212,137,74,0.08); padding: 0.9rem 1.5rem; }
+      .hamburger { display: flex; }
+      .action-bar { gap: 0.5rem; padding: 0 0.75rem; }
+      .bar-btn { padding: 0.6rem 0.9rem; font-size: 0.58rem; }
+      main { padding-left: 1rem; padding-right: 1rem; }
+      .form-section { padding: 1.5rem 1.25rem; }
+      .theme-presets { gap: 0.5rem; }
+      .preset-swatch { width: 44px; height: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <div style="display:flex; align-items:center; gap:0.5rem; flex-shrink:0;">
+        <a class="nav-brand" href="index.html">Resume Builder</a>
+        <span class="nav-badge">Editor</span>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li class="view-link"><a href="index.html">← View Resume</a></li>
+        <li><a href="#section-basic">Basic Info</a></li>
+        <li><a href="#section-experience">Experience</a></li>
+        <li><a href="#section-education">Education</a></li>
+        <li><a href="#section-skills">Skills</a></li>
+        <li><a href="#section-theme">Theme</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Form -->
+  <main>
+
+    <!-- Basic Info -->
+    <div class="form-section" id="section-basic">
+      <div class="section-title">
+        <h2>Basic Information</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="htmlTitle">Page Title</label>
+          <input type="text" id="htmlTitle" placeholder="e.g., Jane Doe — Marine Biologist" />
+        </div>
+        <div class="form-group">
+          <label for="header">Full Name</label>
+          <input type="text" id="header" placeholder="e.g., Jane Doe" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="about">About / Bio</label>
+        <textarea id="about" placeholder="A detailed introduction about yourself…" style="min-height:120px;"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="profilePhoto">Profile Photo URL</label>
+          <input type="text" id="profilePhoto" placeholder="assets/profile.jpg" />
+        </div>
+        <div class="form-group">
+          <label for="contact">Contact Info</label>
+          <input type="text" id="contact" placeholder="Email: … | Phone: … | Location: …" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="footer">Footer Text</label>
+        <input type="text" id="footer" placeholder="© 2025 Jane Doe. All rights reserved." />
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="form-section" id="section-experience">
+      <div class="section-title">
+        <h2>Work Experience</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <div id="experience-list"></div>
+      <button class="btn-add" id="add-exp-btn"><i class="fas fa-plus"></i> Add Experience</button>
+    </div>
+
+    <!-- Education -->
+    <div class="form-section" id="section-education">
+      <div class="section-title">
+        <h2>Education</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <div id="education-list"></div>
+      <button class="btn-add" id="add-edu-btn"><i class="fas fa-plus"></i> Add Education</button>
+    </div>
+
+    <!-- Skills -->
+    <div class="form-section" id="section-skills">
+      <div class="section-title">
+        <h2>Skills</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <div id="skills-list"></div>
+      <button class="btn-add" id="add-skill-btn"><i class="fas fa-plus"></i> Add Skill</button>
+    </div>
+
+    <!-- Languages -->
+    <div class="form-section" id="section-languages">
+      <div class="section-title">
+        <h2>Languages</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <div id="languages-list"></div>
+      <button class="btn-add" id="add-lang-btn"><i class="fas fa-plus"></i> Add Language</button>
+    </div>
+
+    <!-- References -->
+    <div class="form-section" id="section-references">
+      <div class="section-title">
+        <h2>References</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <div id="references-list"></div>
+      <button class="btn-add" id="add-ref-btn"><i class="fas fa-plus"></i> Add Reference</button>
+    </div>
+
+    <!-- Social Links -->
+    <div class="form-section" id="section-social">
+      <div class="section-title">
+        <h2>Social Links</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <div id="social-list"></div>
+      <button class="btn-add" id="add-social-btn"><i class="fas fa-plus"></i> Add Social Link</button>
+    </div>
+
+    <!-- Theme / Background -->
+    <div class="form-section" id="section-theme">
+      <div class="section-title">
+        <h2>Background Theme</h2>
+        <div class="section-title-line"></div>
+      </div>
+
+      <!-- Preset Swatches -->
+      <div class="preview-bar-label" style="margin-bottom:0.75rem;">Presets — click to apply instantly</div>
+      <div class="theme-presets" id="theme-presets"></div>
+
+      <!-- Manual Pickers -->
+      <div class="color-pickers-row">
+        <div class="color-picker-group">
+          <label>Gradient Start</label>
+          <div class="color-picker-wrap">
+            <input type="color" id="cp-g1" value="#0a1628" />
+            <input type="text" class="hex-input" id="hex-g1" value="#0a1628" maxlength="7" />
+          </div>
+        </div>
+        <div class="color-picker-group">
+          <label>Gradient End</label>
+          <div class="color-picker-wrap">
+            <input type="color" id="cp-g2" value="#0d2340" />
+            <input type="text" class="hex-input" id="hex-g2" value="#0d2340" maxlength="7" />
+          </div>
+        </div>
+        <div class="color-picker-group">
+          <label>Accent Color</label>
+          <div class="color-picker-wrap">
+            <input type="color" id="cp-ac" value="#d4894a" />
+            <input type="text" class="hex-input" id="hex-ac" value="#d4894a" maxlength="7" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Preview Bar -->
+      <div class="preview-bar-wrap">
+        <div class="preview-bar-label">Live Preview</div>
+        <div id="preview-bar"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <input type="file" id="file-input" accept=".json" style="display:none;" />
+    <button class="bar-btn bar-btn-load" id="load-btn"><i class="fas fa-upload"></i> Load JSON</button>
+    <button class="bar-btn bar-btn-generate" id="generate-btn"><i class="fas fa-download"></i> Generate &amp; Download</button>
+    <button class="bar-btn bar-btn-preview" id="preview-btn"><i class="fas fa-eye"></i> Preview</button>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <script>
+  (function() {
+
+    /* ─── Hex / Color Helpers ────────────────────────────── */
+    function hexAlpha(hex, alpha) {
+      hex = hex.replace('#','');
+      if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+      const r = parseInt(hex.slice(0,2),16);
+      const g = parseInt(hex.slice(2,4),16);
+      const b = parseInt(hex.slice(4,6),16);
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+    function lighten(hex, pct) {
+      hex = hex.replace('#','');
+      if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+      const r = Math.min(255, parseInt(hex.slice(0,2),16) + Math.round(255*pct/100));
+      const g = Math.min(255, parseInt(hex.slice(2,4),16) + Math.round(255*pct/100));
+      const b = Math.min(255, parseInt(hex.slice(4,6),16) + Math.round(255*pct/100));
+      return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    }
+    function isValidHex(v) { return /^#[0-9a-fA-F]{6}$/.test(v); }
+
+    /* ─── Apply Theme ────────────────────────────────────── */
+    function applyTheme(g1, g2, ac) {
+      const root = document.documentElement;
+      root.style.setProperty('--g1', g1);
+      root.style.setProperty('--g2', g2);
+      root.style.setProperty('--accent', ac);
+      root.style.setProperty('--accent-dim', hexAlpha(ac, 0.18));
+      root.style.setProperty('--accent-glow', hexAlpha(ac, 0.45));
+      root.style.setProperty('--accent-text', lighten(ac, 30));
+      root.style.setProperty('--border', hexAlpha(ac, 0.22));
+      root.style.setProperty('--card-border', hexAlpha(ac, 0.14));
+      document.body.style.background = `linear-gradient(160deg, ${g1} 0%, ${g2} 100%)`;
+      updatePreviewBar(g1, g2, ac);
+    }
+
+    function updatePreviewBar(g1, g2, ac) {
+      document.getElementById('preview-bar').style.background =
+        `linear-gradient(90deg, ${g1}, ${ac}, ${g2})`;
+    }
+
+    /* ─── Current Theme State ────────────────────────────── */
+    let theme = { g1: '#0a1628', g2: '#0d2340', ac: '#d4894a' };
+
+    /* ─── Presets ────────────────────────────────────────── */
+    const presets = [
+      { label: 'Deep Ocean',      g1:'#0a1628', g2:'#0d2340', ac:'#d4894a' },
+      { label: 'Midnight Emerald',g1:'#051a12', g2:'#0c2e1e', ac:'#5ec27a' },
+      { label: 'Obsidian Gold',   g1:'#111008', g2:'#1e1a05', ac:'#e8c84a' },
+      { label: 'Arctic Slate',    g1:'#0d1a24', g2:'#152232', ac:'#7ab8d4' },
+      { label: 'Volcanic Mauve',  g1:'#160d1a', g2:'#231230', ac:'#c47ad4' },
+      { label: 'Rust & Iron',     g1:'#1a0d08', g2:'#2a1410', ac:'#e06040' },
+      { label: 'Glacier',         g1:'#f0f4f8', g2:'#dce8f0', ac:'#3a7bbf' },
+      { label: 'Lemon Grove',     g1:'#f8f6e8', g2:'#eeecd0', ac:'#b09020' },
+    ];
+
+    const presetsEl = document.getElementById('theme-presets');
+    presets.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-swatch' + (i===0?' active':'');
+      btn.title = p.label;
+      btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+      const dot = document.createElement('div');
+      dot.className = 'accent-dot';
+      dot.style.background = p.ac;
+      btn.appendChild(dot);
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        theme = { g1: p.g1, g2: p.g2, ac: p.ac };
+        syncPickers(p.g1, p.g2, p.ac);
+        applyTheme(p.g1, p.g2, p.ac);
+      });
+      presetsEl.appendChild(btn);
+    });
+
+    function syncPickers(g1, g2, ac) {
+      document.getElementById('cp-g1').value = g1;
+      document.getElementById('hex-g1').value = g1;
+      document.getElementById('cp-g2').value = g2;
+      document.getElementById('hex-g2').value = g2;
+      document.getElementById('cp-ac').value = ac;
+      document.getElementById('hex-ac').value = ac;
+    }
+
+    /* ─── Manual Color Pickers ───────────────────────────── */
+    function bindPicker(cpId, hexId, themeKey) {
+      const cp = document.getElementById(cpId);
+      const hex = document.getElementById(hexId);
+      cp.addEventListener('input', () => {
+        hex.value = cp.value;
+        theme[themeKey] = cp.value;
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+        applyTheme(theme.g1, theme.g2, theme.ac);
+      });
+      hex.addEventListener('input', () => {
+        const v = hex.value.startsWith('#') ? hex.value : '#'+hex.value;
+        if (isValidHex(v)) {
+          cp.value = v; theme[themeKey] = v;
+          document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+          applyTheme(theme.g1, theme.g2, theme.ac);
+        }
+      });
+    }
+    bindPicker('cp-g1','hex-g1','g1');
+    bindPicker('cp-g2','hex-g2','g2');
+    bindPicker('cp-ac','hex-ac','ac');
+
+    // Init preview bar
+    updatePreviewBar(theme.g1, theme.g2, theme.ac);
+
+    /* ─── Toast ──────────────────────────────────────────── */
+    let toastTimer;
+    function showToast(msg, isError=false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'show' + (isError ? ' error' : '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.className = '', 3200);
+    }
+
+    /* ─── Hamburger ──────────────────────────────────────── */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', e => {
+      if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      }
+    });
+
+    /* ─── Remove Button Helper ───────────────────────────── */
+    function makeRemoveBtn(container) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn-remove';
+      btn.innerHTML = '<i class="fas fa-trash"></i> Remove';
+      btn.addEventListener('click', () => container.remove());
+      return btn;
+    }
+
+    /* ─── Experience ─────────────────────────────────────── */
+    const expList = document.getElementById('experience-list');
+    function addExp(exp={}) {
+      const wrap = document.createElement('div');
+      wrap.className = 'dynamic-item';
+      wrap.innerHTML = `
+        <div class="form-row">
+          <div class="form-group"><label>Position</label><input type="text" class="exp-position" value="${exp.position||''}" placeholder="e.g., Senior Researcher" /></div>
+          <div class="form-group"><label>Company / Organisation</label><input type="text" class="exp-company" value="${exp.company||''}" placeholder="e.g., Research Institute, City" /></div>
+        </div>
+        <div class="form-group"><label>Duration</label><input type="text" class="exp-duration" value="${exp.duration||''}" placeholder="e.g., 2020 – Present" /></div>
+        <div class="form-group"><label>Description</label><textarea class="exp-description" placeholder="Key responsibilities, achievements…">${exp.description||''}</textarea></div>
+        <div class="item-actions"></div>
+      `;
+      wrap.querySelector('.item-actions').appendChild(makeRemoveBtn(wrap));
+      expList.appendChild(wrap);
+    }
+    document.getElementById('add-exp-btn').addEventListener('click', () => addExp());
+
+    /* ─── Education ──────────────────────────────────────── */
+    const eduList = document.getElementById('education-list');
+    function addEdu(edu={}) {
+      const wrap = document.createElement('div');
+      wrap.className = 'dynamic-item';
+      wrap.innerHTML = `
+        <div class="form-row triple">
+          <div class="form-group"><label>Degree / Qualification</label><input type="text" class="edu-degree" value="${edu.degree||''}" placeholder="e.g., Ph.D. in Marine Biology" /></div>
+          <div class="form-group"><label>Institution</label><input type="text" class="edu-institution" value="${edu.institution||''}" placeholder="e.g., University of Iceland" /></div>
+          <div class="form-group"><label>Year</label><input type="text" class="edu-year" value="${edu.year||''}" placeholder="e.g., 2017" /></div>
+        </div>
+        <div class="item-actions"></div>
+      `;
+      wrap.querySelector('.item-actions').appendChild(makeRemoveBtn(wrap));
+      eduList.appendChild(wrap);
+    }
+    document.getElementById('add-edu-btn').addEventListener('click', () => addEdu());
+
+    /* ─── Skills ─────────────────────────────────────────── */
+    const skillsList = document.getElementById('skills-list');
+    function addSkill(skill='') {
+      const wrap = document.createElement('div');
+      wrap.className = 'dynamic-item';
+      wrap.innerHTML = `
+        <div class="form-group"><label>Skill</label><input type="text" class="skill-name" value="${skill}" placeholder="e.g., Acoustic Doppler Profiling" /></div>
+        <div class="item-actions"></div>
+      `;
+      wrap.querySelector('.item-actions').appendChild(makeRemoveBtn(wrap));
+      skillsList.appendChild(wrap);
+    }
+    document.getElementById('add-skill-btn').addEventListener('click', () => addSkill());
+
+    /* ─── Languages ──────────────────────────────────────── */
+    const langsList = document.getElementById('languages-list');
+    function addLang(lang='') {
+      const wrap = document.createElement('div');
+      wrap.className = 'dynamic-item';
+      wrap.innerHTML = `
+        <div class="form-group"><label>Language</label><input type="text" class="lang-name" value="${lang}" placeholder="e.g., Icelandic (Native)" /></div>
+        <div class="item-actions"></div>
+      `;
+      wrap.querySelector('.item-actions').appendChild(makeRemoveBtn(wrap));
+      langsList.appendChild(wrap);
+    }
+    document.getElementById('add-lang-btn').addEventListener('click', () => addLang());
+
+    /* ─── References ─────────────────────────────────────── */
+    const refsList = document.getElementById('references-list');
+    function addRef(ref={}) {
+      const wrap = document.createElement('div');
+      wrap.className = 'dynamic-item';
+      wrap.innerHTML = `
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" class="ref-name" value="${ref.name||''}" placeholder="e.g., Prof. Jane Smith" /></div>
+          <div class="form-group"><label>Contact</label><input type="text" class="ref-contact" value="${ref.contact||''}" placeholder="e.g., j.smith@uni.edu" /></div>
+        </div>
+        <div class="form-group"><label>Relationship (Optional)</label><input type="text" class="ref-relationship" value="${ref.relationship||''}" placeholder="e.g., Former supervisor, MFRI" /></div>
+        <div class="item-actions"></div>
+      `;
+      wrap.querySelector('.item-actions').appendChild(makeRemoveBtn(wrap));
+      refsList.appendChild(wrap);
+    }
+    document.getElementById('add-ref-btn').addEventListener('click', () => addRef());
+
+    /* ─── Social Links ───────────────────────────────────── */
+    const socialList = document.getElementById('social-list');
+    function addSocial(link={}) {
+      const wrap = document.createElement('div');
+      wrap.className = 'dynamic-item';
+      wrap.innerHTML = `
+        <div class="form-row">
+          <div class="form-group"><label>Platform Name</label><input type="text" class="social-name" value="${link.name||''}" placeholder="e.g., LinkedIn, GitHub, Twitter" /></div>
+          <div class="form-group"><label>URL</label><input type="url" class="social-url" value="${link.url||''}" placeholder="https://linkedin.com/in/yourname" /></div>
+        </div>
+        <div class="item-actions"></div>
+      `;
+      wrap.querySelector('.item-actions').appendChild(makeRemoveBtn(wrap));
+      socialList.appendChild(wrap);
+    }
+    document.getElementById('add-social-btn').addEventListener('click', () => addSocial());
+
+    /* ─── Populate Form ──────────────────────────────────── */
+    function populateForm(data) {
+      document.getElementById('htmlTitle').value = data.htmlTitle || '';
+      document.getElementById('header').value = data.header || '';
+      document.getElementById('about').value = data.about || '';
+      document.getElementById('profilePhoto').value = data.profilePhoto || '';
+      document.getElementById('contact').value = data.contact || '';
+      document.getElementById('footer').value = data.footer || '';
+
+      expList.innerHTML = '';
+      eduList.innerHTML = '';
+      skillsList.innerHTML = '';
+      langsList.innerHTML = '';
+      refsList.innerHTML = '';
+      socialList.innerHTML = '';
+
+      (data.experience || []).forEach(addExp);
+      (data.education || []).forEach(addEdu);
+      (data.skills || []).forEach(addSkill);
+      (data.languages || []).forEach(addLang);
+      (data.references || []).forEach(addRef);
+      (data.socialLinks || []).forEach(addSocial);
+
+      if (data.theme) {
+        const t = data.theme;
+        theme = { g1: t.gradientStart||theme.g1, g2: t.gradientEnd||theme.g2, ac: t.accentColor||theme.ac };
+        syncPickers(theme.g1, theme.g2, theme.ac);
+        applyTheme(theme.g1, theme.g2, theme.ac);
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+      }
+    }
+
+    /* ─── Collect Data ───────────────────────────────────── */
+    function collectData() {
+      return {
+        htmlTitle: document.getElementById('htmlTitle').value,
+        header:    document.getElementById('header').value,
+        about:     document.getElementById('about').value,
+        profilePhoto: document.getElementById('profilePhoto').value,
+        contact:   document.getElementById('contact').value,
+        footer:    document.getElementById('footer').value,
+        experience: Array.from(expList.children).map(el => ({
+          position:    el.querySelector('.exp-position').value,
+          company:     el.querySelector('.exp-company').value,
+          duration:    el.querySelector('.exp-duration').value,
+          description: el.querySelector('.exp-description').value,
+        })),
+        education: Array.from(eduList.children).map(el => ({
+          degree:      el.querySelector('.edu-degree').value,
+          institution: el.querySelector('.edu-institution').value,
+          year:        el.querySelector('.edu-year').value,
+        })),
+        skills:    Array.from(skillsList.children).map(el => el.querySelector('.skill-name').value).filter(Boolean),
+        languages: Array.from(langsList.children).map(el => el.querySelector('.lang-name').value).filter(Boolean),
+        references: Array.from(refsList.children).map(el => ({
+          name:         el.querySelector('.ref-name').value,
+          contact:      el.querySelector('.ref-contact').value,
+          relationship: el.querySelector('.ref-relationship').value,
+        })),
+        socialLinks: Array.from(socialList.children).map(el => ({
+          name: el.querySelector('.social-name').value,
+          url:  el.querySelector('.social-url').value,
+        })).filter(l => l.name && l.url),
+        theme: {
+          gradientStart: theme.g1,
+          gradientEnd:   theme.g2,
+          accentColor:   theme.ac,
+        }
+      };
+    }
+
+    /* ─── Action Bar Buttons ─────────────────────────────── */
+
+    // Load JSON
+    const fileInput = document.getElementById('file-input');
+    document.getElementById('load-btn').addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          populateForm(JSON.parse(ev.target.result));
+          showToast('✓ Data loaded successfully');
+        } catch(err) { showToast('✗ Invalid JSON file', true); }
+      };
+      reader.onerror = () => showToast('✗ Could not read file', true);
+      reader.readAsText(file);
+      fileInput.value = '';
+    });
+
+    // Generate & Download
+    document.getElementById('generate-btn').addEventListener('click', () => {
+      const data = collectData();
+      if (!data.header || !data.header.trim()) {
+        showToast('✗ Please fill in your Full Name first', true); return;
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'data.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('✓ data.json downloaded');
+    });
+
+    // Preview
+    document.getElementById('preview-btn').addEventListener('click', () => {
+      const data = collectData();
+      const encoded = encodeURIComponent(JSON.stringify(data));
+      window.open('index.html#data=' + encoded, '_blank');
+    });
+
+    /* ─── Initial Load of data.json ──────────────────────── */
+    fetch('data.json')
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(data => populateForm(data))
+      .catch(() => { /* start with empty form */ });
+
+  })();
+  </script>
+</body>
+</html>
