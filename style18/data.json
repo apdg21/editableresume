@@ -1,0 +1,122 @@
+{
+  "pageTitle": "Isadora Kuznetsova — Concert Pianist",
+  "logoText": "IK",
+  "navigation": [
+    { "text": "Home",       "link": "#home" },
+    { "text": "About",      "link": "#about" },
+    { "text": "Experience", "link": "#experience" },
+    { "text": "Education",  "link": "#education" },
+    { "text": "Skills",     "link": "#skills" },
+    { "text": "Languages",  "link": "#languages" },
+    { "text": "References", "link": "#references" },
+    { "text": "Contact",    "link": "#contact" }
+  ],
+  "hero": {
+    "title": "Isadora Kuznetsova",
+    "subtitle": "Concert Pianist & Music Director",
+    "description": "Internationally acclaimed pianist and artistic director with two decades of performance across Europe, Asia, and the Americas. Renowned for her interpretations of Romantic and 20th-century repertoire.",
+    "profilePhoto": "assets/profile.jpg"
+  },
+  "downloadCvLink": "#",
+  "about": {
+    "text": "I am a concert pianist and music director whose career has spanned the great stages of Carnegie Hall, the Barbican Centre, and the Vienna Konzerthaus. Trained at the Moscow Conservatory and the Royal Academy of Music, I bring both rigorous classical discipline and an instinct for bold interpretation to every performance. Beyond the stage, I serve as Artistic Director of the Prague International Piano Festival and mentor the next generation of soloists through my masterclass programme across three continents.",
+    "personalInfo": [
+      { "label": "Name",     "value": "Isadora Kuznetsova" },
+      { "label": "Title",    "value": "Concert Pianist & Music Director" },
+      { "label": "Email",    "value": "isadora@kuznetsova-piano.com" },
+      { "label": "Location", "value": "Vienna, Austria" }
+    ]
+  },
+  "experience": [
+    {
+      "date": "2018 – Present",
+      "title": "Artistic Director",
+      "company": "Prague International Piano Festival",
+      "description": "Curate and direct an annual festival drawing 80+ performers from 30 countries. Secured €4.2M in sponsorship and public funding. Commissioned 12 world-premiere works by living composers and grew festival attendance by 140% over five years."
+    },
+    {
+      "date": "2013 – Present",
+      "title": "Solo Concert Pianist",
+      "company": "International Touring — Europe, Asia, Americas",
+      "description": "Perform 60–80 solo recitals annually at premier venues including Carnegie Hall, Barbican Centre, Vienna Konzerthaus, and Tokyo Suntory Hall. Recorded eight critically acclaimed albums for Deutsche Grammophon and Hyperion Records."
+    },
+    {
+      "date": "2010 – 2013",
+      "title": "Principal Pianist",
+      "company": "Vienna Philharmonic Orchestra",
+      "description": "Performed as principal keyboard soloist under conductors including Andris Nelsons and Sir Simon Rattle. Featured in the New Year's Concert broadcast to 50 million viewers worldwide."
+    },
+    {
+      "date": "2006 – 2010",
+      "title": "Piano Faculty",
+      "company": "Royal Academy of Music, London",
+      "description": "Taught advanced undergraduate and postgraduate students. Directed the Annual Academy Concerto Series and developed a pioneering curriculum in 20th-century performance practice."
+    }
+  ],
+  "education": [
+    {
+      "date": "2004 – 2006",
+      "degree": "Artist Diploma in Piano Performance",
+      "institution": "Royal Academy of Music, London",
+      "description": "Studied under Dame Imogen Cooper. Graduated with the Director's Prize and the Kathleen Ferrier Award."
+    },
+    {
+      "date": "1998 – 2004",
+      "degree": "Bachelor & Master of Music, Piano",
+      "institution": "Moscow State Conservatory",
+      "description": "Studied under Professor Eliso Virsaladze. First-class honours. Winner of the All-Russian Young Pianists Competition, 2002."
+    }
+  ],
+  "skills": [
+    { "name": "Solo Piano Performance", "icon": "fas fa-music",        "level": "98" },
+    { "name": "Artistic Direction",     "icon": "fas fa-theater-masks","level": "92" },
+    { "name": "Score Analysis",         "icon": "fas fa-file-alt",     "level": "95" },
+    { "name": "Chamber Music",          "icon": "fas fa-users",        "level": "88" },
+    { "name": "Masterclass Teaching",   "icon": "fas fa-chalkboard-teacher","level": "90" },
+    { "name": "Recording & Production", "icon": "fas fa-compact-disc", "level": "80" }
+  ],
+  "languages": [
+    { "name": "Russian",  "level": "Native"       },
+    { "name": "English",  "level": "Fluent"       },
+    { "name": "German",   "level": "Fluent"       },
+    { "name": "French",   "level": "Intermediate" },
+    { "name": "Czech",    "level": "Basic"        }
+  ],
+  "references": [
+    {
+      "photo": "https://randomuser.me/api/portraits/men/52.jpg",
+      "name": "Prof. Heinrich Brandt",
+      "position": "Dean, Vienna Conservatory",
+      "contact": "h.brandt@wienkonservatorium.at",
+      "text": "Isadora possesses a rare combination of technical mastery and profound musical intelligence. She is among the most gifted pianists of her generation."
+    },
+    {
+      "photo": "https://randomuser.me/api/portraits/women/68.jpg",
+      "name": "Nathalie Voss",
+      "position": "Executive Director, Prague Piano Festival",
+      "contact": "n.voss@praguepianofest.cz",
+      "text": "Under Isadora's artistic leadership, our festival has become one of Europe's most important cultural gatherings. Her vision and energy are extraordinary."
+    }
+  ],
+  "contact": {
+    "items": [
+      { "icon": "fas fa-envelope", "text": "isadora@kuznetsova-piano.com", "link": "mailto:isadora@kuznetsova-piano.com" },
+      { "icon": "fas fa-phone",    "text": "+43 1 5556 7890",               "link": "tel:+43155567890" }
+    ],
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d85376.58795659352!2d16.31733!3d48.20817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476d079e5136ca9f%3A0xfdc2d58a1d467b0!2sVienna%2C%20Austria!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
+  },
+  "footer": {
+    "socialLinks": [
+      { "icon": "fab fa-youtube",      "url": "https://youtube.com/@kuznetsovapiano" },
+      { "icon": "fab fa-instagram",    "url": "https://instagram.com/kuznetsovapiano" },
+      { "icon": "fab fa-spotify",      "url": "https://open.spotify.com/artist/kuznetsova" },
+      { "icon": "fab fa-linkedin-in",  "url": "https://linkedin.com/in/isadora-kuznetsova" }
+    ],
+    "copyright": "© 2025 Isadora Kuznetsova. All rights reserved."
+  },
+  "theme": {
+    "gradientStart": "#0b1a12",
+    "gradientEnd": "#0f2318",
+    "accentColor": "#c9a84c"
+  }
+}
