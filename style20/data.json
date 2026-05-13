@@ -1,0 +1,108 @@
+{
+  "title": "Valentina Cruz Monteiro — Architect",
+  "header": {
+    "title": "VCM"
+  },
+  "profile": {
+    "name": "Valentina Cruz Monteiro",
+    "title": "Senior Architect & Urban Designer",
+    "photo": "assets/profile.jpg"
+  },
+  "socials": {
+    "LinkedIn": "linkedin.com/in/valentina-cruz-monteiro",
+    "Instagram": "instagram.com/vcm.studio",
+    "GitHub": "github.com/vcm-arch"
+  },
+  "about": "I am a senior architect and urban designer based in São Paulo, with over eleven years of experience shaping built environments across residential, cultural, and civic scales. My practice bridges rigorous technical execution with a deep commitment to social equity — I believe architecture has an obligation to serve its community, not merely decorate it. I have led complex mixed-use developments, guided preservation efforts in historic city centres, and collaborated with municipal governments on affordable housing frameworks. My work has been recognised in the Brazilian Architecture Biennial and featured in Archdaily Brazil and AU Revista. I am equally at home on a construction site and in a community workshop, and I bring that same directness to every client relationship.",
+  "experience": [
+    {
+      "position": "Senior Architect & Project Lead",
+      "company": "Brasil Arquitetura, São Paulo",
+      "date": "2019 – Present",
+      "description": "Lead architect on three major civic commissions totalling R$140M, including the Biblioteca Paulistana expansion and a mixed-use social housing complex in Vila Prudente. Manage multidisciplinary teams of up to 18 professionals and coordinate with structural, MEP, and landscape consultants. Responsible for design development through construction administration."
+    },
+    {
+      "position": "Project Architect",
+      "company": "MMBB Arquitetos, São Paulo",
+      "date": "2015 – 2019",
+      "description": "Developed schematic and design development packages for cultural and educational projects. Key contributor to the Parque Augusta cultural pavilion shortlisted for the 2018 IAB Award. Produced technical drawings, specifications, and coordinated with municipal planning authorities for permits."
+    },
+    {
+      "position": "Junior Architect",
+      "company": "Andrade Morettin Arquitetos, São Paulo",
+      "date": "2013 – 2015",
+      "description": "Supported senior architects on residential and small commercial projects. Prepared 3D models, renderings, and presentation materials. Conducted site visits and compiled field observation reports for ongoing construction projects."
+    },
+    {
+      "position": "Architecture Intern",
+      "company": "Prefeitura de São Paulo — Secretaria de Urbanismo",
+      "date": "2012 – 2013",
+      "description": "Assisted urban planners in reviewing development applications and preparing neighbourhood heritage assessments. Contributed to a GIS-based mapping project documenting modernist buildings in the Higienópolis district."
+    }
+  ],
+  "education": [
+    {
+      "degree": "M.Arch. in Urban Design",
+      "institution": "Universidade de São Paulo (FAU-USP)",
+      "date": "2013 – 2015"
+    },
+    {
+      "degree": "B.Arch. (Honours)",
+      "institution": "Universidade Presbiteriana Mackenzie, São Paulo",
+      "date": "2007 – 2012"
+    },
+    {
+      "degree": "Exchange — Architecture & History of Cities",
+      "institution": "École Nationale Supérieure d'Architecture de Paris-Belleville",
+      "date": "2010 – 2011"
+    }
+  ],
+  "skills": [
+    "Architectural Design",
+    "Urban Planning & Master Planning",
+    "AutoCAD & Revit (BIM)",
+    "Rhino 3D & Grasshopper",
+    "Construction Administration",
+    "Building Regulations (ABNT)",
+    "Historic Preservation",
+    "Adobe Creative Suite",
+    "Community Engagement",
+    "Project & Budget Management"
+  ],
+  "languages": [
+    "Portuguese (Native)",
+    "English (Fluent)",
+    "French (Proficient)",
+    "Spanish (Conversational)"
+  ],
+  "references": [
+    {
+      "name": "Francisco Fanucci",
+      "position": "Principal Architect",
+      "company": "Brasil Arquitetura",
+      "contact": "f.fanucci@brasilarquitetura.com.br"
+    },
+    {
+      "name": "Prof. Dra. Ana Luiza Nobre",
+      "position": "Professor of Architecture History",
+      "company": "FAU-USP, São Paulo",
+      "contact": "a.nobre@fau.usp.br"
+    },
+    {
+      "name": "Vinicius Andrade",
+      "position": "Principal",
+      "company": "Andrade Morettin Arquitetos",
+      "contact": "v.andrade@andrademorettin.com.br"
+    }
+  ],
+  "contact": {
+    "Email": "valentina@vcmstudio.arq.br",
+    "Phone": "+55 11 9 8342 7601"
+  },
+  "footer": "© 2025 Valentina Cruz Monteiro. All rights reserved.",
+  "theme": {
+    "gradientStart": "#faf6ef",
+    "gradientEnd": "#f0e8d8",
+    "accentColor": "#b84c1e"
+  }
+}

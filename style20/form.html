@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* ─── Variables ──────────────────────────────────────── */
+    :root {
+      --g1: #faf6ef;
+      --g2: #f0e8d8;
+      --accent: #b84c1e;
+      --accent-dim: rgba(184,76,30,0.10);
+      --accent-mid: rgba(184,76,30,0.22);
+      --accent-text: #8f3714;
+      --ink: #1a1108;
+      --ink-mid: #3d2e1a;
+      --ink-soft: #7a6650;
+      --ink-faint: #b8a898;
+      --surface: rgba(255,252,247,0.9);
+      --border-light: rgba(184,76,30,0.15);
+      --border-mid: rgba(26,17,8,0.12);
+      --input-bg: rgba(255,252,247,0.9);
+      --nav-h: 66px;
+      --bar-h: 70px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Figtree', sans-serif;
+      background: linear-gradient(168deg, var(--g1) 0%, var(--g2) 100%);
+      background-attachment: fixed;
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(26,17,8,0.045) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* ─── Navigation ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      background: rgba(250,246,239,0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-mid);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+      height: 100%;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--ink); text-decoration: none;
+      display: flex; align-items: center; gap: 0.45rem;
+    }
+    .nav-brand-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
+    .nav-badge {
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--border-light);
+      padding: 0.2rem 0.55rem;
+      background: var(--accent-dim);
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 0;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft); text-decoration: none;
+      padding: 0.45rem 0.85rem;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0.85rem; right: 0.85rem;
+      height: 1.5px; background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links .view-a { color: var(--accent-text); font-weight: 600; }
+
+    .hamburger {
+      display: none; background: none; border: none;
+      cursor: pointer; flex-direction: column; gap: 5px; padding: 5px;
+    }
+    .hamburger-line {
+      display: block; width: 22px; height: 2px;
+      background: var(--ink);
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .hamburger.open .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open .hamburger-line:nth-child(2) { opacity: 0; }
+    .hamburger.open .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── Main ───────────────────────────────────────────── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: calc(var(--nav-h) + 2.5rem) 2rem calc(var(--bar-h) + 2.5rem);
+    }
+
+    /* ─── Form Cards ─────────────────────────────────────── */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border-mid);
+      box-shadow: 0 2px 16px rgba(26,17,8,0.06);
+      padding: 2rem 2.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+    }
+
+    .card-title {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .card-title-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.68rem; font-style: italic;
+      color: var(--accent);
+    }
+    .card-title h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--ink); letter-spacing: -0.01em;
+    }
+    .card-title-rule { flex: 1; height: 1px; background: var(--border-mid); }
+
+    /* ─── Form Fields ────────────────────────────────────── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 0.64rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-mid);
+      color: var(--ink);
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.96rem; font-weight: 400;
+      padding: 0.62rem 0.85rem;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    textarea { min-height: 88px; line-height: 1.6; }
+    input::placeholder, textarea::placeholder { color: var(--ink-faint); }
+
+    /* ─── Dynamic Entries ────────────────────────────────── */
+    .entry {
+      background: rgba(250,246,239,0.6);
+      border: 1px solid var(--border-mid);
+      border-left: 2px solid var(--border-light);
+      padding: 1.25rem 1.25rem 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+    .entry:last-child { margin-bottom: 0; }
+    .item-actions { display: flex; justify-content: flex-end; margin-top: 0.65rem; }
+
+    .remove-btn {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: none;
+      color: var(--ink-faint);
+      border: 1px solid var(--border-mid);
+      padding: 0.38rem 0.85rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .remove-btn:hover { color: #c0392b; border-color: rgba(192,57,43,0.35); }
+
+    .add-btn {
+      width: 100%; margin-top: 0.5rem;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: none;
+      color: var(--accent);
+      border: 1px dashed var(--border-light);
+      padding: 0.7rem;
+      cursor: pointer;
+      transition: background 0.2s, border-style 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .add-btn:hover { background: var(--accent-dim); border-style: solid; }
+
+    /* ─── Theme Section ──────────────────────────────────── */
+    .presets-label {
+      font-size: 0.64rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-soft); margin-bottom: 0.75rem;
+    }
+    .presets-grid {
+      display: flex; flex-wrap: wrap; gap: 0.65rem;
+      margin-bottom: 1.75rem;
+    }
+    .swatch {
+      width: 50px; height: 50px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.18s, border-color 0.18s;
+    }
+    .swatch:hover { transform: scale(1.1); }
+    .swatch.active { border-color: var(--ink); }
+    .swatch-dot {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.6);
+    }
+
+    .pickers-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.25rem; margin-bottom: 1.25rem;
+    }
+    .picker-group label { margin-bottom: 0.5rem; }
+    .picker-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    input[type="color"] {
+      width: 38px; height: 36px;
+      border: 1px solid var(--border-mid);
+      background: var(--input-bg);
+      padding: 2px; cursor: pointer; flex-shrink: 0;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: none; }
+    .hex-input {
+      font-family: 'Figtree', monospace !important;
+      font-size: 0.82rem !important;
+      letter-spacing: 0.06em !important;
+      text-transform: uppercase;
+      flex: 1; min-width: 0;
+    }
+
+    .preview-wrap { margin-top: 0.25rem; }
+    .preview-label {
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-faint); margin-bottom: 0.4rem;
+    }
+    #preview-bar {
+      height: 12px; width: 100%;
+      border: 1px solid var(--border-mid);
+      transition: background 0.3s;
+    }
+
+    /* ─── Action Bar ─────────────────────────────────────── */
+    .action-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      height: var(--bar-h);
+      background: rgba(250,246,239,0.97);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-mid);
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.75rem; padding: 0 2rem;
+      box-shadow: 0 -4px 20px rgba(26,17,8,0.07);
+    }
+    .bar-btn {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 0.72rem 1.8rem;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, color 0.2s;
+    }
+    .bar-btn:active { transform: scale(0.97); }
+    .bar-btn-load {
+      background: none; color: var(--ink-soft);
+      border: 1px solid var(--border-mid);
+    }
+    .bar-btn-load:hover { background: var(--accent-dim); color: var(--accent-text); border-color: var(--border-light); }
+    .bar-btn-generate {
+      background: var(--accent); color: white;
+    }
+    .bar-btn-generate:hover { background: var(--accent-text); transform: translateY(-1px); }
+    .bar-btn-preview {
+      background: none; color: var(--ink-soft);
+      border: 1px solid var(--border-mid);
+    }
+    .bar-btn-preview:hover { background: rgba(26,17,8,0.06); color: var(--ink); }
+
+    /* ─── Toast ──────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: calc(var(--bar-h) + 12px); right: 1.5rem;
+      z-index: 300;
+      background: white;
+      border: 1px solid var(--border-mid);
+      border-left: 3px solid var(--accent);
+      box-shadow: 0 4px 20px rgba(26,17,8,0.10);
+      padding: 0.75rem 1.2rem;
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--ink);
+      max-width: 260px;
+      transform: translateY(16px); opacity: 0;
+      transition: transform 0.28s ease, opacity 0.28s ease;
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.error { border-left-color: #c0392b; }
+
+    /* ─── Responsive ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .form-row, .form-row.triple, .pickers-row { grid-template-columns: 1fr; }
+      .nav-links {
+        display: none;
+        position: absolute; top: var(--nav-h); left: 0; right: 0;
+        background: rgba(250,246,239,0.98);
+        border-bottom: 1px solid var(--border-mid);
+        flex-direction: column; gap: 0; padding: 0.5rem 0;
+        box-shadow: 0 8px 20px rgba(26,17,8,0.08);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.85rem 2rem; font-size: 0.78rem; }
+      .nav-links a::after { display: none; }
+      .hamburger { display: flex; }
+      main { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .form-card { padding: 1.5rem 1.25rem; }
+      .action-bar { gap: 0.5rem; padding: 0 1rem; }
+      .bar-btn { padding: 0.65rem 1rem; font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="index.html" class="nav-brand">
+          <span class="nav-brand-dot"></span>
+          Resume Builder
+        </a>
+        <span class="nav-badge">Editor</span>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="view-a">← View Resume</a></li>
+        <li><a href="#basic">Basic Info</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#languages">Languages</a></li>
+        <li><a href="#references">References</a></li>
+        <li><a href="#socials">Socials</a></li>
+        <li><a href="#theme">Theme</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Form -->
+  <main>
+
+    <!-- Basic Info -->
+    <div class="form-card" id="basic">
+      <div class="card-title">
+        <span class="card-title-num">01.</span>
+        <h2>Basic Information</h2>
+        <div class="card-title-rule"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-title">Page Title</label>
+          <input type="text" id="f-title" placeholder="e.g., Valentina Cruz Monteiro — Architect" />
+        </div>
+        <div class="form-group">
+          <label for="f-header-title">Header Initials / Logo Text</label>
+          <input type="text" id="f-header-title" placeholder="e.g., VCM" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-profile-name">Full Name</label>
+          <input type="text" id="f-profile-name" placeholder="e.g., Valentina Cruz Monteiro" />
+        </div>
+        <div class="form-group">
+          <label for="f-profile-title">Professional Title</label>
+          <input type="text" id="f-profile-title" placeholder="e.g., Senior Architect & Urban Designer" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-profile-photo">Profile Photo Path</label>
+          <input type="text" id="f-profile-photo" placeholder="assets/profile.jpg" />
+        </div>
+        <div class="form-group">
+          <label for="f-footer">Footer Text</label>
+          <input type="text" id="f-footer" placeholder="© 2025 Your Name. All rights reserved." />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="f-about">About / Biography</label>
+        <textarea id="f-about" style="min-height:110px;" placeholder="A detailed introduction about yourself, your expertise and approach…"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-contact-email">Email</label>
+          <input type="email" id="f-contact-email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="f-contact-phone">Phone</label>
+          <input type="text" id="f-contact-phone" placeholder="+1 234 567 8900" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="form-card" id="experience">
+      <div class="card-title">
+        <span class="card-title-num">02.</span>
+        <h2>Work Experience</h2>
+        <div class="card-title-rule"></div>
+      </div>
+      <div id="experience-entries"></div>
+      <button class="add-btn" id="add-experience"><i class="fas fa-plus"></i> Add Experience</button>
+    </div>
+
+    <!-- Education -->
+    <div class="form-card" id="education">
+      <div class="card-title">
+        <span class="card-title-num">03.</span>
+        <h2>Education</h2>
+        <div class="card-title-rule"></div>
+      </div>
+      <div id="education-entries"></div>
+      <button class="add-btn" id="add-education"><i class="fas fa-plus"></i> Add Education</button>
+    </div>
+
+    <!-- Skills -->
+    <div class="form-card" id="skills">
+      <div class="card-title">
+        <span class="card-title-num">04.</span>
+        <h2>Skills</h2>
+        <div class="card-title-rule"></div>
+      </div>
+      <div id="skills-entries"></div>
+      <button class="add-btn" id="add-skill"><i class="fas fa-plus"></i> Add Skill</button>
+    </div>
+
+    <!-- Languages -->
+    <div class="form-card" id="languages">
+      <div class="card-title">
+        <span class="card-title-num">05.</span>
+        <h2>Languages</h2>
+        <div class="card-title-rule"></div>
+      </div>
+      <div id="languages-entries"></div>
+      <button class="add-btn" id="add-language"><i class="fas fa-plus"></i> Add Language</button>
+    </div>
+
+    <!-- References -->
+    <div class="form-card" id="references">
+      <div class="card-title">
+        <span class="card-title-num">06.</span>
+        <h2>References</h2>
+        <div class="card-title-rule"></div>
+      </div>
+      <div id="references-entries"></div>
+      <button class="add-btn" id="add-reference"><i class="fas fa-plus"></i> Add Reference</button>
+    </div>
+
+    <!-- Social Links -->
+    <div class="form-card" id="socials">
+      <div class="card-title">
+        <span class="card-title-num">07.</span>
+        <h2>Social Links</h2>
+        <div class="card-title-rule"></div>
+      </div>
+      <div id="socials-entries"></div>
+      <button class="add-btn" id="add-social"><i class="fas fa-plus"></i> Add Social Link</button>
+    </div>
+
+    <!-- Theme -->
+    <div class="form-card" id="theme">
+      <div class="card-title">
+        <span class="card-title-num">08.</span>
+        <h2>Background Theme</h2>
+        <div class="card-title-rule"></div>
+      </div>
+
+      <p class="presets-label">Preset palettes — click to apply</p>
+      <div class="presets-grid" id="presets-grid"></div>
+
+      <div class="pickers-row">
+        <div class="picker-group">
+          <label>Gradient Start</label>
+          <div class="picker-wrap">
+            <input type="color" id="cp-g1" value="#faf6ef" />
+            <input type="text" class="hex-input" id="hex-g1" value="#faf6ef" maxlength="7" />
+          </div>
+        </div>
+        <div class="picker-group">
+          <label>Gradient End</label>
+          <div class="picker-wrap">
+            <input type="color" id="cp-g2" value="#f0e8d8" />
+            <input type="text" class="hex-input" id="hex-g2" value="#f0e8d8" maxlength="7" />
+          </div>
+        </div>
+        <div class="picker-group">
+          <label>Accent Colour</label>
+          <div class="picker-wrap">
+            <input type="color" id="cp-ac" value="#b84c1e" />
+            <input type="text" class="hex-input" id="hex-ac" value="#b84c1e" maxlength="7" />
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-wrap">
+        <p class="preview-label">Live preview</p>
+        <div id="preview-bar"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <input type="file" id="file-input" accept=".json" style="display:none;" />
+    <button class="bar-btn bar-btn-load" id="load-btn"><i class="fas fa-upload"></i> Load JSON</button>
+    <button class="bar-btn bar-btn-generate" id="generate-btn"><i class="fas fa-download"></i> Generate &amp; Download</button>
+    <button class="bar-btn bar-btn-preview" id="preview-btn"><i class="fas fa-eye"></i> Preview</button>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <script>
+  (function() {
+
+    /* ── Helpers ──────────────────────────────────────────── */
+    function hexAlpha(hex, a) {
+      hex = hex.replace('#','');
+      if (hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+      const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+    function darken(hex, pct) {
+      hex=hex.replace('#','');
+      if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+      const r=Math.max(0,parseInt(hex.slice(0,2),16)-Math.round(255*pct/100));
+      const g=Math.max(0,parseInt(hex.slice(2,4),16)-Math.round(255*pct/100));
+      const b=Math.max(0,parseInt(hex.slice(4,6),16)-Math.round(255*pct/100));
+      return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    }
+    function isValidHex(v) { return /^#[0-9a-fA-F]{6}$/.test(v); }
+
+    /* ── Theme State ──────────────────────────────────────── */
+    let theme = { g1:'#faf6ef', g2:'#f0e8d8', ac:'#b84c1e' };
+
+    function applyTheme(g1, g2, ac) {
+      const root = document.documentElement;
+      root.style.setProperty('--g1', g1);
+      root.style.setProperty('--g2', g2);
+      root.style.setProperty('--accent', ac);
+      root.style.setProperty('--accent-dim', hexAlpha(ac, 0.10));
+      root.style.setProperty('--accent-mid', hexAlpha(ac, 0.22));
+      root.style.setProperty('--accent-text', darken(ac, 15));
+      root.style.setProperty('--border-light', hexAlpha(ac, 0.15));
+      document.body.style.background = `linear-gradient(168deg, ${g1} 0%, ${g2} 100%)`;
+      document.getElementById('preview-bar').style.background = `linear-gradient(90deg, ${g1}, ${ac}, ${g2})`;
+    }
+
+    function syncPickers(g1, g2, ac) {
+      document.getElementById('cp-g1').value = g1;
+      document.getElementById('hex-g1').value = g1;
+      document.getElementById('cp-g2').value = g2;
+      document.getElementById('hex-g2').value = g2;
+      document.getElementById('cp-ac').value = ac;
+      document.getElementById('hex-ac').value = ac;
+    }
+
+    /* ── Presets ──────────────────────────────────────────── */
+    const presets = [
+      { label:'Warm Parchment',   g1:'#faf6ef', g2:'#f0e8d8', ac:'#b84c1e' },
+      { label:'Pale Linen',       g1:'#f8f4ee', g2:'#ede5d5', ac:'#2e6b8a' },
+      { label:'Soft Sage',        g1:'#f3f6f1', g2:'#e4ede0', ac:'#4a7c59' },
+      { label:'Dusty Rose',       g1:'#fdf4f4', g2:'#f2e2e2', ac:'#9b4458' },
+      { label:'Cool Slate',       g1:'#f2f4f7', g2:'#e4e9f0', ac:'#3a5080' },
+      { label:'Amber Dusk',       g1:'#fdf8ee', g2:'#f5e8c4', ac:'#a06b10' },
+      { label:'Midnight Ink',     g1:'#12151c', g2:'#1c2130', ac:'#e8c87a' },
+      { label:'Forest Night',     g1:'#0e1812', g2:'#182818', ac:'#7ec89a' },
+    ];
+
+    const presetsGrid = document.getElementById('presets-grid');
+    presets.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'swatch' + (i === 0 ? ' active' : '');
+      btn.title = p.label;
+      btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+      const dot = document.createElement('div');
+      dot.className = 'swatch-dot';
+      dot.style.background = p.ac;
+      btn.appendChild(dot);
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        theme = { g1: p.g1, g2: p.g2, ac: p.ac };
+        syncPickers(p.g1, p.g2, p.ac);
+        applyTheme(p.g1, p.g2, p.ac);
+      });
+      presetsGrid.appendChild(btn);
+    });
+
+    /* ── Manual Pickers ───────────────────────────────────── */
+    function bindPicker(cpId, hexId, key) {
+      const cp = document.getElementById(cpId);
+      const hx = document.getElementById(hexId);
+      cp.addEventListener('input', () => {
+        hx.value = cp.value; theme[key] = cp.value;
+        document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+        applyTheme(theme.g1, theme.g2, theme.ac);
+      });
+      hx.addEventListener('input', () => {
+        const v = hx.value.startsWith('#') ? hx.value : '#' + hx.value;
+        if (isValidHex(v)) {
+          cp.value = v; theme[key] = v;
+          document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+          applyTheme(theme.g1, theme.g2, theme.ac);
+        }
+      });
+    }
+    bindPicker('cp-g1','hex-g1','g1');
+    bindPicker('cp-g2','hex-g2','g2');
+    bindPicker('cp-ac','hex-ac','ac');
+    applyTheme(theme.g1, theme.g2, theme.ac);
+
+    /* ── Toast ────────────────────────────────────────────── */
+    let toastTimer;
+    function showToast(msg, isError=false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'show' + (isError ? ' error' : '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.className = '', 3200);
+    }
+
+    /* ── Hamburger ────────────────────────────────────────── */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', e => {
+      if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      }
+    });
+
+    /* ── Remove Button ────────────────────────────────────── */
+    function makeRemoveBtn(parent) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'remove-btn';
+      btn.innerHTML = '<i class="fas fa-trash"></i> Remove';
+      btn.addEventListener('click', () => parent.remove());
+      return btn;
+    }
+
+    /* ── Experience ───────────────────────────────────────── */
+    const expEntries = document.getElementById('experience-entries');
+    function addExperienceItem(exp={}) {
+      const d = document.createElement('div'); d.className = 'entry';
+      d.innerHTML = `
+        <div class="form-row">
+          <div class="form-group"><label>Position</label><input type="text" class="exp-position" value="${exp.position||''}" placeholder="e.g., Senior Architect" /></div>
+          <div class="form-group"><label>Company</label><input type="text" class="exp-company" value="${exp.company||''}" placeholder="e.g., Brasil Arquitetura, São Paulo" /></div>
+        </div>
+        <div class="form-group"><label>Date</label><input type="text" class="exp-date" value="${exp.date||''}" placeholder="e.g., 2019 – Present" /></div>
+        <div class="form-group"><label>Description</label><textarea class="exp-description" placeholder="Key responsibilities and achievements…">${exp.description||''}</textarea></div>
+        <div class="item-actions"></div>`;
+      d.querySelector('.item-actions').appendChild(makeRemoveBtn(d));
+      expEntries.appendChild(d);
+    }
+    document.getElementById('add-experience').addEventListener('click', () => addExperienceItem());
+
+    /* ── Education ────────────────────────────────────────── */
+    const eduEntries = document.getElementById('education-entries');
+    function addEducationItem(edu={}) {
+      const d = document.createElement('div'); d.className = 'entry';
+      d.innerHTML = `
+        <div class="form-row triple">
+          <div class="form-group"><label>Degree</label><input type="text" class="edu-degree" value="${edu.degree||''}" placeholder="e.g., M.Arch. in Urban Design" /></div>
+          <div class="form-group"><label>Institution</label><input type="text" class="edu-institution" value="${edu.institution||''}" placeholder="e.g., FAU-USP, São Paulo" /></div>
+          <div class="form-group"><label>Date</label><input type="text" class="edu-date" value="${edu.date||''}" placeholder="e.g., 2013 – 2015" /></div>
+        </div>
+        <div class="item-actions"></div>`;
+      d.querySelector('.item-actions').appendChild(makeRemoveBtn(d));
+      eduEntries.appendChild(d);
+    }
+    document.getElementById('add-education').addEventListener('click', () => addEducationItem());
+
+    /* ── Skills ───────────────────────────────────────────── */
+    const skillEntries = document.getElementById('skills-entries');
+    function addSkillItem(skill='') {
+      const d = document.createElement('div'); d.className = 'entry';
+      d.innerHTML = `
+        <div class="form-group"><label>Skill</label><input type="text" class="skill-name" value="${skill}" placeholder="e.g., Architectural Design" /></div>
+        <div class="item-actions"></div>`;
+      d.querySelector('.item-actions').appendChild(makeRemoveBtn(d));
+      skillEntries.appendChild(d);
+    }
+    document.getElementById('add-skill').addEventListener('click', () => addSkillItem());
+
+    /* ── Languages ────────────────────────────────────────── */
+    const langEntries = document.getElementById('languages-entries');
+    function addLanguageItem(lang='') {
+      const d = document.createElement('div'); d.className = 'entry';
+      d.innerHTML = `
+        <div class="form-group"><label>Language</label><input type="text" class="lang-name" value="${lang}" placeholder="e.g., Portuguese (Native)" /></div>
+        <div class="item-actions"></div>`;
+      d.querySelector('.item-actions').appendChild(makeRemoveBtn(d));
+      langEntries.appendChild(d);
+    }
+    document.getElementById('add-language').addEventListener('click', () => addLanguageItem());
+
+    /* ── References ───────────────────────────────────────── */
+    const refEntries = document.getElementById('references-entries');
+    function addReferenceItem(ref={}) {
+      const d = document.createElement('div'); d.className = 'entry';
+      d.innerHTML = `
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" class="ref-name" value="${ref.name||''}" placeholder="e.g., Prof. Ana Nobre" /></div>
+          <div class="form-group"><label>Contact</label><input type="text" class="ref-contact" value="${ref.contact||''}" placeholder="e.g., a.nobre@fau.usp.br" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Position</label><input type="text" class="ref-position" value="${ref.position||''}" placeholder="e.g., Professor of Architecture History" /></div>
+          <div class="form-group"><label>Company / Institution</label><input type="text" class="ref-company" value="${ref.company||''}" placeholder="e.g., FAU-USP" /></div>
+        </div>
+        <div class="item-actions"></div>`;
+      d.querySelector('.item-actions').appendChild(makeRemoveBtn(d));
+      refEntries.appendChild(d);
+    }
+    document.getElementById('add-reference').addEventListener('click', () => addReferenceItem());
+
+    /* ── Social Links ─────────────────────────────────────── */
+    const socialEntries = document.getElementById('socials-entries');
+    function addSocialItem(name='', url='') {
+      const d = document.createElement('div'); d.className = 'entry';
+      d.innerHTML = `
+        <div class="form-row">
+          <div class="form-group"><label>Platform Name</label><input type="text" class="social-name" value="${name}" placeholder="e.g., LinkedIn, GitHub, Instagram" /></div>
+          <div class="form-group"><label>URL or Handle</label><input type="url" class="social-url" value="${url}" placeholder="e.g., linkedin.com/in/yourname" /></div>
+        </div>
+        <div class="item-actions"></div>`;
+      d.querySelector('.item-actions').appendChild(makeRemoveBtn(d));
+      socialEntries.appendChild(d);
+    }
+    document.getElementById('add-social').addEventListener('click', () => addSocialItem());
+
+    /* ── Populate Form ────────────────────────────────────── */
+    function populateForm(data) {
+      document.getElementById('f-title').value          = data.title || '';
+      document.getElementById('f-header-title').value   = data.header?.title || '';
+      document.getElementById('f-profile-name').value   = data.profile?.name || '';
+      document.getElementById('f-profile-title').value  = data.profile?.title || '';
+      document.getElementById('f-profile-photo').value  = data.profile?.photo || 'assets/profile.jpg';
+      document.getElementById('f-about').value          = data.about || '';
+      document.getElementById('f-contact-email').value  = data.contact?.Email || '';
+      document.getElementById('f-contact-phone').value  = data.contact?.Phone || '';
+      document.getElementById('f-footer').value         = data.footer || '';
+
+      expEntries.innerHTML = '';
+      eduEntries.innerHTML = '';
+      skillEntries.innerHTML = '';
+      langEntries.innerHTML = '';
+      refEntries.innerHTML = '';
+      socialEntries.innerHTML = '';
+
+      (data.experience || []).forEach(addExperienceItem);
+      if (!data.experience?.length) addExperienceItem();
+
+      (data.education || []).forEach(addEducationItem);
+      if (!data.education?.length) addEducationItem();
+
+      (data.skills || []).forEach(addSkillItem);
+      if (!data.skills?.length) addSkillItem();
+
+      (data.languages || []).forEach(addLanguageItem);
+      if (!data.languages?.length) addLanguageItem();
+
+      (data.references || []).forEach(addReferenceItem);
+      if (!data.references?.length) addReferenceItem();
+
+      if (data.socials && typeof data.socials === 'object') {
+        Object.entries(data.socials).forEach(([n, u]) => addSocialItem(n, u));
+      }
+      if (!data.socials || !Object.keys(data.socials).length) addSocialItem();
+
+      if (data.theme) {
+        theme = {
+          g1: data.theme.gradientStart || theme.g1,
+          g2: data.theme.gradientEnd   || theme.g2,
+          ac: data.theme.accentColor   || theme.ac
+        };
+        syncPickers(theme.g1, theme.g2, theme.ac);
+        applyTheme(theme.g1, theme.g2, theme.ac);
+        document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      }
+    }
+
+    /* ── Collect Form Data ────────────────────────────────── */
+    function collectData() {
+      const socials = {};
+      Array.from(socialEntries.children).forEach(el => {
+        const n = el.querySelector('.social-name')?.value.trim();
+        const u = el.querySelector('.social-url')?.value.trim();
+        if (n && u) socials[n] = u;
+      });
+
+      return {
+        title:   document.getElementById('f-title').value,
+        header:  { title: document.getElementById('f-header-title').value },
+        profile: {
+          name:  document.getElementById('f-profile-name').value,
+          title: document.getElementById('f-profile-title').value,
+          photo: document.getElementById('f-profile-photo').value || 'assets/profile.jpg'
+        },
+        socials,
+        about:   document.getElementById('f-about').value,
+        experience: Array.from(expEntries.children).map(el => ({
+          position:    el.querySelector('.exp-position')?.value.trim() || '',
+          company:     el.querySelector('.exp-company')?.value.trim()  || '',
+          date:        el.querySelector('.exp-date')?.value.trim()     || '',
+          description: el.querySelector('.exp-description')?.value.trim() || ''
+        })).filter(e => e.position || e.company),
+        education: Array.from(eduEntries.children).map(el => ({
+          degree:      el.querySelector('.edu-degree')?.value.trim()      || '',
+          institution: el.querySelector('.edu-institution')?.value.trim() || '',
+          date:        el.querySelector('.edu-date')?.value.trim()        || ''
+        })).filter(e => e.degree || e.institution),
+        skills:    Array.from(skillEntries.children).map(el => el.querySelector('.skill-name')?.value.trim()).filter(Boolean),
+        languages: Array.from(langEntries.children).map(el => el.querySelector('.lang-name')?.value.trim()).filter(Boolean),
+        references: Array.from(refEntries.children).map(el => ({
+          name:     el.querySelector('.ref-name')?.value.trim()     || '',
+          position: el.querySelector('.ref-position')?.value.trim() || '',
+          company:  el.querySelector('.ref-company')?.value.trim()  || '',
+          contact:  el.querySelector('.ref-contact')?.value.trim()  || ''
+        })).filter(e => e.name),
+        contact: {
+          Email: document.getElementById('f-contact-email').value,
+          Phone: document.getElementById('f-contact-phone').value
+        },
+        footer: document.getElementById('f-footer').value,
+        theme: {
+          gradientStart: theme.g1,
+          gradientEnd:   theme.g2,
+          accentColor:   theme.ac
+        }
+      };
+    }
+
+    /* ── Action Bar ───────────────────────────────────────── */
+    const fileInput = document.getElementById('file-input');
+    document.getElementById('load-btn').addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0]; if (!file) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        try { populateForm(JSON.parse(ev.target.result)); showToast('✓ Data loaded successfully'); }
+        catch(err) { showToast('✗ Invalid JSON file', true); }
+      };
+      r.onerror = () => showToast('✗ Could not read file', true);
+      r.readAsText(file);
+      fileInput.value = '';
+    });
+
+    document.getElementById('generate-btn').addEventListener('click', () => {
+      const data = collectData();
+      if (!data.profile?.name?.trim()) { showToast('✗ Please enter a Full Name first', true); return; }
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'data.json'; a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('✓ data.json downloaded');
+    });
+
+    document.getElementById('preview-btn').addEventListener('click', () => {
+      const data = collectData();
+      window.open('index.html#data=' + encodeURIComponent(JSON.stringify(data)), '_blank');
+    });
+
+    /* ── Initial Data Load ────────────────────────────────── */
+    fetch('data.json')
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(data => populateForm(data))
+      .catch(() => {
+        populateForm({});
+        showToast('Starting with empty form — load a JSON or fill in manually');
+      });
+
+  })();
+  </script>
+</body>
+</html>
