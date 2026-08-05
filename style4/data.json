@@ -1,112 +1,112 @@
 {
-    "title": "Morgan Maxwell | Graphic Designer",
-    "profile": {
-        "name": "Morgan Maxwell",
-        "image": "assets/profile.jpg",
-        "social_links": [
-            { "platform": "linkedin", "url": "https://linkedin.com", "icon": "fab fa-linkedin" },
-            { "platform": "dribbble", "url": "https://dribbble.com", "icon": "fab fa-dribbble" },
-            { "platform": "behance", "url": "https://behance.net", "icon": "fab fa-behance" },
-            { "platform": "instagram", "url": "https://instagram.com", "icon": "fab fa-instagram" }
-        ]
+  "name": "Morgan Maxwell",
+  "title": "Graphic Designer & Brand Specialist",
+  "about": "Creative and detail-oriented graphic designer with 4 years of experience in developing visually compelling designs for print and digital media. Adept at collaborating with cross-functional teams and managing multiple projects to deliver high-quality results on time and within budget.",
+  "theme": {
+    "gradientStart": "#f1f8e9",
+    "gradientEnd": "#e8f5e9",
+    "accentColor": "#2e7d32"
+  },
+  "contact": {
+    "phone": "+123-456-7890",
+    "email": "morgan@example.com",
+    "address": "123 Anywhere St., Any City"
+  },
+  "profile": {
+    "image": "assets/profile.jpg",
+    "eyebrow": "Open to Opportunities"
+  },
+  "hero": {
+    "description": "Creating visual experiences that tell compelling stories",
+    "image": "assets/designer-work.jpg"
+  },
+  "stats": [
+    { "value": "4+",   "label": "Years Experience"   },
+    { "value": "120+", "label": "Projects Completed" },
+    { "value": "98%",  "label": "Client Satisfaction" }
+  ],
+  "skills": [
+    { "name": "Graphic Design",       "level": 90 },
+    { "name": "Typography",            "level": 87 },
+    { "name": "Branding & Identity",   "level": 95 },
+    { "name": "Print & Digital Media", "level": 84 },
+    { "name": "Project Management",    "level": 92 }
+  ],
+  "languages": [
+    { "name": "Russian", "level": 94 },
+    { "name": "Chinese", "level": 86 },
+    { "name": "Korean",  "level": 84 }
+  ],
+  "experience": [
+    {
+      "role": "Senior Graphic Designer",
+      "company": "Fradel and Spies Company",
+      "start": "June 2022",
+      "end": "May 2024",
+      "details": [
+        "Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement.",
+        "Collaborated with marketing and product teams to develop visually appealing and effective campaigns.",
+        "Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines.",
+        "Mentored junior designers and conducted design workshops for cross-functional teams."
+      ]
     },
-    "hero": {
-        "title": "Graphic Designer & Brand Specialist",
-        "description": "Creating visual experiences that tell compelling stories",
-        "image": "assets/designer-work.jpg"
-    },
-    "about": {
-        "description": [
-            "Creative and detail-oriented graphic designer with 4 years of experience in developing visually compelling designs for print and digital media. Adept at collaborating with cross-functional teams and managing multiple projects to deliver high-quality results on time and within budget."
-        ],
-        "personal_info": {
-            "email": "morgan@example.com",
-            "location": "123 Anywhere St., Any City",
-            "availability": "Open to work"
-        },
-        "stats": [
-            { "value": "4+", "label": "Years Experience" },
-            { "value": "120+", "label": "Projects Completed" },
-            { "value": "98%", "label": "Client Satisfaction" }
-        ]
-    },
-    "experience": [
-        {
-            "date": "June 2022 - May 2024",
-            "title": "Senior Graphic Designer",
-            "company": "Fradel and Spies Company",
-            "responsibilities": [
-                "Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement.",
-                "Collaborated with marketing and product teams to develop visually appealing and effective campaigns.",
-                "Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines.",
-                "Mentored junior designers and conducted design workshops for cross-functional teams."
-            ]
-        },
-        {
-            "date": "January 2020 - March 2022",
-            "title": "Graphic Designer",
-            "company": "Borcelle Company",
-            "responsibilities": [
-                "Created website and mobile app designs that enhanced user experience and increased engagement by 20%.",
-                "Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback.",
-                "Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations.",
-                "Developed brand guidelines and design systems for consistent visual identity across all platforms."
-            ]
-        }
-    ],
-    "skills": [
-        {
-            "category": "Design",
-            "items": [
-                { "name": "Graphic Design", "progress": 90 },
-                { "name": "Typography", "progress": 87 },
-                { "name": "Branding & Identity", "progress": 95 }
-            ]
-        },
-        {
-            "category": "Technical",
-            "items": [
-                { "name": "Print & Digital Media", "progress": 84 },
-                { "name": "Project Management", "progress": 92 }
-            ]
-        },
-        {
-            "category": "Languages",
-            "items": [
-                { "name": "Russian", "progress": 94 },
-                { "name": "Chinese", "progress": 86 },
-                { "name": "Korean", "progress": 84 }
-            ]
-        }
-    ],
-    "education": [
-        {
-            "date": "2016 - 2020",
-            "title": "Bachelor of Fine Arts in Graphic Design",
-            "institution": "Paucek and Lage University",
-            "description": "Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City"
-        }
-    ],
-    "awards": [
-        {
-            "date": "2023",
-            "title": "Design Excellence Award",
-            "institution": "International Design Association",
-            "description": "Received for outstanding contributions to graphic design"
-        },
-        {
-            "date": "2021",
-            "title": "Best Brand Identity",
-            "institution": "Creative Design Awards",
-            "description": "Awarded for exceptional brand identity design"
-        }
-    ],
-    "contact": {
-        "email": "morgan@example.com",
-        "phone": "+123-456-7890",
-        "location": "123 Anywhere St., Any City"
-    },
-    "footer": {
-        "copyright": "© {year} Morgan Maxwell. All rights reserved."
+    {
+      "role": "Graphic Designer",
+      "company": "Borcelle Company",
+      "start": "January 2020",
+      "end": "March 2022",
+      "details": [
+        "Created website and mobile app designs that enhanced user experience and increased engagement by 20%.",
+        "Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback.",
+        "Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations.",
+        "Developed brand guidelines and design systems for consistent visual identity across all platforms."
+      ]
     }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Fine Arts in Graphic Design",
+      "institution": "Paucek and Lage University",
+      "start": "2016",
+      "end": "2020",
+      "description": "Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City"
+    }
+  ],
+  "awards": [
+    {
+      "date": "2023",
+      "title": "Design Excellence Award",
+      "institution": "International Design Association",
+      "description": "Received for outstanding contributions to graphic design"
+    },
+    {
+      "date": "2021",
+      "title": "Best Brand Identity",
+      "institution": "Creative Design Awards",
+      "description": "Awarded for exceptional brand identity design"
+    }
+  ],
+  "references": [
+    {
+      "name": "Elena Fradel",
+      "role": "Creative Director, Fradel and Spies Company",
+      "phone": "+123-456-7891",
+      "email": "e.fradel@fradelspies.com"
+    },
+    {
+      "name": "Thomas Borcelle",
+      "role": "Art Director, Borcelle Company",
+      "phone": "+123-456-7892",
+      "email": "t.borcelle@borcelle.com"
+    }
+  ],
+  "footer": {
+    "text": "© {year} Morgan Maxwell. All rights reserved.",
+    "socials": [
+      { "name": "LinkedIn",  "url": "https://linkedin.com",  "icon": "fab fa-linkedin"  },
+      { "name": "Dribbble",  "url": "https://dribbble.com",  "icon": "fab fa-dribbble"  },
+      { "name": "Behance",   "url": "https://behance.net",   "icon": "fab fa-behance"   },
+      { "name": "Instagram", "url": "https://instagram.com", "icon": "fab fa-instagram" }
+    ]
+  }
 }

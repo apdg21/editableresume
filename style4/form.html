@@ -1,545 +1,1020 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio Submission Form</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <title>Edit Portfolio — Style 4</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --primary:      #2e7d32;
+      --primary-dark: #1b5e20;
+      --secondary:    #f5f5f5;
+      --dark:         #212121;
+      --gray:         #757575;
+      --light-gray:   #e0e0e0;
+      --white:        #ffffff;
+      --ac:           #2e7d32;
+      --g1:           #f1f8e9;
+      --g2:           #e8f5e9;
+      --shadow:       0 4px 15px rgba(0,0,0,0.08);
+      --radius:       8px;
     }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      padding-top: 2rem;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, var(--g1), var(--g2));
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 40px 20px 100px;
+      min-height: 100vh;
     }
-    .social-entry {
+
+    .wrap { max-width: 960px; margin: 0 auto; }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--dark);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--ac);
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 30px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); }
+
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary);
+      border-bottom: 1px solid var(--light-gray);
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #495057;
+      margin: 16px 0 6px;
+    }
+    label:first-of-type { margin-top: 0; }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--light-gray);
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: var(--secondary);
+      color: var(--dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(46,125,50,0.12);
+      background: white;
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* ── Buttons ──────────────────────────────────────────── */
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-family: inherit;
+      font-weight: 500;
+      margin-top: 14px;
+      margin-right: 8px;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    button:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-red  { background: #c62828; }
+    .btn-red:hover { background: #b71c1c; }
+    .btn-gray { background: #616161; }
+    .btn-dl   { background: #2e7d32; }
+    .btn-dl:hover { background: #1b5e20; }
+
+    /* ── Dynamic blocks ──────────────────────────────────── */
+    .dblock {
+      background: var(--secondary);
+      border-left: 3px solid var(--primary);
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin: 12px 0;
       position: relative;
     }
-    .icon-preview {
+    .dblock h3 {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .rm-btn {
       position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      color: #4B5563;
+      top: 10px; right: 10px;
+      width: 26px; height: 26px;
+      background: #c62828;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0; padding: 0;
+      transition: background 0.2s;
+      line-height: 1;
     }
-    nav {
-      position: sticky;
-      top: 0;
-      background-color: #fff;
-      z-index: 1000;
-      padding: 1rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    .rm-btn:hover { background: #b71c1c; transform: none; }
+
+    /* ── Level row ───────────────────────────────────────── */
+    .level-row { display: flex; align-items: center; gap: 12px; }
+    .level-row input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      background: var(--light-gray);
+      border-radius: 4px;
+      padding: 0; border: none;
     }
-    nav a {
-      margin-right: 1rem;
-      text-decoration: none;
-      color: #1f2937;
+    .level-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .lval {
+      font-weight: 700;
+      font-size: 0.85rem;
+      min-width: 40px;
+      text-align: center;
+      color: var(--dark);
+    }
+
+    /* ── Theme Picker ────────────────────────────────────── */
+    .preset-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+
+    .preset-swatch {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .preset-swatch:hover { transform: scale(1.12); }
+    .preset-swatch.active { border-color: var(--dark); transform: scale(1.1); }
+    .preset-swatch .ac-dot {
+      position: absolute;
+      bottom: 2px; right: 2px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+
+    .pickers-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .picker-grp label { margin: 0 0 8px; font-size: 0.85rem; }
+    .picker-inner { display: flex; align-items: center; gap: 8px; }
+    .picker-inner input[type="color"] {
+      width: 40px; height: 40px;
+      border: none; border-radius: 5px;
+      cursor: pointer; padding: 0; flex-shrink: 0;
+    }
+    .picker-inner input[type="text"] {
+      flex: 1; width: auto;
+      padding: 8px 10px;
+      font-family: monospace;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+    }
+    .preview-strip { height: 10px; border-radius: 5px; margin-top: 14px; transition: background 0.3s; }
+
+    /* ── Action Bar ──────────────────────────────────────── */
+    .action-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: white;
+      border-top: 2px solid var(--primary);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      z-index: 100;
+      box-shadow: 0 -4px 14px rgba(0,0,0,0.10);
+    }
+    .action-bar button { margin: 0; }
+
+    /* ── Toast ───────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 76px; right: 20px;
+      background: white;
+      border-left: 4px solid var(--primary);
+      border-radius: 6px;
+      padding: 13px 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.14);
+      font-size: 0.92rem;
       font-weight: 500;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 200;
+      max-width: 300px;
+      pointer-events: none;
     }
-    nav a:hover {
-      color: #2563eb;
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { border-left-color: #c62828; }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .two-col, .three-col, .pickers-row { grid-template-columns: 1fr; }
+      body { padding: 20px 14px 100px; }
+      .card { padding: 18px; }
+      .action-bar button { flex: 1; min-width: 100px; }
     }
   </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center min-h-screen">
-  <nav class="w-full max-w-3xl">
-    <a href="#profile">Profile</a>
-    <a href="#hero">Hero</a>
-    <a href="#about">About</a>
-    <a href="#experience">Experience</a>
-    <a href="#skills">Skills</a>
-    <a href="#education">Education</a>
-    <a href="#awards">Awards</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl overflow-y-auto">
-    <h1 class="text-2xl font-bold mb-6 text-center">Portfolio Submission Form</h1>
-    <div class="mb-6">
-      <input type="file" id="load-data" accept=".json" class="hidden">
-      <button type="button" id="load-data-button" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Load Existing data.json</button>
+<body>
+<div class="wrap">
+
+  <h1><i class="fas fa-pencil-alt"></i> Edit Portfolio</h1>
+
+  <!-- ── THEME ──────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Theme Colors</h2>
+    <div class="preset-row" id="presetRow"></div>
+    <div class="pickers-row">
+      <div class="picker-grp">
+        <label>Gradient Start</label>
+        <div class="picker-inner">
+          <input type="color" id="cG1" value="#f1f8e9">
+          <input type="text"  id="cG1h" value="#F1F8E9" maxlength="7">
+        </div>
+      </div>
+      <div class="picker-grp">
+        <label>Gradient End</label>
+        <div class="picker-inner">
+          <input type="color" id="cG2" value="#e8f5e9">
+          <input type="text"  id="cG2h" value="#E8F5E9" maxlength="7">
+        </div>
+      </div>
+      <div class="picker-grp">
+        <label>Accent Color</label>
+        <div class="picker-inner">
+          <input type="color" id="cAC" value="#2e7d32">
+          <input type="text"  id="cACh" value="#2E7D32" maxlength="7">
+        </div>
+      </div>
     </div>
-    <form id="portfolioForm" class="space-y-6">
-      <!-- Profile -->
-      <div id="profile">
-        <h2 class="text-lg font-semibold mb-2">Profile</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-            <input type="text" id="name" name="name" value="Morgan Maxwell" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
-          </div>
-          <div>
-            <label for="profile-image" class="block text-sm font-medium text-gray-700">Profile Image</label>
-            <input type="text" id="profile-image" name="profile-image" value="assets/profile.jpg" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" readonly>
-            <span class="text-sm text-gray-500">Place image in assets folder (e.g., assets/profile.jpg)</span>
-          </div>
-        </div>
-        <div id="social-links-container" class="space-y-4 mt-4">
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
-            <div class="relative">
-              <label for="social-platform-0" class="block text-sm font-medium text-gray-700">Social Platform</label>
-              <select id="social-platform-0" name="social-platform-0" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
-                <option value="" disabled>Select a platform</option>
-                <option value="linkedin" selected>LinkedIn</option>
-                <option value="twitter">Twitter</option>
-                <option value="facebook">Facebook</option>
-                <option value="behance">Behance</option>
-                <option value="dribbble">Dribbble</option>
-                <option value="instagram">Instagram</option>
-              </select>
-              <i class="icon-preview fas fa-linkedin" data-index="0"></i>
-            </div>
-            <div>
-              <label for="social-url-0" class="block text-sm font-medium text-gray-700">URL</label>
-              <input type="url" id="social-url-0" name="social-url-0" value="https://linkedin.com/in/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://linkedin.com/in/yourprofile">
-              <button type="button" class="remove-social mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
-            </div>
-          </div>
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
-            <div class="relative">
-              <label for="social-platform-1" class="block text-sm font-medium text-gray-700">Social Platform</label>
-              <select id="social-platform-1" name="social-platform-1" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
-                <option value="" disabled>Select a platform</option>
-                <option value="linkedin">LinkedIn</option>
-                <option value="twitter" selected>Twitter</option>
-                <option value="facebook">Facebook</option>
-                <option value="behance">Behance</option>
-                <option value="dribbble">Dribbble</option>
-                <option value="instagram">Instagram</option>
-              </select>
-              <i class="icon-preview fas fa-x-twitter" data-index="1"></i>
-            </div>
-            <div>
-              <label for="social-url-1" class="block text-sm font-medium text-gray-700">URL</label>
-              <input type="url" id="social-url-1" name="social-url-1" value="https://twitter.com/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://twitter.com/yourprofile">
-              <button type="button" class="remove-social mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
-            </div>
-          </div>
-          <div class="social-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
-            <div class="relative">
-              <label for="social-platform-2" class="block text-sm font-medium text-gray-700">Social Platform</label>
-              <select id="social-platform-2" name="social-platform-2" class="mt-1 block w-full p-2 pr-10 border border-gray-300 rounded-md">
-                <option value="" disabled>Select a platform</option>
-                <option value="linkedin">LinkedIn</option>
-                <option value="twitter">Twitter</option>
-                <option value="facebook">Facebook</option>
-                <option value="behance" selected>Behance</option>
-                <option value="dribbble">Dribbble</option>
-                <option value="instagram">Instagram</option>
-              </select>
-              <i class="icon-preview fab fa-behance" data-index="2"></i>
-            </div>
-            <div>
-              <label for="social-url-2" class="block text-sm font-medium text-gray-700">URL</label>
-              <input type="url" id="social-url-2" name="social-url-2" value="https://behance.net/example" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., https://behance.net/yourprofile">
-              <button type="button" class="remove-social mt-2 text-red-600 hover:underline" data-index="2">Remove</button>
-            </div>
-          </div>
-        </div>
-        <button type="button" id="add-social" class="mt-2 text-blue-600 hover:underline">Add Another Social Link</button>
-      </div>
-
-      <!-- Hero -->
-      <div id="hero">
-        <h2 class="text-lg font-semibold mb-2">Hero</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="hero-title" class="block text-sm font-medium text-gray-700">Title</label>
-            <input type="text" id="hero-title" name="hero-title" value="Graphic Designer & Brand Specialist" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., Graphic Designer & Brand Specialist">
-          </div>
-          <div>
-            <label for="hero-image" class="block text-sm font-medium text-gray-700">Hero Image</label>
-            <input type="text" id="hero-image" name="hero-image" value="assets/designer-work.jpg" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" readonly>
-            <span class="text-sm text-gray-500">Place image in assets folder (e.g., assets/designer-work.jpg)</span>
-          </div>
-        </div>
-        <div>
-          <label for="hero-description" class="block text-sm font-medium text-gray-700">Description</label>
-          <textarea id="hero-description" name="hero-description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Creating visual experiences that tell compelling stories">Creating visual experiences that tell compelling stories</textarea>
-        </div>
-      </div>
-
-      <!-- About -->
-      <div id="about">
-        <h2 class="text-lg font-semibold mb-2">About</h2>
-        <div>
-          <label for="about-description" class="block text-sm font-medium text-gray-700">Description</label>
-          <textarea id="about-description" name="about-description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="e.g., Creative and detail-oriented graphic designer...">Creative and detail-oriented graphic designer with 4 years of experience in developing visually compelling designs for print and digital media. Adept at collaborating with cross-functional teams and managing multiple projects to deliver high-quality results on time and within budget.</textarea>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div>
-            <label for="personal-email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" id="personal-email" name="personal-email" value="morgan@example.com" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., your.email@example.com">
-          </div>
-          <div>
-            <label for="personal-location" class="block text-sm font-medium text-gray-700">Location</label>
-            <input type="text" id="personal-location" name="personal-location" value="123 Anywhere St., Any City" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 123 Anywhere St., Any City">
-          </div>
-          <div>
-            <label for="personal-availability" class="block text-sm font-medium text-gray-700">Availability</label>
-            <input type="text" id="personal-availability" name="personal-availability" value="Open to work" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Open to work">
-          </div>
-        </div>
-        <div id="stats-container" class="space-y-4 mt-4">
-          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
-            <div>
-              <label for="stats-value-0" class="block text-sm font-medium text-gray-700">Value</label>
-              <input type="text" id="stats-value-0" name="stats-value-0" value="4+" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 4+">
-            </div>
-            <div>
-              <label for="stats-label-0" class="block text-sm font-medium text-gray-700">Label</label>
-              <input type="text" id="stats-label-0" name="stats-label-0" value="Years Experience" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Years Experience">
-              <button type="button" class="remove-stats mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
-            </div>
-          </div>
-          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
-            <div>
-              <label for="stats-value-1" class="block text-sm font-medium text-gray-700">Value</label>
-              <input type="text" id="stats-value-1" name="stats-value-1" value="120+" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 120+">
-            </div>
-            <div>
-              <label for="stats-label-1" class="block text-sm font-medium text-gray-700">Label</label>
-              <input type="text" id="stats-label-1" name="stats-label-1" value="Projects Completed" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Projects Completed">
-              <button type="button" class="remove-stats mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
-            </div>
-          </div>
-          <div class="stats-entry grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
-            <div>
-              <label for="stats-value-2" class="block text-sm font-medium text-gray-700">Value</label>
-              <input type="text" id="stats-value-2" name="stats-value-2" value="98%" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 98%">
-            </div>
-            <div>
-              <label for="stats-label-2" class="block text-sm font-medium text-gray-700">Label</label>
-              <input type="text" id="stats-label-2" name="stats-label-2" value="Client Satisfaction" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Client Satisfaction">
-              <button type="button" class="remove-stats mt-2 text-red-600 hover:underline" data-index="2">Remove</button>
-            </div>
-          </div>
-        </div>
-        <button type="button" id="add-stats" class="mt-2 text-blue-600 hover:underline">Add Another Stat</button>
-      </div>
-
-      <!-- Experience -->
-      <div id="experience">
-        <h2 class="text-lg font-semibold mb-2">Experience</h2>
-        <div id="experience-container" class="space-y-4">
-          <div class="experience-entry" data-index="0">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="exp-date-0" class="block text-sm font-medium text-gray-700">Date</label>
-                <input type="text" id="exp-date-0" name="exp-date-0" value="June 2022 - May 2024" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., June 2022 - May 2024">
-              </div>
-              <div>
-                <label for="exp-title-0" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="exp-title-0" name="exp-title-0" value="Senior Graphic Designer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Senior Graphic Designer">
-              </div>
-              <div>
-                <label for="exp-company-0" class="block text-sm font-medium text-gray-700">Company</label>
-                <input type="text" id="exp-company-0" name="exp-company-0" value="Fradel and Spies Company" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Fradel and Spies Company">
-              </div>
-            </div>
-            <label for="exp-responsibilities-0" class="block text-sm font-medium text-gray-700 mt-2">Responsibilities (one per line)</label>
-            <textarea id="exp-responsibilities-0" name="exp-responsibilities-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter one responsibility per line, e.g.:
-Designed branding materials...
-Collaborated with teams...">Designed branding materials, marketing collateral, and digital assets, resulting in a 25% increase in client engagement.
-Collaborated with marketing and product teams to develop visually appealing and effective campaigns.
-Managed multiple design projects simultaneously, ensuring timely delivery and adherence to brand guidelines.
-Mentored junior designers and conducted design workshops for cross-functional teams.</textarea>
-            <button type="button" class="remove-experience mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
-          </div>
-          <div class="experience-entry mt-4" data-index="1">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="exp-date-1" class="block text-sm font-medium text-gray-700">Date</label>
-                <input type="text" id="exp-date-1" name="exp-date-1" value="January 2020 - March 2022" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., January 2020 - March 2022">
-              </div>
-              <div>
-                <label for="exp-title-1" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="exp-title-1" name="exp-title-1" value="Graphic Designer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Graphic Designer">
-              </div>
-              <div>
-                <label for="exp-company-1" class="block text-sm font-medium text-gray-700">Company</label>
-                <input type="text" id="exp-company-1" name="exp-company-1" value="Borcelle Company" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Borcelle Company">
-              </div>
-            </div>
-            <label for="exp-responsibilities-1" class="block text-sm font-medium text-gray-700 mt-2">Responsibilities (one per line)</label>
-            <textarea id="exp-responsibilities-1" name="exp-responsibilities-1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter one responsibility per line, e.g.:
-Created website designs...
-Led the redesign...">Created website and mobile app designs that enhanced user experience and increased engagement by 20%.
-Led the redesign of the company website, resulting in a 30% increase in web traffic and improved user feedback.
-Conducted client presentations, gathered feedback, and refined design concepts to meet client expectations.
-Developed brand guidelines and design systems for consistent visual identity across all platforms.</textarea>
-            <button type="button" class="remove-experience mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
-          </div>
-        </div>
-        <button type="button" id="add-experience" class="mt-2 text-blue-600 hover:underline">Add Another Experience</button>
-      </div>
-
-      <!-- Skills -->
-      <div id="skills">
-        <h2 class="text-lg font-semibold mb-2">Skills</h2>
-        <div id="skills-container" class="space-y-4">
-          <div class="skills-entry" data-index="0">
-            <label for="skill-category-0" class="block text-sm font-medium text-gray-700">Category</label>
-            <div class="flex items-center gap-2">
-              <input type="text" id="skill-category-0" name="skill-category-0" value="Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Design">
-              <button type="button" class="remove-skill-category mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
-            </div>
-            <div id="skill-items-0" class="space-y-2 mt-2">
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
-                <div>
-                  <label for="skill-name-0-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-0-0" name="skill-name-0-0" value="Graphic Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Graphic Design">
-                </div>
-                <div>
-                  <label for="skill-progress-0-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-0-0" name="skill-progress-0-0" value="90" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 90" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="0" data-index="0">Remove</button>
-                </div>
-              </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
-                <div>
-                  <label for="skill-name-0-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-0-1" name="skill-name-0-1" value="Typography" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Typography">
-                </div>
-                <div>
-                  <label for="skill-progress-0-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-0-1" name="skill-progress-0-1" value="87" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 87" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="0" data-index="1">Remove</button>
-                </div>
-              </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
-                <div>
-                  <label for="skill-name-0-2" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-0-2" name="skill-name-0-2" value="Branding & Identity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Branding & Identity">
-                </div>
-                <div>
-                  <label for="skill-progress-0-2" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-0-2" name="skill-progress-0-2" value="95" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 95" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="0" data-index="2">Remove</button>
-                </div>
-              </div>
-            </div>
-            <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="0">Add Another Skill Item</button>
-          </div>
-          <div class="skills-entry mt-4" data-index="1">
-            <label for="skill-category-1" class="block text-sm font-medium text-gray-700">Category</label>
-            <div class="flex items-center gap-2">
-              <input type="text" id="skill-category-1" name="skill-category-1" value="Technical" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Technical">
-              <button type="button" class="remove-skill-category mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
-            </div>
-            <div id="skill-items-1" class="space-y-2 mt-2">
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
-                <div>
-                  <label for="skill-name-1-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-1-0" name="skill-name-1-0" value="Print & Digital Media" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Print & Digital Media">
-                </div>
-                <div>
-                  <label for="skill-progress-1-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-1-0" name="skill-progress-1-0" value="84" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 84" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="1" data-index="0">Remove</button>
-                </div>
-              </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
-                <div>
-                  <label for="skill-name-1-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-1-1" name="skill-name-1-1" value="Project Management" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Project Management">
-                </div>
-                <div>
-                  <label for="skill-progress-1-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-1-1" name="skill-progress-1-1" value="92" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 92" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="1" data-index="1">Remove</button>
-                </div>
-              </div>
-            </div>
-            <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="1">Add Another Skill Item</button>
-          </div>
-          <div class="skills-entry mt-4" data-index="2">
-            <label for="skill-category-2" class="block text-sm font-medium text-gray-700">Category</label>
-            <div class="flex items-center gap-2">
-              <input type="text" id="skill-category-2" name="skill-category-2" value="Languages" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Languages">
-              <button type="button" class="remove-skill-category mt-2 text-red-600 hover:underline" data-index="2">Remove</button>
-            </div>
-            <div id="skill-items-2" class="space-y-2 mt-2">
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="0">
-                <div>
-                  <label for="skill-name-2-0" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-2-0" name="skill-name-2-0" value="Russian" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Russian">
-                </div>
-                <div>
-                  <label for="skill-progress-2-0" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-2-0" name="skill-progress-2-0" value="94" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 94" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="2" data-index="0">Remove</button>
-                </div>
-              </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="1">
-                <div>
-                  <label for="skill-name-2-1" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-2-1" name="skill-name-2-1" value="Chinese" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Chinese">
-                </div>
-                <div>
-                  <label for="skill-progress-2-1" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-2-1" name="skill-progress-2-1" value="86" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 86" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="2" data-index="1">Remove</button>
-                </div>
-              </div>
-              <div class="skill-item grid grid-cols-1 md:grid-cols-2 gap-4" data-index="2">
-                <div>
-                  <label for="skill-name-2-2" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                  <input type="text" id="skill-name-2-2" name="skill-name-2-2" value="Korean" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Korean">
-                </div>
-                <div>
-                  <label for="skill-progress-2-2" class="block text-sm font-medium text-gray-700">Progress (%)</label>
-                  <input type="number" id="skill-progress-2-2" name="skill-progress-2-2" value="84" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 84" title="Enter a number between 0 and 100">
-                  <button type="button" class="remove-skill-item mt-2 text-red-600 hover:underline" data-category="2" data-index="2">Remove</button>
-                </div>
-              </div>
-            </div>
-            <button type="button" class="add-skill-item mt-2 text-blue-600 hover:underline" data-category="2">Add Another Skill Item</button>
-          </div>
-        </div>
-        <button type="button" id="add-skill-category" class="mt-2 text-blue-600 hover:underline">Add Another Skill Category</button>
-      </div>
-
-      <!-- Education -->
-      <div id="education">
-        <h2 class="text-lg font-semibold mb-2">Education</h2>
-        <div id="education-container" class="space-y-4">
-          <div class="education-entry" data-index="0">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="edu-date-0" class="block text-sm font-medium text-gray-700">Date</label>
-                <input type="text" id="edu-date-0" name="edu-date-0" value="2016 - 2020" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2016 - 2020">
-              </div>
-              <div>
-                <label for="edu-title-0" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="edu-title-0" name="edu-title-0" value="Bachelor of Fine Arts in Graphic Design" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Bachelor of Fine Arts in Graphic Design">
-              </div>
-              <div>
-                <label for="edu-institution-0" class="block text-sm font-medium text-gray-700">Institution</label>
-                <input type="text" id="edu-institution-0" name="edu-institution-0" value="Paucek and Lage University" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Paucek and Lage University">
-              </div>
-            </div>
-            <label for="edu-description-0" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
-            <textarea id="edu-description-0" name="edu-description-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City">Major in Graphic Design, Paucek and Lage University, 123 Anywhere St., Any City</textarea>
-            <button type="button" class="remove-education mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
-          </div>
-        </div>
-        <button type="button" id="add-education" class="mt-2 text-blue-600 hover:underline">Add Another Education</button>
-      </div>
-
-      <!-- Awards -->
-      <div id="awards">
-        <h2 class="text-lg font-semibold mb-2">Awards</h2>
-        <div id="awards-container" class="space-y-4">
-          <div class="awards-entry" data-index="0">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="award-date-0" class="block text-sm font-medium text-gray-700">Date</label>
-                <input type="text" id="award-date-0" name="award-date-0" value="2023" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2023">
-              </div>
-              <div>
-                <label for="award-title-0" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="award-title-0" name="award-title-0" value="Design Excellence Award" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Design Excellence Award">
-              </div>
-              <div>
-                <label for="award-institution-0" class="block text-sm font-medium text-gray-700">Institution</label>
-                <input type="text" id="award-institution-0" name="award-institution-0" value="International Design Association" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., International Design Association">
-              </div>
-            </div>
-            <label for="award-description-0" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
-            <textarea id="award-description-0" name="award-description-0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Received for outstanding contributions to graphic design">Received for outstanding contributions to graphic design</textarea>
-            <button type="button" class="remove-award mt-2 text-red-600 hover:underline" data-index="0">Remove</button>
-          </div>
-          <div class="awards-entry mt-4" data-index="1">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label for="award-date-1" class="block text-sm font-medium text-gray-700">Date</label>
-                <input type="text" id="award-date-1" name="award-date-1" value="2021" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 2021">
-              </div>
-              <div>
-                <label for="award-title-1" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="award-title-1" name="award-title-1" value="Best Brand Identity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Best Brand Identity">
-              </div>
-              <div>
-                <label for="award-institution-1" class="block text-sm font-medium text-gray-700">Institution</label>
-                <input type="text" id="award-institution-1" name="award-institution-1" value="Creative Design Awards" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., Creative Design Awards">
-              </div>
-            </div>
-            <label for="award-description-1" class="block text-sm font-medium text-gray-700 mt-2">Description</label>
-            <textarea id="award-description-1" name="award-description-1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="e.g., Awarded for exceptional brand identity design">Awarded for exceptional brand identity design</textarea>
-            <button type="button" class="remove-award mt-2 text-red-600 hover:underline" data-index="1">Remove</button>
-          </div>
-        </div>
-        <button type="button" id="add-award" class="mt-2 text-blue-600 hover:underline">Add Another Award</button>
-      </div>
-
-      <!-- Contact -->
-      <div id="contact">
-        <h2 class="text-lg font-semibold mb-2">Contact</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" id="contact-email" name="contact-email" value="morgan@example.com" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required placeholder="e.g., morgan@example.com">
-          </div>
-          <div>
-            <label for="contact-phone" class="block text-sm font-medium text-gray-700">Phone</label>
-            <input type="tel" id="contact-phone" name="contact-phone" value="+123-456-7890" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., +123-456-7890">
-          </div>
-          <div>
-            <label for="contact-location" class="block text-sm font-medium text-gray-700">Location</label>
-            <input type="text" id="contact-location" name="contact-location" value="123 Anywhere St., Any City" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., 123 Anywhere St., Any City">
-          </div>
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="text-center">
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Submit Portfolio</button>
-      </div>
-    </form>
+    <div class="preview-strip" id="previewStrip"></div>
   </div>
-  <script src="form.js"></script>
+
+  <!-- ── PROFILE ────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Profile</h2>
+    <div class="two-col">
+      <div>
+        <label for="profileImage">Profile Image Path</label>
+        <input type="text" id="profileImage" placeholder="assets/profile.jpg">
+      </div>
+      <div>
+        <label for="profileEyebrow">Eyebrow Label</label>
+        <input type="text" id="profileEyebrow" placeholder="Open to Opportunities">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BASIC INFO ─────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Basic Information</h2>
+    <label for="inp-name">Full Name *</label>
+    <input type="text" id="inp-name" placeholder="Morgan Maxwell" required>
+
+    <label for="inp-title">Professional Title</label>
+    <input type="text" id="inp-title" placeholder="Graphic Designer & Brand Specialist">
+
+    <label for="inp-about">About / Bio</label>
+    <textarea id="inp-about" placeholder="Describe your professional background…"></textarea>
+  </div>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Hero Section</h2>
+    <div class="two-col">
+      <div>
+        <label for="heroDesc">Hero Description</label>
+        <input type="text" id="heroDesc" placeholder="Creating visual experiences that tell stories">
+      </div>
+      <div>
+        <label for="heroImage">Hero Image Path</label>
+        <input type="text" id="heroImage" placeholder="assets/designer-work.jpg">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STATS ──────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Stats</h2>
+    <div id="stats-container"></div>
+    <button type="button" onclick="addStat()"><i class="fas fa-plus"></i> Add Stat</button>
+  </div>
+
+  <!-- ── SKILLS ─────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Skills</h2>
+    <div id="skills-container"></div>
+    <button type="button" onclick="addSkill()"><i class="fas fa-plus"></i> Add Skill</button>
+  </div>
+
+  <!-- ── LANGUAGES ──────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Languages</h2>
+    <div id="languages-container"></div>
+    <button type="button" onclick="addLanguage()"><i class="fas fa-plus"></i> Add Language</button>
+  </div>
+
+  <!-- ── EXPERIENCE ─────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Work Experience</h2>
+    <div id="experience-container"></div>
+    <button type="button" onclick="addExperience()"><i class="fas fa-plus"></i> Add Experience</button>
+  </div>
+
+  <!-- ── EDUCATION ──────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Education</h2>
+    <div id="education-container"></div>
+    <button type="button" onclick="addEducation()"><i class="fas fa-plus"></i> Add Education</button>
+  </div>
+
+  <!-- ── AWARDS ─────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Awards</h2>
+    <div id="awards-container"></div>
+    <button type="button" onclick="addAward()"><i class="fas fa-plus"></i> Add Award</button>
+  </div>
+
+  <!-- ── REFERENCES ─────────────────────────────────────────── -->
+  <div class="card">
+    <h2>References</h2>
+    <div id="references-container"></div>
+    <button type="button" onclick="addReference()"><i class="fas fa-plus"></i> Add Reference</button>
+  </div>
+
+  <!-- ── CONTACT ────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Contact Information</h2>
+    <div class="three-col">
+      <div>
+        <label for="inp-phone">Phone</label>
+        <input type="tel"   id="inp-phone"   placeholder="+123-456-7890">
+      </div>
+      <div>
+        <label for="inp-email">Email</label>
+        <input type="email" id="inp-email"   placeholder="you@example.com">
+      </div>
+      <div>
+        <label for="inp-address">Address / Location</label>
+        <input type="text"  id="inp-address" placeholder="123 Anywhere St., Any City">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER & SOCIALS ───────────────────────────────────── -->
+  <div class="card">
+    <h2>Footer &amp; Socials</h2>
+    <label for="inp-footer">Footer Text</label>
+    <input type="text" id="inp-footer" placeholder="© {year} Your Name. All rights reserved.">
+    <p style="font-size:0.8rem;color:#999;margin-top:5px">Use <code>{year}</code> for the current year.</p>
+
+    <label style="margin-top:20px">Social Links</label>
+    <p style="font-size:0.8rem;color:#999;margin-bottom:8px">
+      Icon: use a Font Awesome class, e.g. <code>fab fa-linkedin</code>, <code>fab fa-dribbble</code>
+    </p>
+    <div id="social-container"></div>
+    <button type="button" onclick="addSocial()"><i class="fas fa-plus"></i> Add Social Link</button>
+  </div>
+
+</div><!-- /.wrap -->
+
+<!-- ── ACTION BAR ─────────────────────────────────────────── -->
+<div class="action-bar">
+  <input type="file" id="loadFileInput" accept=".json" style="display:none" onchange="handleLoad(event)">
+  <button type="button" class="btn-gray" onclick="document.getElementById('loadFileInput').click()">
+    <i class="fas fa-upload"></i> Load JSON
+  </button>
+  <button type="button" class="btn-dl" onclick="generateAndDownload()">
+    <i class="fas fa-file-download"></i> Generate &amp; Download
+  </button>
+  <button type="button" onclick="openPreview()">
+    <i class="fas fa-eye"></i> Preview
+  </button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Presets ───────────────────────────────────────────────────────────────
+const PRESETS = [
+  { label: 'Forest',   g1: '#f1f8e9', g2: '#e8f5e9', ac: '#2e7d32' },
+  { label: 'Ocean',    g1: '#e3f2fd', g2: '#bbdefb', ac: '#1565c0' },
+  { label: 'Crimson',  g1: '#fce4ec', g2: '#f8bbd0', ac: '#c62828' },
+  { label: 'Purple',   g1: '#f3e5f5', g2: '#e1bee7', ac: '#6a1b9a' },
+  { label: 'Slate',    g1: '#0f172a', g2: '#1e293b', ac: '#38bdf8' },
+  { label: 'Amber',    g1: '#fff8e1', g2: '#ffecb3', ac: '#e65100' },
+  { label: 'Teal',     g1: '#e0f2f1', g2: '#b2dfdb', ac: '#00695c' },
+  { label: 'Dark',     g1: '#212121', g2: '#424242', ac: '#ffd600' },
+];
+
+function buildPresets() {
+  const row = document.getElementById('presetRow');
+  PRESETS.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'preset-swatch' + (i === 0 ? ' active' : '');
+    btn.title = p.label;
+    btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+    const dot = document.createElement('span');
+    dot.className = 'ac-dot';
+    dot.style.background = p.ac;
+    btn.appendChild(dot);
+    btn.addEventListener('click', () => applyPreset(i));
+    row.appendChild(btn);
+  });
+}
+
+function applyPreset(i) {
+  const p = PRESETS[i];
+  setVals(p.g1, p.g2, p.ac);
+  applyTheme(p.g1, p.g2, p.ac);
+  document.querySelectorAll('.preset-swatch').forEach((s, j) => s.classList.toggle('active', j === i));
+}
+
+function setVals(g1, g2, ac) {
+  document.getElementById('cG1').value  = g1;
+  document.getElementById('cG1h').value = g1.toUpperCase();
+  document.getElementById('cG2').value  = g2;
+  document.getElementById('cG2h').value = g2.toUpperCase();
+  document.getElementById('cAC').value  = ac;
+  document.getElementById('cACh').value = ac.toUpperCase();
+  updateStrip();
+}
+
+function applyTheme(g1, g2, ac) {
+  const r = document.documentElement;
+  r.style.setProperty('--g1', g1);
+  r.style.setProperty('--g2', g2);
+  r.style.setProperty('--ac', ac);
+  r.style.setProperty('--primary', ac);
+  document.body.style.background = `linear-gradient(135deg, ${g1}, ${g2})`;
+  updateStrip();
+}
+
+function updateStrip() {
+  document.getElementById('previewStrip').style.background =
+    `linear-gradient(to right, ${document.getElementById('cG1').value}, ${document.getElementById('cAC').value}, ${document.getElementById('cG2').value})`;
+}
+
+function wirePicker(pId, hId) {
+  const p = document.getElementById(pId), h = document.getElementById(hId);
+  p.addEventListener('input', () => {
+    h.value = p.value.toUpperCase();
+    document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+    applyTheme(document.getElementById('cG1').value, document.getElementById('cG2').value, document.getElementById('cAC').value);
+  });
+  h.addEventListener('input', () => {
+    if (/^#[0-9a-fA-F]{6}$/.test(h.value)) {
+      p.value = h.value;
+      document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+      applyTheme(document.getElementById('cG1').value, document.getElementById('cG2').value, document.getElementById('cAC').value);
+    }
+  });
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+let _tt;
+function showToast(msg, isErr = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isErr ? ' error' : '');
+  clearTimeout(_tt);
+  _tt = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+let _id = Date.now();
+function nid() { return ++_id; }
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function clearAll() {
+  ['stats-container','skills-container','languages-container','experience-container',
+   'education-container','awards-container','references-container','social-container']
+    .forEach(id => { document.getElementById(id).innerHTML = ''; });
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────
+function addStat(s = { value: '', label: '' }) {
+  const id = nid();
+  const c  = document.getElementById('stats-container');
+  const d  = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `stat-${id}`;
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <div class="two-col">
+      <div>
+        <label>Value</label>
+        <input type="text" class="stat-value" value="${esc(s.value)}" placeholder="4+">
+      </div>
+      <div>
+        <label>Label</label>
+        <input type="text" class="stat-label" value="${esc(s.label)}" placeholder="Years Experience">
+      </div>
+    </div>`;
+  c.appendChild(d);
+}
+
+// ── Skills ────────────────────────────────────────────────────────────────
+function addSkill(s = { name: '', level: 80 }) {
+  const id = nid();
+  const c  = document.getElementById('skills-container');
+  const d  = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `skill-${id}`;
+  const lvl = s.level ?? s.progress ?? 80;
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <div class="two-col">
+      <div>
+        <label>Skill Name</label>
+        <input type="text" class="skill-name" value="${esc(s.name)}" placeholder="Graphic Design">
+      </div>
+      <div>
+        <label>Level (0–100)</label>
+        <div class="level-row">
+          <input type="range" class="skill-range" min="0" max="100" value="${lvl}">
+          <span class="lval skill-val">${lvl}</span>%
+        </div>
+      </div>
+    </div>`;
+  c.appendChild(d);
+  d.querySelector('.skill-range').addEventListener('input', function() {
+    d.querySelector('.skill-val').textContent = this.value;
+  });
+}
+
+// ── Languages ─────────────────────────────────────────────────────────────
+function addLanguage(l = { name: '', level: 80 }) {
+  const id = nid();
+  const c  = document.getElementById('languages-container');
+  const d  = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `lang-${id}`;
+  const lvl = l.level ?? 80;
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <div class="two-col">
+      <div>
+        <label>Language</label>
+        <input type="text" class="lang-name" value="${esc(l.name)}" placeholder="Russian">
+      </div>
+      <div>
+        <label>Level (0–100)</label>
+        <div class="level-row">
+          <input type="range" class="lang-range" min="0" max="100" value="${lvl}">
+          <span class="lval lang-val">${lvl}</span>%
+        </div>
+      </div>
+    </div>`;
+  c.appendChild(d);
+  d.querySelector('.lang-range').addEventListener('input', function() {
+    d.querySelector('.lang-val').textContent = this.value;
+  });
+}
+
+// ── Experience ────────────────────────────────────────────────────────────
+function addExperience(e = {}) {
+  const id = nid();
+  const c  = document.getElementById('experience-container');
+  const d  = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `exp-${id}`;
+  const role    = e.role || e.title || '';
+  const start   = e.start || '';
+  const end     = e.end   || '';
+  // details may be array (universal) or responsibilities (legacy)
+  const details = Array.isArray(e.details) ? e.details : (e.responsibilities || []);
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <h3>Experience Entry</h3>
+    <div class="two-col">
+      <div>
+        <label>Role / Title</label>
+        <input type="text" class="exp-role" value="${esc(role)}" placeholder="Senior Graphic Designer">
+      </div>
+      <div>
+        <label>Company</label>
+        <input type="text" class="exp-company" value="${esc(e.company || '')}" placeholder="Company Name">
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <label>Start</label>
+        <input type="text" class="exp-start" value="${esc(start)}" placeholder="June 2022">
+      </div>
+      <div>
+        <label>End</label>
+        <input type="text" class="exp-end" value="${esc(end)}" placeholder="May 2024">
+      </div>
+    </div>
+    <label>Responsibilities / Details (one per line)</label>
+    <textarea class="exp-details" placeholder="Each bullet on its own line">${esc(details.join('\n'))}</textarea>`;
+  c.appendChild(d);
+}
+
+// ── Education ─────────────────────────────────────────────────────────────
+function addEducation(e = {}) {
+  const id = nid();
+  const c  = document.getElementById('education-container');
+  const d  = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `edu-${id}`;
+  const start = e.start || '';
+  const end   = e.end   || '';
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <h3>Education Entry</h3>
+    <label>Degree</label>
+    <input type="text" class="edu-degree" value="${esc(e.degree || e.title || '')}" placeholder="Bachelor of Fine Arts in Graphic Design">
+    <label>Institution</label>
+    <input type="text" class="edu-inst"   value="${esc(e.institution || '')}" placeholder="University Name">
+    <div class="two-col">
+      <div>
+        <label>Start</label>
+        <input type="text" class="edu-start" value="${esc(start)}" placeholder="2016">
+      </div>
+      <div>
+        <label>End</label>
+        <input type="text" class="edu-end"   value="${esc(end)}"   placeholder="2020">
+      </div>
+    </div>
+    <label>Description (optional)</label>
+    <input type="text" class="edu-desc" value="${esc(e.description || '')}" placeholder="Major, location, notes…">`;
+  c.appendChild(d);
+}
+
+// ── Awards ────────────────────────────────────────────────────────────────
+function addAward(a = {}) {
+  const id = nid();
+  const c  = document.getElementById('awards-container');
+  const d  = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `award-${id}`;
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <div class="two-col">
+      <div>
+        <label>Year / Date</label>
+        <input type="text" class="award-date" value="${esc(a.date || '')}" placeholder="2023">
+      </div>
+      <div>
+        <label>Title</label>
+        <input type="text" class="award-title" value="${esc(a.title || '')}" placeholder="Design Excellence Award">
+      </div>
+    </div>
+    <label>Institution</label>
+    <input type="text" class="award-inst" value="${esc(a.institution || '')}" placeholder="International Design Association">
+    <label>Description</label>
+    <input type="text" class="award-desc" value="${esc(a.description || '')}" placeholder="Brief description of the award">`;
+  c.appendChild(d);
+}
+
+// ── References ────────────────────────────────────────────────────────────
+function addReference(r = {}) {
+  const id = nid();
+  const c  = document.getElementById('references-container');
+  const d  = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `ref-${id}`;
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <div class="two-col">
+      <div>
+        <label>Name</label>
+        <input type="text" class="ref-name" value="${esc(r.name || '')}" placeholder="Elena Fradel">
+      </div>
+      <div>
+        <label>Role / Company</label>
+        <input type="text" class="ref-role" value="${esc(r.role || '')}" placeholder="Creative Director, Acme Co.">
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <label>Phone</label>
+        <input type="tel"   class="ref-phone" value="${esc(r.phone || '')}" placeholder="+123-456-7890">
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" class="ref-email" value="${esc(r.email || '')}" placeholder="you@example.com">
+      </div>
+    </div>`;
+  c.appendChild(d);
+}
+
+// ── Socials ───────────────────────────────────────────────────────────────
+const PLATFORMS = [
+  { name: 'LinkedIn',  icon: 'fab fa-linkedin'  },
+  { name: 'Dribbble',  icon: 'fab fa-dribbble'  },
+  { name: 'Behance',   icon: 'fab fa-behance'   },
+  { name: 'Instagram', icon: 'fab fa-instagram' },
+  { name: 'GitHub',    icon: 'fab fa-github'    },
+  { name: 'Twitter',   icon: 'fab fa-twitter'   },
+  { name: 'YouTube',   icon: 'fab fa-youtube'   },
+  { name: 'Facebook',  icon: 'fab fa-facebook'  },
+];
+
+function addSocial(s = { name: 'LinkedIn', url: '', icon: 'fab fa-linkedin' }) {
+  const id   = nid();
+  const c    = document.getElementById('social-container');
+  const d    = document.createElement('div');
+  d.className = 'dblock';
+  d.id = `soc-${id}`;
+  const opts = PLATFORMS.map(p =>
+    `<option value="${p.name}" data-icon="${p.icon}" ${p.name===s.name?'selected':''}>${p.name}</option>`
+  ).join('');
+  d.innerHTML = `
+    <button type="button" class="rm-btn" onclick="this.closest('.dblock').remove()" title="Remove">×</button>
+    <div class="three-col">
+      <div>
+        <label>Platform</label>
+        <select class="soc-name">${opts}</select>
+      </div>
+      <div>
+        <label>FA Icon Class</label>
+        <input type="text" class="soc-icon" value="${esc(s.icon || 'fab fa-linkedin')}" placeholder="fab fa-linkedin">
+      </div>
+      <div>
+        <label>Profile URL</label>
+        <input type="url" class="soc-url" value="${esc(s.url || '')}" placeholder="https://…">
+      </div>
+    </div>`;
+  c.appendChild(d);
+  // Auto-fill icon when platform changes
+  d.querySelector('.soc-name').addEventListener('change', function() {
+    const p = PLATFORMS.find(p => p.name === this.value);
+    if (p) d.querySelector('.soc-icon').value = p.icon;
+  });
+}
+
+// ── Collect ───────────────────────────────────────────────────────────────
+function collectData() {
+  const g1 = document.getElementById('cG1').value;
+  const g2 = document.getElementById('cG2').value;
+  const ac = document.getElementById('cAC').value;
+  const fullName = document.getElementById('inp-name').value.trim();
+
+  const stats = [];
+  document.querySelectorAll('[id^="stat-"]').forEach(d => {
+    const value = d.querySelector('.stat-value')?.value.trim();
+    const label = d.querySelector('.stat-label')?.value.trim();
+    if (value || label) stats.push({ value: value || '', label: label || '' });
+  });
+
+  const skills = [];
+  document.querySelectorAll('[id^="skill-"]').forEach(d => {
+    const name = d.querySelector('.skill-name')?.value.trim();
+    if (name) skills.push({ name, level: parseInt(d.querySelector('.skill-range').value) });
+  });
+
+  const languages = [];
+  document.querySelectorAll('[id^="lang-"]').forEach(d => {
+    const name = d.querySelector('.lang-name')?.value.trim();
+    if (name) languages.push({ name, level: parseInt(d.querySelector('.lang-range').value) });
+  });
+
+  const experience = [];
+  document.querySelectorAll('[id^="exp-"]').forEach(d => {
+    const role    = d.querySelector('.exp-role')?.value.trim();
+    const company = d.querySelector('.exp-company')?.value.trim();
+    if (role || company) experience.push({
+      role, company,
+      start:   d.querySelector('.exp-start').value.trim(),
+      end:     d.querySelector('.exp-end').value.trim(),
+      details: d.querySelector('.exp-details').value.split('\n').map(s=>s.trim()).filter(Boolean)
+    });
+  });
+
+  const education = [];
+  document.querySelectorAll('[id^="edu-"]').forEach(d => {
+    const degree = d.querySelector('.edu-degree')?.value.trim();
+    const institution = d.querySelector('.edu-inst')?.value.trim();
+    if (degree || institution) education.push({
+      degree, institution,
+      start:       d.querySelector('.edu-start').value.trim(),
+      end:         d.querySelector('.edu-end').value.trim(),
+      description: d.querySelector('.edu-desc').value.trim()
+    });
+  });
+
+  const awards = [];
+  document.querySelectorAll('[id^="award-"]').forEach(d => {
+    const title = d.querySelector('.award-title')?.value.trim();
+    if (title) awards.push({
+      date:        d.querySelector('.award-date').value.trim(),
+      title,
+      institution: d.querySelector('.award-inst').value.trim(),
+      description: d.querySelector('.award-desc').value.trim()
+    });
+  });
+
+  const references = [];
+  document.querySelectorAll('[id^="ref-"]').forEach(d => {
+    const name = d.querySelector('.ref-name')?.value.trim();
+    if (name) references.push({
+      name,
+      role:  d.querySelector('.ref-role').value.trim(),
+      phone: d.querySelector('.ref-phone').value.trim(),
+      email: d.querySelector('.ref-email').value.trim()
+    });
+  });
+
+  const socials = [];
+  document.querySelectorAll('[id^="soc-"]').forEach(d => {
+    const url = d.querySelector('.soc-url')?.value.trim();
+    if (url) socials.push({
+      name: d.querySelector('.soc-name').value,
+      icon: d.querySelector('.soc-icon').value.trim(),
+      url
+    });
+  });
+
+  return {
+    name:  fullName,
+    title: document.getElementById('inp-title').value.trim(),
+    about: document.getElementById('inp-about').value.trim(),
+    theme: { gradientStart: g1, gradientEnd: g2, accentColor: ac },
+    contact: {
+      phone:   document.getElementById('inp-phone').value.trim(),
+      email:   document.getElementById('inp-email').value.trim(),
+      address: document.getElementById('inp-address').value.trim()
+    },
+    profile: {
+      image:   document.getElementById('profileImage').value.trim() || 'assets/profile.jpg',
+      eyebrow: document.getElementById('profileEyebrow').value.trim()
+    },
+    hero: {
+      description: document.getElementById('heroDesc').value.trim(),
+      image:       document.getElementById('heroImage').value.trim() || 'assets/designer-work.jpg'
+    },
+    stats, skills, languages, experience, education, awards, references,
+    footer: {
+      text: document.getElementById('inp-footer').value.trim() || `© {year} ${fullName}. All rights reserved.`,
+      socials
+    }
+  };
+}
+
+// ── Load JSON ─────────────────────────────────────────────────────────────
+function handleLoad(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      clearAll();
+
+      // Resolve name: universal top-level, or legacy profile.name
+      const name = d.name || d.profile?.name || '';
+      document.getElementById('inp-name').value    = name;
+      document.getElementById('inp-title').value   = d.title || d.hero?.title || '';
+      document.getElementById('inp-about').value   = Array.isArray(d.about) ? d.about.join('\n\n') : (d.about || '');
+      document.getElementById('inp-phone').value   = d.contact?.phone   || '';
+      document.getElementById('inp-email').value   = d.contact?.email   || '';
+      document.getElementById('inp-address').value = d.contact?.address || '';
+      document.getElementById('profileImage').value   = d.profile?.image   || 'assets/profile.jpg';
+      document.getElementById('profileEyebrow').value = d.profile?.eyebrow || '';
+      document.getElementById('heroDesc').value  = d.hero?.description || '';
+      document.getElementById('heroImage').value = d.hero?.image       || 'assets/designer-work.jpg';
+      document.getElementById('inp-footer').value = d.footer?.text || '';
+
+      // Theme
+      const t = d.theme || { gradientStart: '#f1f8e9', gradientEnd: '#e8f5e9', accentColor: '#2e7d32' };
+      setVals(t.gradientStart, t.gradientEnd, t.accentColor);
+      applyTheme(t.gradientStart, t.gradientEnd, t.accentColor);
+      document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+
+      // Stats — support both data.stats (universal) and data.about.stats (legacy)
+      const stats = d.stats || d.about?.stats || [];
+      stats.forEach(addStat);
+
+      // Skills — support flat array (universal) or grouped with items[].progress (legacy)
+      const skillsSrc = d.skills || [];
+      if (skillsSrc.length && skillsSrc[0].items) {
+        skillsSrc.forEach(grp => grp.items.forEach(s => addSkill({ name: s.name, level: s.progress ?? s.level ?? 80 })));
+      } else {
+        skillsSrc.forEach(addSkill);
+      }
+
+      (d.languages  || []).forEach(addLanguage);
+      (d.experience || []).forEach(addExperience);
+
+      // Education can be single object or array
+      const eduArr = Array.isArray(d.education) ? d.education : (d.education ? [d.education] : []);
+      eduArr.forEach(addEducation);
+
+      (d.awards     || []).forEach(addAward);
+      (d.references || []).forEach(addReference);
+
+      // Socials — support footer.socials (universal) and profile.social_links (legacy)
+      const socials = d.footer?.socials || d.profile?.social_links || [];
+      socials.forEach(s => addSocial({
+        name: s.name || s.platform || 'LinkedIn',
+        icon: s.icon || `fab fa-${(s.name||s.platform||'linkedin').toLowerCase()}`,
+        url:  s.url  || ''
+      }));
+
+      showToast('✅ Data loaded successfully!');
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Invalid JSON file.', true);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ── Generate & Download ───────────────────────────────────────────────────
+function generateAndDownload() {
+  if (!document.getElementById('inp-name').value.trim()) {
+    showToast('❌ Please enter your full name first.', true);
+    return;
+  }
+  const data = collectData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'data.json';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+  showToast('✅ data.json downloaded!');
+}
+
+// ── Preview ───────────────────────────────────────────────────────────────
+function openPreview() {
+  const data = collectData();
+  window.open('index.html#data=' + encodeURIComponent(JSON.stringify(data)), '_blank');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+buildPresets();
+wirePicker('cG1','cG1h');
+wirePicker('cG2','cG2h');
+wirePicker('cAC','cACh');
+applyPreset(0);
+
+// Seed one of each
+addStat();
+addSkill();
+addLanguage();
+addExperience();
+addEducation();
+addAward();
+addReference();
+addSocial();
+</script>
 </body>
 </html>
