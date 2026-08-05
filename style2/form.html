@@ -3,135 +3,812 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resume Data Input</title>
+  <title>Resume Builder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Base Styles */
+    :root {
+      --primary: #e7ecf2;
+      --accent: #3d4a5a;
+      --bg: #f8f9fb;
+      --white: #fff;
+      --ac: #3d4a5a;
+      --g1: #e7ecf2;
+      --g2: #d0d9e4;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      max-width: 800px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--accent);
+      line-height: 1.7;
+      padding: 40px 20px 100px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 20px;
-      color: #333;
     }
-    h1 { color: #2c3e50; }
-    h2 { 
-      color: #3498db; 
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 5px;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 36px;
+      padding-bottom: 14px;
+      border-bottom: 3px solid var(--ac);
     }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--accent);
+      border-left: 4px solid var(--ac);
+      padding-left: 14px;
+      margin: 36px 0 18px;
+    }
+
     .form-section {
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
+      background: var(--white);
+      border-radius: 10px;
+      padding: 28px 30px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.07);
+      transition: transform 0.2s;
     }
+    .form-section:hover { transform: translateY(-2px); }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--accent);
+      margin: 18px 0 6px;
+    }
+
     input, textarea, select {
       width: 100%;
-      padding: 8px;
-      margin: 5px 0 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      padding: 10px 13px;
+      border: 1px solid #d8dfe8;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 0.97rem;
+      color: var(--accent);
+      background: var(--bg);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--ac);
+      box-shadow: 0 0 0 2px rgba(61,74,90,0.12);
+      background: white;
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
     button {
-      background: #3498db;
+      background: var(--ac);
       color: white;
       border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-right: 10px;
-    }
-    button:hover { background: #2980b9; }
-    .remove-btn { background: #e74c3c; }
-    .remove-btn:hover { background: #c0392b; }
-    .dynamic-field {
-      background: white;
-      padding: 15px;
+      padding: 10px 22px;
       border-radius: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 500;
+      margin: 14px 8px 0 0;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    button:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .remove-btn { background: #c0392b; }
+    .remove-btn:hover { background: #a93226; }
+
+    .dynamic-block {
+      background: var(--primary);
+      border-left: 3px solid var(--ac);
+      border-radius: 6px;
+      padding: 18px 20px;
+      margin: 14px 0;
+      position: relative;
+    }
+    .dynamic-block h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--ac);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Skill / Language level ──────────────────────────── */
+    .level-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+    .level-row input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      background: #c9d3de;
+      border-radius: 4px;
+      padding: 0;
+      border: none;
+    }
+    .level-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--ac);
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    }
+    .level-row .level-val {
+      font-weight: 700;
+      font-size: 0.88rem;
+      min-width: 40px;
+      text-align: center;
+      color: var(--accent);
+    }
+
+    /* ── Theme Picker ────────────────────────────────────── */
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .preset-swatch {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    .preset-swatch:hover { transform: scale(1.12); }
+    .preset-swatch.active { border-color: var(--accent); transform: scale(1.1); }
+    .preset-swatch .ac-dot {
+      position: absolute;
+      bottom: 2px; right: 2px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+
+    .pickers-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .picker-group label { margin: 0 0 8px; font-size: 0.88rem; }
+    .picker-inner { display: flex; align-items: center; gap: 8px; }
+    .picker-inner input[type="color"] {
+      width: 40px; height: 40px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .picker-inner input[type="text"] {
+      flex: 1;
+      padding: 8px 10px;
+      font-family: monospace;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      width: auto;
+    }
+
+    .preview-strip {
+      height: 10px;
+      border-radius: 5px;
+      margin-top: 14px;
+      transition: background 0.3s;
+    }
+
+    /* ── Action Bar ──────────────────────────────────────── */
+    .action-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: white;
+      border-top: 2px solid var(--ac);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      z-index: 100;
+      box-shadow: 0 -4px 14px rgba(44,62,80,0.10);
+    }
+    .action-bar button { margin: 0; }
+    .btn-load  { background: #7f8c8d; }
+    .btn-dl    { background: #27ae60; }
+    .btn-dl:hover { background: #219a52; }
+
+    /* ── Toast ───────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 76px; right: 20px;
+      background: white;
+      border-left: 4px solid var(--ac);
+      border-radius: 6px;
+      padding: 13px 18px;
+      box-shadow: 0 6px 20px rgba(44,62,80,0.14);
+      font-size: 0.92rem;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 200;
+      max-width: 300px;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { border-left-color: #c0392b; }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 800px) {
+      .two-col { grid-template-columns: 1fr; }
+      .pickers-row { grid-template-columns: 1fr; }
+      body { padding: 20px 14px 100px; }
+      .form-section { padding: 18px; }
+    }
+    @media (max-width: 500px) {
+      h1 { font-size: 1.5rem; }
+      .action-bar button { flex: 1; min-width: 100px; }
     }
   </style>
 </head>
 <body>
-  <h1>Resume Data Input</h1>
-  
-  <!-- Personal Info -->
+
+  <h1><i class="fas fa-file-alt"></i> Resume Builder</h1>
+
+  <!-- ── THEME ─────────────────────────────────────────────── -->
+  <div class="form-section">
+    <h2>Theme Colors</h2>
+    <div class="preset-row" id="presetRow"></div>
+    <div class="pickers-row">
+      <div class="picker-group">
+        <label>Gradient Start</label>
+        <div class="picker-inner">
+          <input type="color" id="cG1" value="#e7ecf2">
+          <input type="text"  id="cG1h" value="#E7ECF2" maxlength="7">
+        </div>
+      </div>
+      <div class="picker-group">
+        <label>Gradient End</label>
+        <div class="picker-inner">
+          <input type="color" id="cG2" value="#d0d9e4">
+          <input type="text"  id="cG2h" value="#D0D9E4" maxlength="7">
+        </div>
+      </div>
+      <div class="picker-group">
+        <label>Accent Color</label>
+        <div class="picker-inner">
+          <input type="color" id="cAC" value="#3d4a5a">
+          <input type="text"  id="cACh" value="#3D4A5A" maxlength="7">
+        </div>
+      </div>
+    </div>
+    <div class="preview-strip" id="previewStrip"></div>
+  </div>
+
+  <!-- ── PROFILE ───────────────────────────────────────────── -->
+  <div class="form-section">
+    <h2>Profile</h2>
+    <div class="two-col">
+      <div>
+        <label for="profileImage">Profile Image Path</label>
+        <input type="text" id="profileImage" placeholder="assets/profile.jpg">
+      </div>
+      <div>
+        <label for="profileEyebrow">Eyebrow Label</label>
+        <input type="text" id="profileEyebrow" placeholder="Open to Opportunities">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PERSONAL INFO ─────────────────────────────────────── -->
   <div class="form-section">
     <h2>Personal Information</h2>
-    <label>Full Name:</label>
-    <input type="text" id="name" placeholder="John Doe">
-    
-    <label>Job Title:</label>
-    <input type="text" id="title" placeholder="Marketing Manager">
-    
-    <label>About You:</label>
-    <textarea id="about" rows="4" placeholder="Experienced professional skilled in..."></textarea>
+    <label for="inp-name">Full Name *</label>
+    <input type="text" id="inp-name" placeholder="RICHARD SANCHEZ" required>
+
+    <label for="inp-title">Job Title</label>
+    <input type="text" id="inp-title" placeholder="Marketing Manager">
+
+    <div class="two-col">
+      <div>
+        <label for="inp-email">Email</label>
+        <input type="email" id="inp-email" placeholder="hello@example.com">
+      </div>
+      <div>
+        <label for="inp-phone">Phone</label>
+        <input type="tel" id="inp-phone" placeholder="+123-456-7890">
+      </div>
+    </div>
+    <label for="inp-address">Address / Location</label>
+    <input type="text" id="inp-address" placeholder="123 Anywhere St., Any City">
   </div>
 
-  <!-- Contact Info -->
+  <!-- ── ABOUT ─────────────────────────────────────────────── -->
   <div class="form-section">
-    <h2>Contact Information</h2>
-    <label>Phone:</label>
-    <input type="text" id="phone" placeholder="+123-456-7890">
-    
-    <label>Email:</label>
-    <input type="email" id="email" placeholder="hello@example.com">
-    
-    <label>Address:</label>
-    <input type="text" id="address" placeholder="123 Anywhere St., Any City">
+    <h2>About</h2>
+    <label for="inp-about">Professional Summary</label>
+    <textarea id="inp-about" placeholder="Write your professional summary…"></textarea>
   </div>
 
-  <!-- Experience -->
+  <!-- ── SKILLS ────────────────────────────────────────────── -->
+  <div class="form-section">
+    <h2>Skills</h2>
+    <p style="font-size:0.88rem;color:#7f8c8d;margin-bottom:4px">Enter each skill as a text tag (displayed as pills).</p>
+    <div id="skills-fields"></div>
+    <button type="button" onclick="addSkill()"><i class="fas fa-plus"></i> Add Skill</button>
+  </div>
+
+  <!-- ── EXPERIENCE ────────────────────────────────────────── -->
   <div class="form-section">
     <h2>Work Experience</h2>
     <div id="experience-fields"></div>
-    <button onclick="addExperienceField()">+ Add Experience</button>
+    <button type="button" onclick="addExperience()"><i class="fas fa-plus"></i> Add Experience</button>
   </div>
 
-  <!-- Education -->
+  <!-- ── EDUCATION ─────────────────────────────────────────── -->
   <div class="form-section">
     <h2>Education</h2>
     <div id="education-fields"></div>
-    <button onclick="addEducationField()">+ Add Education</button>
+    <button type="button" onclick="addEducation()"><i class="fas fa-plus"></i> Add Education</button>
   </div>
 
-  <!-- Skills -->
-  <div class="form-section">
-    <h2>Skills</h2>
-    <div id="skills-fields"></div>
-    <button onclick="addSkillField()">+ Add Skill</button>
-  </div>
-
-  <!-- Languages -->
+  <!-- ── LANGUAGES ─────────────────────────────────────────── -->
   <div class="form-section">
     <h2>Languages</h2>
+    <p style="font-size:0.88rem;color:#7f8c8d;margin-bottom:4px">Enter as text, e.g. "English (Fluent)".</p>
     <div id="languages-fields"></div>
-    <button onclick="addLanguageField()">+ Add Language</button>
+    <button type="button" onclick="addLanguage()"><i class="fas fa-plus"></i> Add Language</button>
   </div>
 
-  <!-- References -->
+  <!-- ── REFERENCES ────────────────────────────────────────── -->
   <div class="form-section">
     <h2>References</h2>
     <div id="references-fields"></div>
-    <button onclick="addReferenceField()">+ Add Reference</button>
+    <button type="button" onclick="addReference()"><i class="fas fa-plus"></i> Add Reference</button>
   </div>
 
-  <!-- Footer -->
+  <!-- ── FOOTER & SOCIALS ──────────────────────────────────── -->
   <div class="form-section">
-    <h2>Footer & Social Media</h2>
-    <label>Copyright Text:</label>
-    <input type="text" id="footer-text" placeholder="© 2023 John Doe. All rights reserved.">
-    
-    <h3>Social Media Links</h3>
+    <h2>Footer &amp; Socials</h2>
+    <label for="inp-footer">Footer Text</label>
+    <input type="text" id="inp-footer" placeholder="© {year} Your Name. All rights reserved.">
+    <p style="font-size:0.83rem;color:#999;margin-top:5px">Use <code>{year}</code> for the current year.</p>
+
+    <label style="margin-top:22px">Social Links</label>
     <div id="socials-fields"></div>
-    <button onclick="addSocialField()">+ Add Social Link</button>
+    <button type="button" onclick="addSocial()"><i class="fas fa-plus"></i> Add Social Link</button>
   </div>
 
-  <!-- Generate Button -->
-  <button onclick="generateJSON()" style="background: #27ae60; padding: 10px 20px;">Generate Resume</button>
+  <!-- ── ACTION BAR ────────────────────────────────────────── -->
+  <div class="action-bar">
+    <input type="file" id="loadFileInput" accept=".json" style="display:none" onchange="handleLoad(event)">
+    <button type="button" class="btn-load" onclick="document.getElementById('loadFileInput').click()">
+      <i class="fas fa-upload"></i> Load JSON
+    </button>
+    <button type="button" class="btn-dl" onclick="generateAndDownload()">
+      <i class="fas fa-file-download"></i> Generate &amp; Download
+    </button>
+    <button type="button" onclick="openPreview()">
+      <i class="fas fa-eye"></i> Preview
+    </button>
+  </div>
 
-  <script src="form.js"></script>
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+  // ── Presets ───────────────────────────────────────────────────────────────
+  const PRESETS = [
+    { label: 'Default',  g1: '#e7ecf2', g2: '#d0d9e4', ac: '#3d4a5a' },
+    { label: 'Ocean',    g1: '#2c3e50', g2: '#34495e', ac: '#3498db' },
+    { label: 'Forest',   g1: '#1a472a', g2: '#2d6a4f', ac: '#52b788' },
+    { label: 'Crimson',  g1: '#6b0f1a', g2: '#b91c1c', ac: '#f87171' },
+    { label: 'Purple',   g1: '#3b1f5e', g2: '#5b21b6', ac: '#a78bfa' },
+    { label: 'Slate',    g1: '#0f172a', g2: '#1e293b', ac: '#38bdf8' },
+    { label: 'Amber',    g1: '#78350f', g2: '#92400e', ac: '#fbbf24' },
+    { label: 'Teal',     g1: '#134e4a', g2: '#0f766e', ac: '#2dd4bf' },
+  ];
+
+  function buildPresets() {
+    const row = document.getElementById('presetRow');
+    PRESETS.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-swatch' + (i === 0 ? ' active' : '');
+      btn.title = p.label;
+      btn.style.background = `linear-gradient(135deg, ${p.g1}, ${p.g2})`;
+      btn.dataset.i = i;
+      const dot = document.createElement('span');
+      dot.className = 'ac-dot';
+      dot.style.background = p.ac;
+      btn.appendChild(dot);
+      btn.addEventListener('click', () => applyPreset(i));
+      row.appendChild(btn);
+    });
+  }
+
+  function applyPreset(i) {
+    const p = PRESETS[i];
+    setPickerVals(p.g1, p.g2, p.ac);
+    applyTheme(p.g1, p.g2, p.ac);
+    document.querySelectorAll('.preset-swatch').forEach((s, j) => s.classList.toggle('active', j === i));
+  }
+
+  function setPickerVals(g1, g2, ac) {
+    document.getElementById('cG1').value  = g1;
+    document.getElementById('cG1h').value = g1.toUpperCase();
+    document.getElementById('cG2').value  = g2;
+    document.getElementById('cG2h').value = g2.toUpperCase();
+    document.getElementById('cAC').value  = ac;
+    document.getElementById('cACh').value = ac.toUpperCase();
+    updateStrip();
+  }
+
+  function applyTheme(g1, g2, ac) {
+    const r = document.documentElement;
+    r.style.setProperty('--g1', g1);
+    r.style.setProperty('--g2', g2);
+    r.style.setProperty('--ac', ac);
+    r.style.setProperty('--accent', ac);
+    r.style.setProperty('--primary', g1);
+    updateStrip();
+  }
+
+  function updateStrip() {
+    document.getElementById('previewStrip').style.background =
+      `linear-gradient(to right, ${document.getElementById('cG1').value}, ${document.getElementById('cAC').value}, ${document.getElementById('cG2').value})`;
+  }
+
+  function wirePicker(pickId, hexId) {
+    const pick = document.getElementById(pickId);
+    const hex  = document.getElementById(hexId);
+    pick.addEventListener('input', () => {
+      hex.value = pick.value.toUpperCase();
+      document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+      applyTheme(document.getElementById('cG1').value, document.getElementById('cG2').value, document.getElementById('cAC').value);
+    });
+    hex.addEventListener('input', () => {
+      if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) {
+        pick.value = hex.value;
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+        applyTheme(document.getElementById('cG1').value, document.getElementById('cG2').value, document.getElementById('cAC').value);
+      }
+    });
+  }
+
+  // ── Toast ─────────────────────────────────────────────────────────────────
+  let _tt;
+  function showToast(msg, isErr = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (isErr ? ' error' : '');
+    clearTimeout(_tt);
+    _tt = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  let _id = Date.now();
+  function nid() { return ++_id; }
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+      .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function clearAll() {
+    ['skills-fields','experience-fields','education-fields',
+     'languages-fields','references-fields','socials-fields']
+      .forEach(id => { document.getElementById(id).innerHTML = ''; });
+  }
+
+  // ── Skills ────────────────────────────────────────────────────────────────
+  function addSkill(val = '') {
+    const id = nid();
+    const c = document.getElementById('skills-fields');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `skill-${id}`;
+    d.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <input type="text" class="skill-val" value="${esc(typeof val==='string'?val:val.name||'')}" placeholder="e.g. Project Management" style="flex:1">
+        <button type="button" class="remove-btn" onclick="this.closest('.dynamic-block').remove()">
+          <i class="fas fa-trash"></i> Remove
+        </button>
+      </div>`;
+    c.appendChild(d);
+  }
+
+  // ── Experience ────────────────────────────────────────────────────────────
+  function addExperience(e = {}) {
+    const id = nid();
+    const c = document.getElementById('experience-fields');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `exp-${id}`;
+    const det = Array.isArray(e.details) ? e.details.join('\n') : (e.details || '');
+    d.innerHTML = `
+      <h3>Experience Entry</h3>
+      <div class="two-col">
+        <div><label>Company</label><input type="text" class="exp-company" value="${esc(e.company)}" placeholder="Borcelle Studio"></div>
+        <div><label>Role / Position</label><input type="text" class="exp-role" value="${esc(e.role||e.position||'')}" placeholder="Marketing Manager"></div>
+      </div>
+      <div class="two-col">
+        <div><label>Start</label><input type="text" class="exp-start" value="${esc(e.start||e.startDate||'')}" placeholder="2025"></div>
+        <div><label>End</label><input type="text" class="exp-end" value="${esc(e.end||e.endDate||'')}" placeholder="Present"></div>
+      </div>
+      <label>Details (one per line)</label>
+      <textarea class="exp-details" placeholder="Each bullet on its own line">${esc(det)}</textarea>
+      <button type="button" class="remove-btn" onclick="this.closest('.dynamic-block').remove()">
+        <i class="fas fa-trash"></i> Remove
+      </button>`;
+    c.appendChild(d);
+  }
+
+  // ── Education ─────────────────────────────────────────────────────────────
+  function addEducation(e = {}) {
+    const id = nid();
+    const c = document.getElementById('education-fields');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `edu-${id}`;
+    d.innerHTML = `
+      <h3>Education Entry</h3>
+      <label>Degree / Certification</label>
+      <input type="text" class="edu-degree" value="${esc(e.degree)}" placeholder="Master of Business Management">
+      <label>Institution</label>
+      <input type="text" class="edu-inst" value="${esc(e.institution)}" placeholder="Wardiere University">
+      <div class="two-col">
+        <div><label>Start</label><input type="text" class="edu-start" value="${esc(e.start||'')}" placeholder="2025"></div>
+        <div><label>End</label><input type="text" class="edu-end" value="${esc(e.end||'')}" placeholder="2029"></div>
+      </div>
+      <label>Description (optional)</label>
+      <input type="text" class="edu-desc" value="${esc(e.description||'')}" placeholder="GPA, location, notes…">
+      <button type="button" class="remove-btn" onclick="this.closest('.dynamic-block').remove()">
+        <i class="fas fa-trash"></i> Remove
+      </button>`;
+    c.appendChild(d);
+  }
+
+  // ── Languages ─────────────────────────────────────────────────────────────
+  function addLanguage(val = '') {
+    const id = nid();
+    const c = document.getElementById('languages-fields');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `lang-${id}`;
+    d.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <input type="text" class="lang-val" value="${esc(typeof val==='string'?val:val.name||'')}" placeholder="e.g. English (Fluent)" style="flex:1">
+        <button type="button" class="remove-btn" onclick="this.closest('.dynamic-block').remove()">
+          <i class="fas fa-trash"></i> Remove
+        </button>
+      </div>`;
+    c.appendChild(d);
+  }
+
+  // ── References ────────────────────────────────────────────────────────────
+  function addReference(r = {}) {
+    const id = nid();
+    const c = document.getElementById('references-fields');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `ref-${id}`;
+    d.innerHTML = `
+      <div class="two-col">
+        <div><label>Name</label><input type="text" class="ref-name" value="${esc(r.name)}" placeholder="Estelle Darcy"></div>
+        <div><label>Role / Company</label><input type="text" class="ref-role" value="${esc(r.role)}" placeholder="Wardiere Inc. / CTO"></div>
+      </div>
+      <div class="two-col">
+        <div><label>Phone</label><input type="tel" class="ref-phone" value="${esc(r.phone)}" placeholder="123-456-7890"></div>
+        <div><label>Email</label><input type="email" class="ref-email" value="${esc(r.email)}" placeholder="hello@example.com"></div>
+      </div>
+      <button type="button" class="remove-btn" onclick="this.closest('.dynamic-block').remove()">
+        <i class="fas fa-trash"></i> Remove
+      </button>`;
+    c.appendChild(d);
+  }
+
+  // ── Socials ───────────────────────────────────────────────────────────────
+  const PLATFORMS = ['LinkedIn','Twitter','Facebook','Instagram','GitHub','YouTube','Dribbble','Behance'];
+
+  function addSocial(s = { name: 'LinkedIn', url: '' }) {
+    const id = nid();
+    const c = document.getElementById('socials-fields');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `soc-${id}`;
+    const opts = PLATFORMS.map(p => `<option value="${p}" ${p===s.name?'selected':''}>${p}</option>`).join('');
+    d.innerHTML = `
+      <div class="two-col">
+        <div><label>Platform</label><select class="soc-name">${opts}</select></div>
+        <div><label>Profile URL</label><input type="url" class="soc-url" value="${esc(s.url)}" placeholder="https://…"></div>
+      </div>
+      <button type="button" class="remove-btn" onclick="this.closest('.dynamic-block').remove()">
+        <i class="fas fa-trash"></i> Remove
+      </button>`;
+    c.appendChild(d);
+  }
+
+  // ── Collect ───────────────────────────────────────────────────────────────
+  function collectData() {
+    const g1 = document.getElementById('cG1').value;
+    const g2 = document.getElementById('cG2').value;
+    const ac = document.getElementById('cAC').value;
+    const fullName = document.getElementById('inp-name').value.trim();
+
+    const skills = [];
+    document.querySelectorAll('[id^="skill-"] .skill-val').forEach(el => {
+      if (el.value.trim()) skills.push(el.value.trim());
+    });
+
+    const experience = [];
+    document.querySelectorAll('[id^="exp-"]').forEach(d => {
+      const role = d.querySelector('.exp-role')?.value.trim();
+      const company = d.querySelector('.exp-company')?.value.trim();
+      if (role || company) experience.push({
+        role, company,
+        start:   d.querySelector('.exp-start').value.trim(),
+        end:     d.querySelector('.exp-end').value.trim(),
+        details: d.querySelector('.exp-details').value.split('\n').map(s=>s.trim()).filter(Boolean)
+      });
+    });
+
+    const education = [];
+    document.querySelectorAll('[id^="edu-"]').forEach(d => {
+      const degree = d.querySelector('.edu-degree')?.value.trim();
+      const institution = d.querySelector('.edu-inst')?.value.trim();
+      if (degree || institution) education.push({
+        degree, institution,
+        start:       d.querySelector('.edu-start').value.trim(),
+        end:         d.querySelector('.edu-end').value.trim(),
+        description: d.querySelector('.edu-desc').value.trim()
+      });
+    });
+
+    const languages = [];
+    document.querySelectorAll('[id^="lang-"] .lang-val').forEach(el => {
+      if (el.value.trim()) languages.push(el.value.trim());
+    });
+
+    const references = [];
+    document.querySelectorAll('[id^="ref-"]').forEach(d => {
+      const name = d.querySelector('.ref-name')?.value.trim();
+      if (name) references.push({
+        name,
+        role:  d.querySelector('.ref-role').value.trim(),
+        phone: d.querySelector('.ref-phone').value.trim(),
+        email: d.querySelector('.ref-email').value.trim()
+      });
+    });
+
+    const socials = [];
+    document.querySelectorAll('[id^="soc-"]').forEach(d => {
+      const url = d.querySelector('.soc-url')?.value.trim();
+      if (url) {
+        const name = d.querySelector('.soc-name').value;
+        socials.push({ name, url, icon: `${name.toLowerCase()}.svg` });
+      }
+    });
+
+    return {
+      name:  fullName,
+      title: document.getElementById('inp-title').value.trim(),
+      about: document.getElementById('inp-about').value.trim(),
+      theme: { gradientStart: g1, gradientEnd: g2, accentColor: ac },
+      contact: {
+        phone:   document.getElementById('inp-phone').value.trim(),
+        email:   document.getElementById('inp-email').value.trim(),
+        address: document.getElementById('inp-address').value.trim()
+      },
+      profile: {
+        image:   document.getElementById('profileImage').value.trim() || 'assets/profile.jpg',
+        eyebrow: document.getElementById('profileEyebrow').value.trim()
+      },
+      skills, experience, education, languages, references,
+      footer: {
+        text: document.getElementById('inp-footer').value.trim() || `© {year} ${fullName}. All rights reserved.`,
+        socials
+      }
+    };
+  }
+
+  // ── Load JSON ─────────────────────────────────────────────────────────────
+  function handleLoad(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const d = JSON.parse(ev.target.result);
+        clearAll();
+
+        // Support both old and new schema
+        const name = d.name || [d.personalInfo?.firstName, d.personalInfo?.lastName].filter(Boolean).join(' ') || '';
+        document.getElementById('inp-name').value    = name;
+        document.getElementById('inp-title').value   = d.title || d.personalInfo?.jobTitle || '';
+        document.getElementById('inp-about').value   = Array.isArray(d.about) ? d.about.join('\n\n') : (d.about || '');
+        document.getElementById('inp-email').value   = d.contact?.email || d.personalInfo?.email || '';
+        document.getElementById('inp-phone').value   = d.contact?.phone || d.personalInfo?.phone || '';
+        document.getElementById('inp-address').value = d.contact?.address || d.personalInfo?.location || '';
+        document.getElementById('profileImage').value   = d.profile?.image || 'assets/profile.jpg';
+        document.getElementById('profileEyebrow').value = d.profile?.eyebrow || '';
+        document.getElementById('inp-footer').value  = d.footer?.text || '';
+
+        // Theme
+        const t = d.theme || { gradientStart: '#e7ecf2', gradientEnd: '#d0d9e4', accentColor: '#3d4a5a' };
+        setPickerVals(t.gradientStart, t.gradientEnd, t.accentColor);
+        applyTheme(t.gradientStart, t.gradientEnd, t.accentColor);
+        document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+
+        // Dynamic sections
+        (d.skills    || []).forEach(addSkill);
+        (d.experience|| []).forEach(addExperience);
+        (d.education || []).forEach(addEducation);
+        (d.languages || []).forEach(addLanguage);
+        (d.references|| []).forEach(addReference);
+        const socials = d.footer?.socials || d.socialLinks || [];
+        socials.forEach(addSocial);
+
+        showToast('✅ Data loaded successfully!');
+      } catch (err) {
+        showToast('❌ Invalid JSON file.', true);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  // ── Generate & Download ───────────────────────────────────────────────────
+  function generateAndDownload() {
+    if (!document.getElementById('inp-name').value.trim()) {
+      showToast('❌ Please enter your full name first.', true);
+      return;
+    }
+    const data = collectData();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'data.json';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+    showToast('✅ data.json downloaded!');
+  }
+
+  // ── Preview ───────────────────────────────────────────────────────────────
+  function openPreview() {
+    const data = collectData();
+    window.open('index.html#data=' + encodeURIComponent(JSON.stringify(data)), '_blank');
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+  buildPresets();
+  wirePicker('cG1','cG1h');
+  wirePicker('cG2','cG2h');
+  wirePicker('cAC','cACh');
+  applyPreset(0);
+
+  // Seed one of each
+  addSkill();
+  addExperience();
+  addEducation();
+  addLanguage();
+  addReference();
+  addSocial();
+  </script>
 </body>
 </html>

@@ -1,26 +1,21 @@
 {
   "name": "RICHARD SANCHEZ",
   "title": "Marketing Manager",
+  "about": "Experienced Marketing Manager skilled in developing and executing comprehensive marketing strategies. Adept at leading teams, managing budgets, and delivering measurable results for diverse clients.",
+  "theme": {
+    "gradientStart": "#e7ecf2",
+    "gradientEnd": "#d0d9e4",
+    "accentColor": "#3d4a5a"
+  },
   "contact": {
     "phone": "+123-456-7890",
     "email": "hello@reallygreatsite.com",
     "address": "123 Anywhere St., Any City"
   },
-  "about": "Experienced Marketing Manager skilled in developing and executing comprehensive marketing strategies. Adept at leading teams, managing budgets, and delivering measurable results for diverse clients.",
-  "education": [
-    {
-      "degree": "Master of Business Management",
-      "institution": "Wardiere University",
-      "start": "2029",
-      "end": "2030"
-    },
-    {
-      "degree": "Bachelor of Business (GPA: 3.8 / 4.0)",
-      "institution": "Wardiere University",
-      "start": "2025",
-      "end": "2029"
-    }
-  ],
+  "profile": {
+    "image": "assets/profile.jpg",
+    "eyebrow": "Open to Opportunities"
+  },
   "skills": [
     "Project Management",
     "Public Relations",
@@ -70,6 +65,22 @@
       ]
     }
   ],
+  "education": [
+    {
+      "degree": "Master of Business Management",
+      "institution": "Wardiere University",
+      "start": "2029",
+      "end": "2030",
+      "description": ""
+    },
+    {
+      "degree": "Bachelor of Business (GPA: 3.8 / 4.0)",
+      "institution": "Wardiere University",
+      "start": "2025",
+      "end": "2029",
+      "description": ""
+    }
+  ],
   "references": [
     {
       "name": "Estelle Darcy",
@@ -85,10 +96,10 @@
     }
   ],
   "footer": {
-    "text": "© 2025 Richard Sanchez. All rights reserved.",
+    "text": "© {year} Richard Sanchez. All rights reserved.",
     "socials": [
       { "name": "LinkedIn", "url": "https://linkedin.com/in/richardsanchez", "icon": "linkedin.svg" },
-      { "name": "Twitter", "url": "https://twitter.com/richardsanchez", "icon": "twitter.svg" },
+      { "name": "Twitter",  "url": "https://twitter.com/richardsanchez",  "icon": "twitter.svg"  },
       { "name": "Facebook", "url": "https://facebook.com/richardsanchez", "icon": "facebook.svg" }
     ]
   }
