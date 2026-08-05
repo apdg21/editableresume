@@ -1,89 +1,110 @@
 {
-  "title": "John Doe's Resume",
-  "header": {
-    "title": "JD"
+  "name": "John Doe",
+  "title": "Software Engineer",
+  "about": "A passionate and results-driven software engineer with over 7 years of hands-on experience in full-stack web development. I excel at building scalable, high-performance applications from conception to deployment. My expertise spans across various technologies including modern JavaScript frameworks, backend services, and database management. I am adept at collaborating with cross-functional teams to deliver innovative solutions that meet business objectives and enhance user experience.",
+  "theme": {
+    "gradientStart": "#1a3c34",
+    "gradientEnd": "#0f2520",
+    "accentColor": "#a3e635"
+  },
+  "contact": {
+    "phone": "(123) 456-7890",
+    "email": "john.doe@example.com",
+    "address": "San Francisco, CA"
   },
   "profile": {
-    "name": "John Doe",
-    "title": "Software Engineer",
-    "photo": "assets/profile.jpg"
+    "image": "assets/profile.jpg",
+    "eyebrow": "Open to Opportunities"
   },
-  "socials": {
-    "LinkedIn": "linkedin.com/in/johndoe",
-    "GitHub": "github.com/johndoe",
-    "Twitter": "twitter.com/johndoe_dev",
-    "Facebook": "facebook.com/johndoe"
-  },
-  "about": "A passionate and results-driven software engineer with over 7 years of hands-on experience in full-stack web development. I excel at building scalable, high-performance applications from conception to deployment. My expertise spans across various technologies including modern JavaScript frameworks, backend services, and database management. I am adept at collaborating with cross-functional teams to deliver innovative solutions that meet business objectives and enhance user experience. I am committed to continuous learning and staying updated with the latest industry trends to bring the best practices to every project.",
   "experience": [
     {
-      "position": "Senior Developer",
       "company": "Tech Corp",
-      "date": "Jan 2020 - Present",
-      "description": "Led a team of developers to build a cloud-based SaaS platform, improving performance by 30% and significantly enhancing user engagement through new feature implementations. Championed code reviews and mentored junior developers."
+      "role": "Senior Developer",
+      "start": "Jan 2020",
+      "end": "Present",
+      "details": [
+        "Led a team of developers to build a cloud-based SaaS platform, improving performance by 30%.",
+        "Championed code reviews and mentored junior developers."
+      ]
     },
     {
-      "position": "Junior Developer",
       "company": "Innovate Solutions",
-      "date": "Jun 2017 - Dec 2019",
-      "description": "Developed front-end features using React and integrated REST APIs, contributing to a 20% improvement in application responsiveness. Participated in daily stand-ups and sprint planning."
+      "role": "Junior Developer",
+      "start": "Jun 2017",
+      "end": "Dec 2019",
+      "details": [
+        "Developed front-end features using React and integrated REST APIs, contributing to a 20% improvement in application responsiveness.",
+        "Participated in daily stand-ups and sprint planning."
+      ]
     },
     {
-      "position": "Software Intern",
       "company": "Global Tech Co.",
-      "date": "May 2016 - Aug 2016",
-      "description": "Assisted senior engineers in debugging and testing existing software modules. Developed scripts to automate routine data processing tasks, saving approximately 5 hours per week."
+      "role": "Software Intern",
+      "start": "May 2016",
+      "end": "Aug 2016",
+      "details": [
+        "Assisted senior engineers in debugging and testing existing software modules.",
+        "Developed scripts to automate routine data processing tasks, saving approximately 5 hours per week."
+      ]
     }
   ],
   "education": [
     {
       "degree": "B.S. in Computer Science",
       "institution": "University of Example",
-      "date": "2013 - 2017"
+      "start": "2013",
+      "end": "2017",
+      "description": ""
     },
     {
       "degree": "Associate of Science",
       "institution": "Community College",
-      "date": "2011 - 2013"
+      "start": "2011",
+      "end": "2013",
+      "description": ""
     }
   ],
   "skills": [
-    "JavaScript",
-    "React",
-    "Node.js",
-    "Python",
-    "SQL",
-    "Docker",
-    "AWS",
-    "RESTful APIs"
+    { "name": "JavaScript", "level": 92 },
+    { "name": "React",      "level": 88 },
+    { "name": "Node.js",    "level": 84 },
+    { "name": "Python",     "level": 78 },
+    { "name": "SQL",        "level": 80 },
+    { "name": "Docker",     "level": 72 },
+    { "name": "AWS",        "level": 70 },
+    { "name": "RESTful APIs","level": 90 }
   ],
   "languages": [
-    "English (Fluent)",
-    "Spanish (Intermediate)"
+    { "name": "English", "level": 100 },
+    { "name": "Spanish", "level": 55 }
   ],
   "references": [
     {
       "name": "Jane Smith",
-      "position": "Engineering Manager",
-      "company": "Tech Corp",
-      "contact": "jane.smith@techcorp.com"
+      "role": "Engineering Manager, Tech Corp",
+      "phone": "(123) 555-0101",
+      "email": "jane.smith@techcorp.example.com"
     },
     {
       "name": "Bob Johnson",
-      "position": "Senior Developer",
-      "company": "Innovate Solutions",
-      "contact": "bob.johnson@innovatesolutions.com"
+      "role": "Senior Developer, Innovate Solutions",
+      "phone": "(123) 555-0202",
+      "email": "bob.johnson@innovatesolutions.example.com"
     },
     {
       "name": "Dr. Emily White",
-      "position": "Professor, Computer Science",
-      "company": "University of Example",
-      "contact": "emily.white@example.edu"
+      "role": "Professor, CS — University of Example",
+      "phone": "(123) 555-0303",
+      "email": "emily.white@example.edu"
     }
   ],
-  "contact": {
-    "Email": "john.doe@example.com",
-    "Phone": "(123) 456-7890"
-  },
-  "footer": "© 2023 John Doe. All rights reserved."
+  "footer": {
+    "text": "© {year} John Doe. All rights reserved.",
+    "socials": [
+      { "name": "LinkedIn",  "url": "https://linkedin.com/in/johndoe" },
+      { "name": "GitHub",    "url": "https://github.com/johndoe" },
+      { "name": "Twitter",   "url": "https://twitter.com/johndoe_dev" },
+      { "name": "Facebook",  "url": "https://facebook.com/johndoe" }
+    ]
+  }
 }
