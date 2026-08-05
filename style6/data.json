@@ -1,29 +1,21 @@
 {
   "name": "Isabel Schumacher",
   "title": "Graphics Designer",
-  "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum.",
+  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum. Passionate about creating visual experiences that communicate clearly and beautifully.",
+  "theme": {
+    "gradientStart": "#2c2c2c",
+    "gradientEnd": "#555555",
+    "accentColor": "#007bff"
+  },
   "contact": {
     "phone": "+123-456-7890",
     "email": "hello@reallygreatsite.com",
     "address": "123 Anywhere Street., Any City"
   },
-  "social_links": [
-    {
-      "platform": "linkedin",
-      "url": "https://linkedin.com/in/example",
-      "icon": "fab fa-linkedin"
-    },
-    {
-      "platform": "twitter",
-      "url": "https://twitter.com/example",
-      "icon": "fab fa-x-twitter"
-    },
-    {
-      "platform": "facebook",
-      "url": "https://www.facebook.com/adolfdg",
-      "icon": "fab fa-facebook"
-    }
-  ],
+  "profile": {
+    "image": "assets/profile.jpg",
+    "eyebrow": "Open to Opportunities"
+  },
   "skills": [
     "Web Design",
     "Branding",
@@ -36,38 +28,64 @@
     "French",
     "Tagalog"
   ],
-  "education": [
-    {
-      "degree": "Bachelor of Arts",
-      "university": "Example University",
-      "years": "2015-2019",
-      "grade": "3.8 GPA"
-    },
-    {
-      "degree": "Bachelor of Design",
-      "university": "WARDIERE UNIVERSITY",
-      "years": "2014-2019",
-      "grade": "3.74"
-    }
-  ],
   "experience": [
     {
-      "title": "Graphic Designer",
+      "role": "Graphic Designer",
       "company": "Creative Agency",
-      "years": "2019-2021",
-      "responsibilities": [
+      "start": "2019",
+      "end": "2021",
+      "details": [
         "Designed marketing materials",
         "Led branding projects"
       ]
     },
     {
-      "title": "SENIOR GRAPHIC DESIGNER",
+      "role": "Senior Graphic Designer",
       "company": "Larana, Inc.",
-      "years": "2017-2019",
-      "responsibilities": [
-        "create more than 100 graphic designs for big companies",
-        "complete a lot of complicated work"
+      "start": "2017",
+      "end": "2019",
+      "details": [
+        "Created more than 100 graphic designs for big companies",
+        "Completed complex, high-visibility projects to tight deadlines"
       ]
     }
-  ]
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Arts",
+      "institution": "Example University",
+      "start": "2015",
+      "end": "2019",
+      "description": "3.8 GPA"
+    },
+    {
+      "degree": "Bachelor of Design",
+      "institution": "Wardiere University",
+      "start": "2014",
+      "end": "2019",
+      "description": "3.74 GPA"
+    }
+  ],
+  "references": [
+    {
+      "name": "Laura Petersen",
+      "role": "Creative Director, Creative Agency",
+      "phone": "+123-456-7891",
+      "email": "l.petersen@creativeagency.com"
+    },
+    {
+      "name": "Marcus Webb",
+      "role": "Design Lead, Larana Inc.",
+      "phone": "+123-456-7892",
+      "email": "m.webb@larana.com"
+    }
+  ],
+  "footer": {
+    "text": "© {year} Isabel Schumacher. All rights reserved.",
+    "socials": [
+      { "name": "LinkedIn", "url": "https://linkedin.com/in/example",      "icon": "fab fa-linkedin"   },
+      { "name": "Twitter",  "url": "https://twitter.com/example",           "icon": "fab fa-x-twitter" },
+      { "name": "Facebook", "url": "https://www.facebook.com/example",      "icon": "fab fa-facebook"  }
+    ]
+  }
 }
