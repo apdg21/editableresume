@@ -1,15 +1,70 @@
 {
-  "profile_image": "assets/profile.jpg",
   "name": "John Doe",
   "title": "Web Developer & Designer",
   "about": "Passionate web developer with 5+ years of experience creating responsive and user-friendly websites. Specialized in JavaScript frameworks and UI/UX design.",
-  "phone": "+1 (555) 123-4567",
-  "email": "john.doe@example.com",
-  "location": "San Francisco, CA",
+  "theme": {
+    "gradientStart": "#1e7150",
+    "gradientEnd": "#145238",
+    "accentColor": "#2d8d66"
+  },
+  "contact": {
+    "phone": "+1 (555) 123-4567",
+    "email": "john.doe@example.com",
+    "address": "San Francisco, CA"
+  },
+  "profile": {
+    "image": "assets/profile.jpg",
+    "eyebrow": "Open to Opportunities"
+  },
+  "experience": [
+    {
+      "company": "Tech Solutions Inc. - San Francisco, CA",
+      "role": "Senior Frontend Developer",
+      "start": "2020",
+      "end": "Present",
+      "details": [
+        "Lead a team of 5 developers to build responsive web applications using React.js.",
+        "Improved page load performance by 40% through code optimization and lazy loading techniques."
+      ]
+    },
+    {
+      "company": "Digital Creations LLC - New York, NY",
+      "role": "Web Developer",
+      "start": "2018",
+      "end": "2020",
+      "details": [
+        "Developed and maintained 15+ client websites using WordPress and custom HTML/CSS.",
+        "Implemented ADA compliance standards across all projects."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master of Computer Science",
+      "institution": "Stanford University",
+      "start": "2016",
+      "end": "2018",
+      "description": "Focused on human-computer interaction and web technologies."
+    },
+    {
+      "degree": "Bachelor of Arts in Design",
+      "institution": "University of California",
+      "start": "2012",
+      "end": "2016",
+      "description": "Studied visual communication, typography, and digital media design."
+    }
+  ],
+  "skills": [
+    { "name": "HTML/CSS", "level": 95 },
+    { "name": "JavaScript", "level": 90 },
+    { "name": "React", "level": 85 },
+    { "name": "UI/UX Design", "level": 80 },
+    { "name": "Node.js", "level": 75 }
+  ],
   "languages": [
-    "English (Fluent)",
-    "Spanish (Intermediate)",
-    "French (Basic)"
+    { "name": "English", "level": 100 },
+    { "name": "Spanish", "level": 65 },
+    { "name": "French", "level": 35 }
   ],
   "expertise": [
     "Frontend Development",
@@ -19,78 +74,27 @@
     "Performance Optimization",
     "Cross-Browser Compatibility"
   ],
-  "summary": "Creative problem-solver with a strong eye for design and attention to detail. Proven track record of delivering high-quality web applications that meet both user needs and business objectives.",
-  "experience": [
+  "references": [
     {
-      "role": "Senior Frontend Developer",
-      "company": "Tech Solutions Inc. - San Francisco, CA",
-      "period": "2020 - Present",
-      "description": "Lead a team of 5 developers to build responsive web applications using React.js. Improved page load performance by 40% through code optimization and lazy loading techniques."
+      "name": "Sarah Mitchell",
+      "role": "Engineering Manager, Tech Solutions Inc.",
+      "phone": "+1 (555) 987-6543",
+      "email": "s.mitchell@techsolutions.example.com"
     },
     {
-      "role": "Web Developer",
-      "company": "Digital Creations LLC - New York, NY",
-      "period": "2018 - 2020",
-      "description": "Developed and maintained 15+ client websites using WordPress and custom HTML/CSS. Implemented ADA compliance standards across all projects."
-    }
-  ],
-  "education": [
-    {
-      "institution": "Stanford University",
-      "degree": "Master of Computer Science",
-      "year": "2016 - 2018"
-    },
-    {
-      "institution": "University of California",
-      "degree": "Bachelor of Arts in Design",
-      "year": "2012 - 2016"
-    }
-  ],
-  "skills": [
-    {
-      "name": "HTML/CSS",
-      "level": 95
-    },
-    {
-      "name": "JavaScript",
-      "level": 90
-    },
-    {
-      "name": "React",
-      "level": 85
-    },
-    {
-      "name": "UI/UX Design",
-      "level": 80
-    },
-    {
-      "name": "Node.js",
-      "level": 75
+      "name": "David Nguyen",
+      "role": "Creative Director, Digital Creations LLC",
+      "phone": "+1 (555) 246-8102",
+      "email": "d.nguyen@digitalcreations.example.com"
     }
   ],
   "footer": {
-    "copyright": "© [year] [name]. All rights reserved.",
-    "social_links": [
-      {
-        "name": "LinkedIn",
-        "url": "https://linkedin.com/in/johndoe",
-        "icon": "fab fa-linkedin"
-      },
-      {
-        "name": "GitHub",
-        "url": "https://github.com/johndoe",
-        "icon": "fab fa-github"
-      },
-      {
-        "name": "Twitter",
-        "url": "https://twitter.com/johndoe",
-        "icon": "fab fa-twitter"
-      },
-      {
-        "name": "Email",
-        "url": "mailto:john.doe@example.com",
-        "icon": "fas fa-envelope"
-      }
+    "text": "© {year} John Doe. All rights reserved.",
+    "socials": [
+      { "name": "LinkedIn", "url": "https://linkedin.com/in/johndoe" },
+      { "name": "GitHub", "url": "https://github.com/johndoe" },
+      { "name": "Twitter", "url": "https://twitter.com/johndoe" },
+      { "name": "Email", "url": "mailto:john.doe@example.com" }
     ]
   }
 }
