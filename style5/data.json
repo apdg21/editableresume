@@ -1,26 +1,21 @@
 {
   "name": "DONNA STROUPE",
   "title": "Sales Representative",
+  "about": "I am a Sales Representative who initializes and manages relationships with customers. I serve as their point of contact and lead from initial outreach through the making of the final purchase by them or someone in their household.",
+  "theme": {
+    "gradientStart": "#d6e4ef",
+    "gradientEnd": "#c2d6e8",
+    "accentColor": "#3d4a5a"
+  },
   "contact": {
     "phone": "+123-456-7890",
     "email": "hello@reallygreatsite.com",
     "address": "123 Anywhere St., Any City, ST 12345"
   },
-  "about": "I am a Sales Representative is a professional who initializes and manages relationships with customers. They serve as their point of contact and lead from initial outreach through the making of the final purchase by them or someone in their household.",
-  "education": [
-    {
-      "degree": "BA Sales and Commerce",
-      "institution": "ABC University",
-      "start": "2011",
-      "end": "2015"
-    },
-    {
-      "degree": "BA Sales and Commerce",
-      "institution": "Wardiere University",
-      "start": "2011",
-      "end": "2015"
-    }
-  ],
+  "profile": {
+    "image": "assets/profile.jpg",
+    "eyebrow": "Open to Opportunities"
+  },
   "skills": [
     "Fast-moving Consumer Goods",
     "Packaged Consumer Goods",
@@ -37,7 +32,7 @@
       "company": "Timmerman Industries",
       "role": "Consumer Goods Seller",
       "start": "Aug 2018",
-      "end": "present",
+      "end": "Present",
       "details": [
         "Offer consumer goods packages to corporate and clients",
         "Meet with clients every quarter to update or renew services",
@@ -64,6 +59,22 @@
       ]
     }
   ],
+  "education": [
+    {
+      "degree": "BA Sales and Commerce",
+      "institution": "ABC University",
+      "start": "2011",
+      "end": "2015",
+      "description": ""
+    },
+    {
+      "degree": "BA Sales and Commerce",
+      "institution": "Wardiere University",
+      "start": "2011",
+      "end": "2015",
+      "description": ""
+    }
+  ],
   "references": [
     {
       "name": "Estelle Darcy",
@@ -79,23 +90,11 @@
     }
   ],
   "footer": {
-    "text": "© 2025 DONNA STROUPE. All rights reserved.",
+    "text": "© {year} DONNA STROUPE. All rights reserved.",
     "socials": [
-      {
-        "name": "LinkedIn",
-        "url": "https://linkedin.com/in/donnastroupe",
-        "icon": "linkedin.svg"
-      },
-      {
-        "name": "Twitter",
-        "url": "https://twitter.com/donnastroupe",
-        "icon": "twitter.svg"
-      },
-      {
-        "name": "Facebook",
-        "url": "https://facebook.com/donnastroupe",
-        "icon": "facebook.svg"
-      }
+      { "name": "LinkedIn", "url": "https://linkedin.com/in/donnastroupe",  "icon": "fa-linkedin"  },
+      { "name": "Twitter",  "url": "https://twitter.com/donnastroupe",   "icon": "fa-x-twitter" },
+      { "name": "Facebook", "url": "https://facebook.com/donnastroupe", "icon": "fa-facebook"  }
     ]
   }
 }
