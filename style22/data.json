@@ -1,0 +1,109 @@
+{
+  "personalInfo": {
+    "firstName": "Adolf",
+    "lastName": "de Guzman",
+    "jobTitle": "Email Marketing & Shopify Strategist",
+    "email": "adolf@emailmarketing.pro",
+    "phone": "+63 912 345 6789",
+    "location": "Cavite, Philippines · Available Remote"
+  },
+  "about": "Email marketing specialist and Shopify expert focused on turning owned channels into a reliable revenue line. I build and optimize Klaviyo flows, write conversion-first copy, and run disciplined A/B testing across subject lines, content, and send timing. Across freelance and agency work I've supported brands in the US, EU, and the Philippines — pairing sharp segmentation with clean, responsive template design to lift open rates, click-through, and customer lifetime value.",
+  "skills": [
+    { "name": "Email Marketing", "level": 95 },
+    { "name": "Shopify + Klaviyo", "level": 90 },
+    { "name": "Copywriting / CRO", "level": 95 },
+    { "name": "Email Automation", "level": 92 },
+    { "name": "Segmentation & Personalization", "level": 88 },
+    { "name": "HTML / CSS Email Build", "level": 85 },
+    { "name": "GA4 & Reporting", "level": 78 }
+  ],
+  "experience": [
+    {
+      "position": "Email Marketing & Shopify Specialist",
+      "company": "Freelance · Remote (US, EU, PH)",
+      "startDate": "2025",
+      "endDate": "Present",
+      "description": "Running end-to-end email programs for Shopify brands, from flow architecture and copy through to testing and reporting.",
+      "details": [
+        "Built and optimized Klaviyo flows for 2 Shopify brands, resulting in a 35% revenue lift across both stores",
+        "Implemented advanced segmentation and personalization strategies that boosted customer LTV by 42%",
+        "Ran systematic A/B testing on subject lines, content, and timing — lifting open rates from 62% to 78%",
+        "Recovered 18% of abandoned carts through a rebuilt three-step recovery sequence"
+      ]
+    },
+    {
+      "position": "Email Marketing Strategist",
+      "company": "MBC Agency",
+      "startDate": "2024",
+      "endDate": "2025",
+      "description": "Owned email strategy and execution for a portfolio of Shopify merchants across lifecycle, retention, and promotional calendars.",
+      "details": [
+        "Managed email programs for 12+ Shopify merchants, driving a 28% revenue increase year-over-year",
+        "Designed welcome flows, re-engagement campaigns, and VIP programs contributing to $890K in attributed sales",
+        "Integrated SMS with email campaigns to reach 3.8× ROAS for a health supplement brand",
+        "Increased repeat purchase rate by 31% through timed post-purchase upsell sequences"
+      ]
+    },
+    {
+      "position": "Email / Landing Page Designer",
+      "company": "Freelance Shopify Partner",
+      "startDate": "2022",
+      "endDate": "2024",
+      "description": "Focused on the build side — responsive templates, list-growth capture, and reusable modules for client teams.",
+      "details": [
+        "Designed responsive email templates and popups that grew client lists by 47%",
+        "Developed custom HTML email modules and drag-and-drop blocks for Klaviyo",
+        "Built landing pages aligned to campaign creative for consistent message match"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Klaviyo Product Certified",
+      "institution": "Klaviyo",
+      "location": "",
+      "year": "2023"
+    },
+    {
+      "degree": "Shopify Partner Fundamentals",
+      "institution": "Shopify",
+      "location": "",
+      "year": "2024"
+    }
+  ],
+  "languages": [
+    { "name": "Filipino", "level": 100 },
+    { "name": "English", "level": 95 }
+  ],
+  "projects": [
+    {
+      "name": "Abandoned Cart Recovery Flow",
+      "description": "A three-stage Klaviyo recovery sequence with dynamic product blocks and escalating incentives — recovered 18% of lost carts and roughly $120K in revenue over six months.",
+      "liveUrl": "",
+      "codeUrl": ""
+    },
+    {
+      "name": "Klaviyo SMS + Email Program",
+      "description": "Integrated cross-channel campaign for a health supplement brand, coordinating send windows across SMS and email to hit 3.8× ROAS.",
+      "liveUrl": "",
+      "codeUrl": ""
+    },
+    {
+      "name": "Post-Purchase Upsell Sequence",
+      "description": "Timed replenishment and cross-sell series mapped to product consumption cycles, lifting repeat purchase rate by 31%.",
+      "liveUrl": "",
+      "codeUrl": ""
+    },
+    {
+      "name": "Personal Portfolio Site",
+      "description": "A portfolio and interactive online resume built for prospective clients and employers.",
+      "liveUrl": "https://portfolio-6df.pages.dev/",
+      "codeUrl": ""
+    }
+  ],
+  "socialLinks": [
+    { "name": "Portfolio", "url": "https://portfolio-6df.pages.dev/" },
+    { "name": "LinkedIn", "url": "https://linkedin.com/in/adolfguzman" },
+    { "name": "GitHub", "url": "https://github.com/adolfguz" }
+  ]
+}
