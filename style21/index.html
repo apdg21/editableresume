@@ -6,6 +6,9 @@
   <title>Resume | Your Name</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Libraries used to turn the actual rendered resume into a PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
       --purple: #b19cd9;
@@ -478,6 +481,23 @@
       .projects-grid { grid-template-columns: 1fr; }
     }
 
+    /* Applied to body while html2canvas is capturing, so scroll-reveal
+       sections and floating animations don't show mid-transition */
+    .pdf-capturing .content-section {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .pdf-capturing .hero-float {
+      animation: none !important;
+    }
+    .pdf-capturing .hero-photo-wrap {
+      animation: none !important;
+    }
+    .pdf-capturing .skill-fill {
+      transition: none !important;
+    }
+
     /* ── PRINT ── */
     @media print {
       .top-nav, .btn-pdf, .btn-upload-json, .upload-overlay { display: none !important; }
@@ -506,7 +526,7 @@
     <button class="btn-upload-json" id="uploadJsonBtn" title="Upload data.json for offline viewing">
       <i class="fas fa-upload"></i> Load JSON
     </button>
-    <button class="btn-pdf" onclick="window.print()">
+    <button class="btn-pdf" id="downloadPdfBtn">
       <i class="fas fa-download"></i> Download PDF
     </button>
   </div>
@@ -524,6 +544,9 @@
   <a href="form.html" class="offline-only" id="mobileEditLink">Edit</a>
   <a href="#" id="mobileLoadJson" class="offline-only" style="color:var(--pink)"><i class="fas fa-upload"></i> Load JSON</a>
 </div>
+
+<!-- Everything inside #resumeContent is exactly what gets exported to the PDF -->
+<div id="resumeContent">
 
 <!-- HERO -->
 <header class="hero">
@@ -605,6 +628,8 @@
 
   </main>
 </div>
+
+</div><!-- /#resumeContent -->
 
 <!-- FOOTER -->
 <footer class="resume-footer">
@@ -696,6 +721,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   loadData();
+
+  // ── PDF download ──
+  document.getElementById('downloadPdfBtn').addEventListener('click', downloadResumePdf);
 
   // ── Scroll animations ──
   const observer = new IntersectionObserver(entries => {
@@ -845,6 +873,139 @@ function populateResume(data) {
       </a>
     `);
   });
+}
+
+// PDF Download Functionality - captures the ACTUAL rendered resume
+// (same fonts, colors, layout, icons as the webpage) using html2canvas,
+// then places that image into a paginated A4 PDF.
+async function downloadResumePdf() {
+  const btn = document.getElementById('downloadPdfBtn');
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+  btn.disabled = true;
+
+  const content = document.getElementById('resumeContent');
+
+  try {
+    // Reveal every scroll-triggered section and freeze animations so
+    // nothing looks mid-transition in the snapshot
+    document.querySelectorAll('.content-section').forEach(s => s.classList.add('visible'));
+    document.body.classList.add('pdf-capturing');
+
+    // Let the browser apply the styles before snapshotting
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const canvas = await html2canvas(content, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#f9f0ff',
+      windowWidth: content.scrollWidth,
+      windowHeight: content.scrollHeight
+    });
+
+    document.body.classList.remove('pdf-capturing');
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    const fullName = document.getElementById('fullName')?.textContent || 'Resume';
+    pdf.setProperties({
+      title: `${fullName} — Resume`,
+      subject: 'Curriculum Vitae',
+      author: fullName,
+      creator: 'Resume PDF Generator'
+    });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    const totalPages = pdf.internal.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      pdf.setPage(i);
+      pdf.setTextColor(150, 150, 150);
+      pdf.setFontSize(8);
+      pdf.text(`Page ${i} of ${totalPages}`, pageWidth / 2, pageHeight - 5, { align: 'center' });
+    }
+
+    const fileSafeName = fullName.trim().replace(/\s+/g, '_') || 'Resume';
+    pdf.save(`${fileSafeName}_Resume.pdf`);
+
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+
+    showNotification('PDF downloaded successfully!', 'success');
+
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    document.body.classList.remove('pdf-capturing');
+
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+
+    showNotification('Error generating PDF. Please try again.', 'error');
+  }
+}
+
+function showNotification(message, type) {
+  const existing = document.querySelector('.pdf-notification');
+  if (existing) existing.remove();
+
+  const notification = document.createElement('div');
+  notification.className = 'pdf-notification';
+  notification.innerHTML = `
+    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+    <span>${message}</span>
+  `;
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-family: var(--body, sans-serif);
+    animation: pdfSlideIn 0.3s ease-out;
+  `;
+
+  if (!document.getElementById('pdfNotificationStyles')) {
+    const style = document.createElement('style');
+    style.id = 'pdfNotificationStyles';
+    style.textContent = `
+      @keyframes pdfSlideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      @keyframes pdfSlideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+    `;
+    document.head.appendChild(style);
+  }
+
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    notification.style.animation = 'pdfSlideOut 0.3s ease-out';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
 }
 
 function setupNavHighlight() {
