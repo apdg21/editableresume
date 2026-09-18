@@ -1,109 +1,103 @@
 {
   "personalInfo": {
-    "firstName": "Adolf",
-    "lastName": "de Guzman",
-    "jobTitle": "Email Marketing & Shopify Strategist",
-    "email": "adolf@emailmarketing.pro",
-    "phone": "+63 912 345 6789",
-    "location": "Cavite, Philippines · Available Remote"
+    "firstName": "Ramon",
+    "lastName": "Villareal",
+    "jobTitle": "Email Marketing & CRM Strategist",
+    "email": "ramon.villareal.crm@gmail.com",
+    "phone": "+63 917 204 5581",
+    "location": "Tagaytay City, Cavite, Philippines · Available Remote"
   },
-  "about": "Email marketing specialist and Shopify expert focused on turning owned channels into a reliable revenue line. I build and optimize Klaviyo flows, write conversion-first copy, and run disciplined A/B testing across subject lines, content, and send timing. Across freelance and agency work I've supported brands in the US, EU, and the Philippines — pairing sharp segmentation with clean, responsive template design to lift open rates, click-through, and customer lifetime value.",
+  "about": "CRM and email marketing strategist with a focus on lifecycle campaigns that keep revenue steady between big promotions. I design and maintain Klaviyo and Mailchimp flows, write direct-response copy, and lean on testing rather than guesswork to improve open and click performance. Over the past several years I've supported DTC brands in the US and Australia, balancing hands-on template building with the reporting side — tracking what a flow actually contributes to revenue, not just how it looks.",
   "skills": [
-    { "name": "Email Marketing", "level": 95 },
-    { "name": "Shopify + Klaviyo", "level": 90 },
-    { "name": "Copywriting / CRO", "level": 95 },
-    { "name": "Email Automation", "level": 92 },
-    { "name": "Segmentation & Personalization", "level": 88 },
-    { "name": "HTML / CSS Email Build", "level": 85 },
-    { "name": "GA4 & Reporting", "level": 78 }
+    { "name": "Email Marketing Strategy", "level": 93 },
+    { "name": "Klaviyo Flow Building", "level": 91 },
+    { "name": "Copywriting / CRO", "level": 89 },
+    { "name": "List Segmentation", "level": 87 },
+    { "name": "Mailchimp & ActiveCampaign", "level": 82 },
+    { "name": "HTML Email Development", "level": 80 },
+    { "name": "Campaign Reporting & Analytics", "level": 84 }
   ],
   "experience": [
     {
-      "position": "Email Marketing & Shopify Specialist",
-      "company": "Freelance · Remote (US, EU, PH)",
-      "startDate": "2025",
-      "endDate": "Present",
-      "description": "Running end-to-end email programs for Shopify brands, from flow architecture and copy through to testing and reporting.",
-      "details": [
-        "Built and optimized Klaviyo flows for 2 Shopify brands, resulting in a 35% revenue lift across both stores",
-        "Implemented advanced segmentation and personalization strategies that boosted customer LTV by 42%",
-        "Ran systematic A/B testing on subject lines, content, and timing — lifting open rates from 62% to 78%",
-        "Recovered 18% of abandoned carts through a rebuilt three-step recovery sequence"
-      ]
-    },
-    {
-      "position": "Email Marketing Strategist",
-      "company": "MBC Agency",
+      "position": "CRM & Email Marketing Manager",
+      "company": "Freelance · Remote (US, AU)",
       "startDate": "2024",
-      "endDate": "2025",
-      "description": "Owned email strategy and execution for a portfolio of Shopify merchants across lifecycle, retention, and promotional calendars.",
+      "endDate": "Present",
+      "description": "Managing full lifecycle email programs for two DTC brands, from flow strategy through campaign calendar and reporting.",
       "details": [
-        "Managed email programs for 12+ Shopify merchants, driving a 28% revenue increase year-over-year",
-        "Designed welcome flows, re-engagement campaigns, and VIP programs contributing to $890K in attributed sales",
-        "Integrated SMS with email campaigns to reach 3.8× ROAS for a health supplement brand",
-        "Increased repeat purchase rate by 31% through timed post-purchase upsell sequences"
+        "Rebuilt core Klaviyo flows (welcome, abandoned cart, post-purchase) resulting in a 29% lift in flow-attributed revenue",
+        "Introduced quarterly A/B testing cadence across subject lines and send times, raising average open rate from 34% to 46%",
+        "Built and maintained segmentation logic across 6 customer lifecycle stages",
+        "Delivered monthly performance reports tying email activity directly to store revenue"
       ]
     },
     {
-      "position": "Email / Landing Page Designer",
-      "company": "Freelance Shopify Partner",
+      "position": "Email Marketing Specialist",
+      "company": "Palm & Co. Agency",
       "startDate": "2022",
       "endDate": "2024",
-      "description": "Focused on the build side — responsive templates, list-growth capture, and reusable modules for client teams.",
+      "description": "Handled email execution for a roster of 8–10 e-commerce clients, focused on campaign build and flow optimization.",
       "details": [
-        "Designed responsive email templates and popups that grew client lists by 47%",
-        "Developed custom HTML email modules and drag-and-drop blocks for Klaviyo",
-        "Built landing pages aligned to campaign creative for consistent message match"
+        "Managed weekly campaign sends for 8+ Shopify clients across fashion and home goods",
+        "Designed and deployed win-back and VIP loyalty flows contributing to $410K in attributed sales",
+        "Coordinated with design team to keep templates on-brand and mobile-responsive",
+        "Reduced list churn by 15% through a re-engagement sunset sequence"
+      ]
+    },
+    {
+      "position": "Marketing Coordinator",
+      "company": "Bright Leaf Retail",
+      "startDate": "2020",
+      "endDate": "2022",
+      "description": "Supported the marketing team across email, basic paid social, and promotional calendar planning.",
+      "details": [
+        "Assisted in planning and scheduling the monthly email promotional calendar",
+        "Wrote and proofread campaign copy for weekly newsletters",
+        "Tracked campaign performance and compiled results for leadership review"
       ]
     }
   ],
   "education": [
     {
-      "degree": "Klaviyo Product Certified",
+      "degree": "Klaviyo Certified Email Specialist",
       "institution": "Klaviyo",
       "location": "",
       "year": "2023"
     },
     {
-      "degree": "Shopify Partner Fundamentals",
-      "institution": "Shopify",
-      "location": "",
-      "year": "2024"
+      "degree": "BS in Marketing Management",
+      "institution": "De La Salle University – Dasmariñas",
+      "location": "Dasmariñas, Cavite, Philippines",
+      "year": "2015 – 2019"
     }
   ],
   "languages": [
     { "name": "Filipino", "level": 100 },
-    { "name": "English", "level": 95 }
+    { "name": "English", "level": 92 }
   ],
   "projects": [
     {
-      "name": "Abandoned Cart Recovery Flow",
-      "description": "A three-stage Klaviyo recovery sequence with dynamic product blocks and escalating incentives — recovered 18% of lost carts and roughly $120K in revenue over six months.",
+      "name": "Lifecycle Flow Rebuild",
+      "description": "A full audit and rebuild of a client's core Klaviyo flows — welcome, browse abandonment, cart recovery, and post-purchase — resulting in a 29% lift in flow revenue.",
       "liveUrl": "",
       "codeUrl": ""
     },
     {
-      "name": "Klaviyo SMS + Email Program",
-      "description": "Integrated cross-channel campaign for a health supplement brand, coordinating send windows across SMS and email to hit 3.8× ROAS.",
-      "liveUrl": "",
-      "codeUrl": ""
-    },
-    {
-      "name": "Post-Purchase Upsell Sequence",
-      "description": "Timed replenishment and cross-sell series mapped to product consumption cycles, lifting repeat purchase rate by 31%.",
+      "name": "VIP Loyalty Email Series",
+      "description": "A tiered loyalty campaign built around purchase frequency, designed to reward repeat customers and reduce discount dependency.",
       "liveUrl": "",
       "codeUrl": ""
     },
     {
       "name": "Personal Portfolio Site",
-      "description": "A portfolio and interactive online resume built for prospective clients and employers.",
-      "liveUrl": "https://portfolio-6df.pages.dev/",
+      "description": "A portfolio and interactive resume showcasing case studies, campaign samples, and results for prospective clients.",
+      "liveUrl": "https://ramon-villareal.pages.dev",
       "codeUrl": ""
     }
   ],
   "socialLinks": [
-    { "name": "Portfolio", "url": "https://portfolio-6df.pages.dev/" },
-    { "name": "LinkedIn", "url": "https://linkedin.com/in/adolfguzman" },
-    { "name": "GitHub", "url": "https://github.com/adolfguz" }
+    { "name": "Portfolio", "url": "https://ramon-villareal.pages.dev" },
+    { "name": "LinkedIn", "url": "https://linkedin.com/in/ramonvillarealcrm" },
+    { "name": "GitHub", "url": "https://github.com/rvillareal" }
   ]
 }
