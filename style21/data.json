@@ -1,0 +1,96 @@
+{
+  "personalInfo": {
+    "firstName": "Jean",
+    "lastName": "Aguilar",
+    "jobTitle": "Virtual Assistant & Product Copywriter",
+    "email": "aguilarjean42@gmail.com",
+    "phone": "0916 365 6012",
+    "location": "Dasmarinas City, Cavite, Philippines"
+  },
+  "about": "Detail-oriented Virtual Assistant and Product Copywriter with over 6 years of experience in e-commerce operations, Shopify platform management, and product catalog optimization. I bridge the gap between suppliers and customers — sourcing winning products through market and trend research, writing SEO-driven product descriptions, and keeping inventory and sales reporting airtight. Having supported teams across the Netherlands, Singapore, and the Philippines, I bring cross-cultural adaptability, strong administrative coordination, and a sharp eye for what makes an online storefront convert.",
+  "skills": [
+    { "name": "Shopify Platform Management", "level": 95 },
+    { "name": "Product Listing & SEO Optimization", "level": 92 },
+    { "name": "Product Copywriting", "level": 90 },
+    { "name": "Inventory & Supplier Management", "level": 88 },
+    { "name": "Sales & Data Analysis / Reporting", "level": 85 },
+    { "name": "Customer Support & Email Management", "level": 82 },
+    { "name": "Market & Trend Research", "level": 78 }
+  ],
+  "experience": [
+    {
+      "position": "Virtual Assistant / Product Lister",
+      "company": "Spoused, Netherlands (Remote)",
+      "startDate": "Nov 2022",
+      "endDate": "Present",
+      "description": "Managing end-to-end e-commerce operations for a Netherlands-based Shopify store, from supplier communication to sales reporting and product listing.",
+      "details": [
+        "Prepare daily sales reports and update product stocks in the inventory management system",
+        "Communicate daily with Alibaba suppliers for order updates and tracking",
+        "Create weekly analytical reports including Data Analysis, Return Analysis, and Average Sales reports",
+        "Upload and optimize new product listings on Shopify with SEO-friendly descriptions",
+        "Manage product categorization and collection organization for better customer navigation"
+      ]
+    },
+    {
+      "position": "Product Copywriter",
+      "company": "Reload Media, Singapore (Remote)",
+      "startDate": "Mar 2020",
+      "endDate": "Sep 2020",
+      "description": "Specialized in creating compelling product descriptions and optimizing listings for maximum visibility and conversion on the Shopify platform.",
+      "details": [
+        "Created compelling product descriptions complete with images and customer reviews",
+        "Uploaded product descriptions, images, and reviews to the Shopify platform",
+        "Ensured product pages were complete and properly formatted before publishing online",
+        "Optimized product listings for search engines and customer conversion"
+      ]
+    },
+    {
+      "position": "Customer Support Email Specialist",
+      "company": "Reload Media, Singapore (Remote)",
+      "startDate": "Jul 2019",
+      "endDate": "Jan 2020",
+      "description": "Delivered responsive customer support, ensuring high satisfaction across orders, shipping, and product inquiries.",
+      "details": [
+        "Responded to customer inquiries regarding orders, products, and shipping",
+        "Handled order tracking and escalated customer complaints appropriately",
+        "Closely coordinated with the Team Leader on escalation results and resolutions",
+        "Maintained high customer satisfaction through timely and helpful communication"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor in Business Administration — Major in Management",
+      "institution": "Polytechnic University of the Philippines",
+      "location": "Manila, Philippines",
+      "year": "1994 – 1998"
+    },
+    {
+      "degree": "Career Service Professional Eligibility (Grade: 82.42%)",
+      "institution": "Civil Service Commission, Philippines",
+      "year": "May 1998"
+    }
+  ],
+  "languages": [
+    { "name": "Filipino", "level": 100 },
+    { "name": "English", "level": 90 }
+  ],
+  "projects": [
+    {
+      "name": "Personal Portfolio & Resume Site",
+      "description": "A personal site showcasing my professional profile, specializations, and an interactive online resume for prospective clients and employers.",
+      "liveUrl": "https://jean-aguilar.pages.dev",
+      "codeUrl": ""
+    },
+    {
+      "name": "Dropshipping Product Finder Guide",
+      "description": "A guide detailing my product research process — using the Facebook Ads Library and market trend analysis to identify winning dropshipping products for e-commerce stores.",
+      "liveUrl": "https://dropshipping-product-finder.pages.dev/finder-guide",
+      "codeUrl": ""
+    }
+  ],
+  "socialLinks": [
+    { "name": "Portfolio", "url": "https://jean-aguilar.pages.dev" }
+  ]
+}
