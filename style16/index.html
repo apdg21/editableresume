@@ -773,7 +773,12 @@
     /* ── Responsive ── */
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; }
-      .hero-card { display: none; }
+      .hero-card {
+        order: -1;
+        max-width: 280px;
+        width: 100%;
+        margin: 0 auto 2rem;
+      }
       .about-grid { grid-template-columns: 1fr; }
       .edu-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; }
